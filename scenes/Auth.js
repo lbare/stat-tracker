@@ -1,25 +1,30 @@
 import React from 'react';
-import { SafeAreaView, View } from 'react-native';
-import {
-  Button,
-  Divider,
-  Layout,
-  TopNavigation,
-  Text,
-} from '@ui-kitten/components';
+import { SafeAreaView, View, TextInput, StyleSheet, Text } from 'react-native';
 
 const Auth = () => {
+  const [value, setValue] = React.useState('');
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title='Login' alignment='center' />
-      <Divider />
-      <Layout
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Text category='h1'>Auth</Text>
-      </Layout>
+      <View style={styles.container}>
+        <TextInput
+          label='First Name'
+          value={value}
+          onChangeText={(nextValue) => setValue(nextValue)}
+        />
+      </View>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: '#000',
+    padding: 20,
+    margin: 10,
+  },
+});
 
 export default Auth;
