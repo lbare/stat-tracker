@@ -1,30 +1,25 @@
 import React from 'react';
-import { SafeAreaView, View, TextInput, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Text } from 'react-native';
 
-const Auth = () => {
+const Auth = ({ styles }) => {
   const [value, setValue] = React.useState('');
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.topBar}>
+        <Text style={styles.h1}>Sign In</Text>
+      </View>
+      <View style={styles.middle}>
         <TextInput
           label='First Name'
           value={value}
           onChangeText={(nextValue) => setValue(nextValue)}
         />
+        <Text style={styles.p}>Test</Text>
       </View>
-    </SafeAreaView>
+      <View style={styles.topBar}></View>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#000',
-    padding: 20,
-    margin: 10,
-  },
-});
 
 export default Auth;
