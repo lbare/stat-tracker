@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 
-export const HomeScreen = ({ navigation }) => {
+const Home = ({ navigation }) => {
   const navigateDetails = () => {
     navigation.navigate('Details');
   };
@@ -19,3 +19,5 @@ export const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+export default Home;
