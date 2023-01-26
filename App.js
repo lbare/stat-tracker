@@ -1,12 +1,5 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import Auth from "./scenes/Auth";
 import { useFonts } from "expo-font";
 
@@ -36,13 +29,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#2D424F",
   },
   top: {
-    flex: 0.1,
+    flex: 0.2,
     justifyContent: "center",
-    paddingTop: 50,
+    paddingTop: 100,
     paddingBottom: 10,
   },
   middle: {
     flex: 1,
+    paddingTop: 50,
     backgroundColor: "#FFF8DE",
   },
   bottom: {
@@ -52,7 +46,7 @@ const styles = StyleSheet.create({
   h1: {
     fontFamily: "SecularOne-Regular",
     textAlign: "center",
-    fontSize: 48,
+    fontSize: 64,
     color: "#FFF8DE",
   },
   p: {
@@ -68,10 +62,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  button: {
+    fontFamily: "SecularOne-Regular",
+    textAlign: "center",
+    fontSize: 24,
+    color: "#2D424F",
+  },
   // Icons
-  Eye: {
+  eye: {
     position: "absolute",
-    top: 80,
-    left: 340,
+    top: 163,
+    left: 320,
   },
 });
