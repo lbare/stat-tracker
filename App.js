@@ -1,66 +1,77 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   ActivityIndicator,
-} from 'react-native';
-import Auth from './scenes/Auth';
-import { useFonts } from 'expo-font';
+} from "react-native";
+import Auth from "./scenes/Auth";
+import { useFonts } from "expo-font";
 
 export default () => {
   const [fontsLoaded] = useFonts({
-    'SecularOne-Regular': require('./assets/fonts/SecularOne-Regular.ttf'),
+    "SecularOne-Regular": require("./assets/fonts/SecularOne-Regular.ttf"),
   });
 
   if (!fontsLoaded) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
         <ActivityIndicator />
       </View>
     );
   }
   return (
-    <View>
+    <>
       <Auth styles={styles} />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    alignItems: 'center',
-    alignContent: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    backgroundColor: '#2D424F',
+    flex: 1,
+    justifyContent: "space-between",
+    backgroundColor: "#2D424F",
   },
-  topBar: {
-    width: Dimensions.get('window').width,
-    justifyContent: 'center',
-    paddingTop: 100,
+  top: {
+    flex: 0.1,
+    justifyContent: "center",
+    paddingTop: 50,
     paddingBottom: 10,
-    backgroundColor: '#FFF8DE',
   },
   middle: {
-    padding: 20,
+    flex: 1,
+    backgroundColor: "#FFF8DE",
   },
   bottom: {
-    padding: 20,
+    flex: 0.18,
   },
+  // Text
   h1: {
-    fontFamily: 'SecularOne-Regular',
-    textAlign: 'center',
+    fontFamily: "SecularOne-Regular",
+    textAlign: "center",
     fontSize: 48,
-    color: '#2D424F',
+    color: "#FFF8DE",
   },
   p: {
-    fontFamily: 'SecularOne-Regular',
-    textAlign: 'center',
+    fontFamily: "SecularOne-Regular",
+    textAlign: "center",
     fontSize: 24,
-    color: '#FFF8DE',
+    color: "#2D424F",
+  },
+  // Components
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  // Icons
+  Eye: {
+    position: "absolute",
+    top: 80,
+    left: 340,
   },
 });
