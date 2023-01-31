@@ -1,4 +1,4 @@
-const fonts = {
+export const fontSize = {
   xs: 8,
   s: 12,
   m: 18,
@@ -7,19 +7,17 @@ const fonts = {
   primary: "SecularOne-Regular",
 };
 
-const text = {
+export const font = {
   h1: {
-    fontFamily: fonts.primary,
-    fontSize: fonts.xl,
+    fontFamily: fontSize.primary,
+    fontSize: fontSize.xl,
   },
   h2: {
-    fontFamily: fonts.primary,
-    fontSize: fonts.l,
+    fontFamily: fontSize.primary,
+    fontSize: fontSize.l,
   },
   body: {
-    fontFamily: fonts.primary,
-    fontSize: fonts.m,
+    fontFamily: fontSize.primary,
+    fontSize: fontSize.m,
   },
 };
-
-export default text;
