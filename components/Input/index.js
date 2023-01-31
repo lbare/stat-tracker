@@ -1,4 +1,4 @@
-import { Text, StyleSheet, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 import { styles } from "./styles";
 
 export const Input = ({

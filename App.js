@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { Auth } from "./scenes/Auth";
 import { useFonts } from "expo-font";
 
