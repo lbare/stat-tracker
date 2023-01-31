@@ -1,8 +1,9 @@
 import React from "react";
-import { View, TextInput, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Eye, EyeSlash } from "phosphor-react-native";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import Button from "../../components/Button";
+import { Input } from "../../components/Input";
+import { styles } from "./styles";
 
 const EyeIcon = ({ password }) => {
   return password.showPassword ? (
@@ -12,7 +13,7 @@ const EyeIcon = ({ password }) => {
   );
 };
 
-const Auth = ({ styles }) => {
+export const Auth = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState({
     password: "",
@@ -60,5 +61,3 @@ const Auth = ({ styles }) => {
     </View>
   );
 };
-
-export default Auth;
