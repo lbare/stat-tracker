@@ -13,7 +13,7 @@ const EyeIcon = ({ password }) => {
   );
 };
 
-export const Auth = () => {
+export const Login = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState({
     password: "",
