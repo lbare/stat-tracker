@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Eye, EyeSlash } from "phosphor-react-native";
-import Button from "../../components/Button";
-import { Input } from "../../components/Input";
-import { styles } from "./styles";
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Eye, EyeSlash } from 'phosphor-react-native';
+import Button from '../../components/Button';
+import { Input } from '../../components/Input';
+import { styles } from './styles';
 
 const EyeIcon = ({ password }) => {
   return password.showPassword ? (
@@ -13,12 +13,16 @@ const EyeIcon = ({ password }) => {
   );
 };
 
-export const Login = () => {
-  const [email, setEmail] = React.useState("");
+export const Login = ({ navigation }) => {
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState({
-    password: "",
+    password: '',
     showPassword: false,
   });
+
+  const onRegistrationPress = () => {
+    navigation.navigate('Register');
+  };
 
   return (
     <View style={styles.container}>
@@ -53,7 +57,8 @@ export const Login = () => {
         >
           <EyeIcon password={password} />
         </TouchableOpacity>
-        <Button title='Login' onPress={() => console.log("Pressed")} />
+        <Button title='Login' onPress={() => console.log('Pressed')} />
+        <Button title='Register' onPress={onRegistrationPress} />
       </View>
 
       {/* Bottom Bar */}

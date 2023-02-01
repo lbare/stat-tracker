@@ -4,10 +4,14 @@ import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import { styles } from './styles';
 
-export const Register = () => {
+export const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+
+  const onLoginPress = () => {
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.container}>
@@ -38,6 +42,7 @@ export const Register = () => {
           onChangeText={(value) => setConfirmPassword(value)}
         />
         <Button title='Register' onPress={() => console.log('Pressed')} />
+        <Button title='Login' onPress={onLoginPress} />
       </View>
 
       {/* Bottom Bar */}
