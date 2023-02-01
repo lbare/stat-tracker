@@ -1,5 +1,7 @@
-import { firebase } from "@react-native-firebase/auth";
-// Your web app's Firebase configuration
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBOgTaYS8HJA1uFEebcKBFukJ72Je_j5GM",
   authDomain: "stat-tracker-9f25a.firebaseapp.com",
@@ -9,9 +11,15 @@ const firebaseConfig = {
   appId: "1:491322406723:web:c3c263d8e4907f92a621f6",
 };
 
-// Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+let app;
+
+if (firebase.apps.length === 0) {
+  app = firebase.initializeApp(firebaseConfig);
+} else {
+  app = firebase.app();
 }
 
-export { firebase };
+const db = app.firestore();
+const auth = firebase.auth();
+
+export { db, auth };

@@ -1,16 +1,48 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import Button from '../../components/Button';
-import { Input } from '../../components/Input';
-import { styles } from './styles';
+import React from "react";
+import { View, Text } from "react-native";
+import Button from "../../components/Button";
+import { Input } from "../../components/Input";
+import { styles } from "./styles";
+import { auth } from "../../firebase";
 
 export const Register = ({ navigation }) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
 
   const onLoginPress = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
+  };
+
+  const onRegisterPress = () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.");
+      return;
+    }
+
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+        const uid = response.user.uid;
+        const data = {
+          id: uid,
+          email,
+        };
+        console.log(data.email);
+        // const usersRef = firebase.firestore().collection("users");
+        // usersRef
+        //   .doc(uid)
+        //   .set(data)
+        //   .then(() => {
+        //     navigation.navigate("Home", { user: data });
+        //   })
+        //   .catch((error) => {
+        //     alert(error);
+        //   });
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
   return (
@@ -41,7 +73,7 @@ export const Register = ({ navigation }) => {
           value={confirmPassword}
           onChangeText={(value) => setConfirmPassword(value)}
         />
-        <Button title='Register' onPress={() => console.log('Pressed')} />
+        <Button title='Register' onPress={onRegisterPress} />
         <Button title='Login' onPress={onLoginPress} />
       </View>
 
