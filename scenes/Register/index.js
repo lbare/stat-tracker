@@ -3,12 +3,18 @@ import { View, Text } from "react-native";
 import Button from "../../components/Button";
 import { Input } from "../../components/Input";
 import { styles } from "./styles";
-import { auth } from "../../firebase";
+import {
+  addDoc,
+  auth,
+  db,
+  collection,
+  createUserWithEmailAndPassword,
+} from "../../firebase";
 
 export const Register = ({ navigation }) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [email, setEmail] = React.useState("levi.bare@gmail.com");
+  const [password, setPassword] = React.useState("password");
+  const [confirmPassword, setConfirmPassword] = React.useState("password");
 
   const onLoginPress = () => {
     navigation.navigate("Login");
@@ -20,17 +26,16 @@ export const Register = ({ navigation }) => {
       return;
     }
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((response) => {
         const uid = response.user.uid;
         const data = {
           id: uid,
           email,
         };
-        console.log(data.email);
-        // const usersRef = firebase.firestore().collection("users");
-        // usersRef
+        const userRef = addDoc(collection(db, "users"), data);
+        userRef.then(console.log(userRef)).catch((error) => alert(error));
+        // userRef
         //   .doc(uid)
         //   .set(data)
         //   .then(() => {
@@ -57,21 +62,14 @@ export const Register = ({ navigation }) => {
         <Input
           title='EMAIL'
           keyboardType='email-address'
-          value={email}
+          value='levi.bare@gmail.com'
           textContentType='emailAddress'
-          onChangeText={(value) => setEmail(value)}
         />
-        <Input
-          title='PASSWORD'
-          textContentType='password'
-          value={password}
-          onChangeText={(value) => setPassword(value)}
-        />
+        <Input title='PASSWORD' textContentType='password' value='password' />
         <Input
           title='CONFIRM PASSWORD'
           textContentType='password'
-          value={confirmPassword}
-          onChangeText={(value) => setConfirmPassword(value)}
+          value='password'
         />
         <Button title='Register' onPress={onRegisterPress} />
         <Button title='Login' onPress={onLoginPress} />
