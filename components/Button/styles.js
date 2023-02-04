@@ -1,16 +1,18 @@
-import { StyleSheet } from "react-native";
-import { fontSize, font, spacing, colors } from "../../styles";
+import { StyleSheet } from 'react-native';
+import { fontSize, font, spacing, colors } from '../../styles';
 
 export const styles = StyleSheet.create({
   text: {
     ...font.h2,
-    textAlign: "center",
-    color: "white",
+    textAlign: 'center',
+    color: colors.blue[900],
   },
   button: {
-    backgroundColor: colors.blue[500],
-    marginHorizontal: spacing.m,
-    paddingVertical: spacing.xl,
+    backgroundColor: 'white',
+    marginHorizontal: spacing.l,
+    paddingVertical: spacing.m,
+    borderColor: 'orange',
+    borderWidth: 0,
     borderRadius: 7,
   },
 });

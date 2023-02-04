@@ -1,23 +1,25 @@
-import React from "react";
-import { View, Text } from "react-native";
-import Button from "../../components/Button";
-import { Input } from "../../components/Input";
-import { styles } from "./styles";
+import React from 'react';
+import { View, Text } from 'react-native';
+import Button from '../../components/Button';
+import { Input } from '../../components/Input';
+import { styles } from './styles';
 import {
+  setDoc,
   addDoc,
   auth,
   db,
   collection,
+  doc,
   createUserWithEmailAndPassword,
-} from "../../firebase";
+} from '../../firebase';
 
 export const Register = ({ navigation }) => {
-  const [email, setEmail] = React.useState("levi.bare@gmail.com");
-  const [password, setPassword] = React.useState("password");
-  const [confirmPassword, setConfirmPassword] = React.useState("password");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
 
   const onLoginPress = () => {
-    navigation.navigate("Login");
+    navigation.navigate('Login');
   };
 
   const onRegisterPress = () => {
@@ -30,20 +32,14 @@ export const Register = ({ navigation }) => {
       .then((response) => {
         const uid = response.user.uid;
         const data = {
-          id: uid,
+          uid: uid,
           email,
         };
-        const userRef = addDoc(collection(db, "users"), data);
-        userRef.then(console.log(userRef)).catch((error) => alert(error));
-        // userRef
-        //   .doc(uid)
-        //   .set(data)
-        //   .then(() => {
-        //     navigation.navigate("Home", { user: data });
-        //   })
-        //   .catch((error) => {
-        //     alert(error);
-        //   });
+        const userRef = setDoc(doc(db, 'users', uid), data)
+          .then(navigation.navigate('Home', { user: data }))
+          .catch((error) => {
+            alert(error);
+          });
       })
       .catch((error) => {
         alert(error);
@@ -62,14 +58,21 @@ export const Register = ({ navigation }) => {
         <Input
           title='EMAIL'
           keyboardType='email-address'
-          value='levi.bare@gmail.com'
+          value={email}
+          onChangeText={(value) => setEmail(value)}
           textContentType='emailAddress'
         />
-        <Input title='PASSWORD' textContentType='password' value='password' />
+        <Input
+          title='PASSWORD'
+          textContentType='password'
+          value={password}
+          onChangeText={(value) => setPassword(value)}
+        />
         <Input
           title='CONFIRM PASSWORD'
           textContentType='password'
-          value='password'
+          value={confirmPassword}
+          onChangeText={(value) => setConfirmPassword(value)}
         />
         <Button title='Register' onPress={onRegisterPress} />
         <Button title='Login' onPress={onLoginPress} />

@@ -1,9 +1,9 @@
-import { Text } from "react-native";
+import { Text, View } from 'react-native';
 
 export const Home = (props) => {
   return (
     <View>
-      <Text>Hello</Text>
+      <Text>FUCK YEAH</Text>
     </View>
   );
 };
