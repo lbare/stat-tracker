@@ -12,9 +12,9 @@ import {
 } from '../../firebase';
 
 export const Login = ({ navigation }) => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState('levi.bare@gmail.com');
   const [password, setPassword] = React.useState({
-    password: '',
+    password: 'password',
     showPassword: false,
   });
 
