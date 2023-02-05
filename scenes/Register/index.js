@@ -53,7 +53,7 @@ export const Register = ({ navigation }) => {
       <View style={styles.main}>
         <View style={styles.middle1}>
           <Input
-            title='EMAIL'
+            title='Email'
             blurOnSubmit={false}
             secureTextEntry={false}
             keyboardType='email-address'
@@ -64,7 +64,7 @@ export const Register = ({ navigation }) => {
             onSubmitEditing={() => ref_to_input2.current.focus()}
           />
           <Input
-            title='PASSWORD'
+            title='Password'
             blurOnSubmit={false}
             secureTextEntry={true}
             keyboardType='default'
@@ -76,7 +76,7 @@ export const Register = ({ navigation }) => {
             onSubmitEditing={() => ref_to_input3.current.focus()}
           />
           <Input
-            title='CONFIRM PASSWORD'
+            title='Confirm Password'
             blurOnSubmit={true}
             secureTextEntry={true}
             keyboardType='default'
