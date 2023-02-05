@@ -12,17 +12,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: spacing.m,
   },
-  middle: {
+  middle1: {
+    paddingTop: spacing.s,
+    flex: 0.35,
+    paddingVertical: spacing.s,
+  },
+  middle2: {
     flex: 0.4,
-
-    borderColor: 'red',
-    borderWidth: 0,
     paddingVertical: spacing.s,
   },
   bottom: {
-    flex: 0.18,
+    flex: 0.12,
     backgroundColor: colors.blue[900],
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   // Text
   h1: {

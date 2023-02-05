@@ -15,11 +15,16 @@ export const styles = StyleSheet.create({
   },
   input: {
     ...font.body,
+    flex: 1,
+    display: 'flex',
     color: colors.blue[900],
+    verticalAlign: 'middle',
     backgroundColor: 'white',
     borderRadius: 7,
+    paddingVertical: spacing.m,
     paddingLeft: spacing.l,
-    paddingBottom: spacing.l,
-    paddingTop: spacing.m,
+    borderColor: 'transparent',
+    borderWidth: 5,
+    textBreakStrategy: 'simple',
   },
 });
