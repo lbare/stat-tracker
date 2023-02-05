@@ -12,12 +12,10 @@ import {
   docRef,
   doc,
   getDoc,
-  setDoc
+  setDoc,
 } from 'firebase/firestore';
 import { getReactNativePersistence } from 'firebase/auth/react-native';
-import Asyncstorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
-import { async } from '@firebase/util';
 
 const firebaseConfig = {
   apiKey: '***REMOVED***',
@@ -42,5 +40,5 @@ export {
   docRef,
   doc,
   getDoc,
-  setDoc
+  setDoc,
 };
