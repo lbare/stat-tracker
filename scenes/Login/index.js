@@ -48,7 +48,7 @@ export const Login = ({ navigation }) => {
       <View style={styles.main}>
         <View style={styles.middle1}>
           <Input
-            title='EMAIL'
+            title='Email'
             blurOnSubmit={false}
             secureTextEntry={false}
             keyboardType='email-address'
@@ -59,7 +59,7 @@ export const Login = ({ navigation }) => {
             onSubmitEditing={() => ref_to_input2.current.focus()}
           />
           <Input
-            title='PASSWORD'
+            title='Password'
             blurOnSubmit={true}
             secureTextEntry={!password.showPassword}
             keyboardType='default'
