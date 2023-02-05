@@ -1,53 +1,55 @@
-import { StyleSheet } from "react-native";
-import { fontSize, font, spacing, colors } from "../../styles";
+import { StyleSheet } from 'react-native';
+import { fontSize, font, spacing, colors } from '../../styles';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    backgroundColor: 'white',
+  },
+  main: {
+    borderTopLeftRadius: 50,
     backgroundColor: colors.blue[900],
-  },
-  top: {
-    flex: 0.2,
-    justifyContent: "center",
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.s,
-  },
-  middle: {
     flex: 1,
-    paddingTop: spacing.xl,
-    backgroundColor: "white",
+    paddingVertical: spacing.m,
+  },
+  middle1: {
+    paddingTop: spacing.s,
+    flex: 0.53,
+    paddingVertical: spacing.s,
+  },
+  middle2: {
+    flex: 0.4,
+    paddingVertical: spacing.s,
   },
   bottom: {
-    flex: 0.18,
+    flex: 0.12,
+    backgroundColor: colors.blue[900],
+    justifyContent: 'flex-start',
   },
   // Text
   h1: {
     ...font.h1,
-    textAlign: "center",
-    color: "white",
+    textAlign: 'center',
+    color: 'white',
   },
   p: {
     ...font.body,
-    textAlign: "center",
-    color: colors.blue[900],
+    fontSize: fontSize.s,
+    textAlign: 'center',
+    color: 'white',
   },
-  // Components
   input: {
-    height: spacing.xl,
-    margin: spacing.s,
-    borderWidth: 1,
-    padding: spacing.s,
-  },
-  button: {
     ...font.body,
-    textAlign: "center",
+    flex: 1,
+    display: 'flex',
     color: colors.blue[900],
-  },
-  // Icons
-  eye: {
-    position: "absolute",
-    top: 163,
-    left: 320,
+    verticalAlign: 'middle',
+    backgroundColor: 'white',
+    borderRadius: 7,
+    paddingVertical: spacing.l,
+    paddingLeft: spacing.l,
+    borderColor: 'transparent',
+    borderWidth: 5,
+    textBreakStrategy: 'simple',
   },
 });

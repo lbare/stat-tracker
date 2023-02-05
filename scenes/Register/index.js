@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, TextInput } from 'react-native';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import { styles } from './styles';
+import { Form } from '../../components/Form';
 import {
   setDoc,
   addDoc,
@@ -17,6 +18,9 @@ export const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+
+  const ref_to_input2 = useRef();
+  const ref_to_input3 = useRef();
 
   const onLoginPress = () => {
     navigation.navigate('Login');
@@ -48,38 +52,65 @@ export const Register = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.top}>
-        <Text style={styles.h1}>Sign In</Text>
-      </View>
-
       {/* Main Content */}
-      <View style={styles.middle}>
-        <Input
-          title='EMAIL'
-          keyboardType='email-address'
-          value={email}
-          onChangeText={(value) => setEmail(value)}
-          textContentType='emailAddress'
-        />
-        <Input
-          title='PASSWORD'
-          textContentType='password'
-          value={password}
-          onChangeText={(value) => setPassword(value)}
-        />
-        <Input
-          title='CONFIRM PASSWORD'
-          textContentType='password'
-          value={confirmPassword}
-          onChangeText={(value) => setConfirmPassword(value)}
-        />
-        <Button title='Register' onPress={onRegisterPress} />
-        <Button title='Login' onPress={onLoginPress} />
+      <View style={styles.main}>
+        {/* <Form
+          title={{
+            first: 'Email',
+            second: 'Password',
+            third: 'Confirm Password',
+          }}
+          onLastSubmit={onRegisterPress}
+        /> */}
+        <View style={styles.middle1}>
+          <Input
+            title='EMAIL'
+            blurOnSubmit={false}
+            secureTextEntry={false}
+            keyboardType='email-address'
+            textContentType='emailAddress'
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+            returnKeyType='next'
+            onSubmitEditing={() => ref_to_input2.current.focus()}
+          />
+          <Input
+            title='PASSWORD'
+            blurOnSubmit={false}
+            secureTextEntry={true}
+            keyboardType='default'
+            textContentType='password'
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            returnKeyType='next'
+            refInner={ref_to_input2}
+            onSubmitEditing={() => ref_to_input3.current.focus()}
+          />
+          <Input
+            title='CONFIRM PASSWORD'
+            blurOnSubmit={true}
+            secureTextEntry={true}
+            keyboardType='default'
+            textContentType='password'
+            value={confirmPassword}
+            onChangeText={(value) => setConfirmPassword(value)}
+            returnKeyType='done'
+            refInner={ref_to_input3}
+            onSubmitEditing={onRegisterPress}
+          />
+        </View>
+        <View style={styles.middle2}>
+          <Button title='Create Account' onPress={onRegisterPress} />
+        </View>
       </View>
 
       {/* Bottom Bar */}
-      <View style={styles.bottom}></View>
+      <View style={styles.bottom}>
+        <Text style={styles.p}>Already have an account?</Text>
+        <Text style={styles.p} onPress={onLoginPress}>
+          SIGN IN
+        </Text>
+      </View>
     </View>
   );
 };
