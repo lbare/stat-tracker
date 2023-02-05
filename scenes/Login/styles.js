@@ -38,11 +38,4 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
-  // Icons
-  eye: {
-    position: 'absolute',
-    right: 45,
-    bottom: 355,
-    zIndex: 4,
-  },
 });
