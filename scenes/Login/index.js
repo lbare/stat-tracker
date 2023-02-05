@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Eye, EyeSlash } from 'phosphor-react-native';
+import { View, Text } from 'react-native';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import { styles } from './styles';
@@ -11,20 +10,11 @@ import {
   doc,
   getDoc,
 } from '../../firebase';
-import { colors, font } from '../../styles';
-
-const EyeIcon = ({ password }) => {
-  return password.showPassword ? (
-    <Eye size={32} color={colors.blue[900]} />
-  ) : (
-    <EyeSlash size={32} color={colors.blue[900]} />
-  );
-};
 
 export const Login = ({ navigation }) => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState('levi.bare@gmail.com');
   const [password, setPassword] = React.useState({
-    password: '',
+    password: 'password',
     showPassword: false,
   });
 
@@ -38,32 +28,14 @@ export const Login = ({ navigation }) => {
     signInWithEmailAndPassword(auth, email, password.password)
       .then((userCredentials) => {
         const uid = userCredentials.user.uid;
-        console.log('SUCCESS', uid);
-        const docRef = doc(db, 'users', uid);
-        console.log(docRef);
-        const docSnap = getDoc(docRef);
-
-        if (docSnap === undefined) {
-          console.log('Document data:', docSnap.data());
-        } else {
-          console.log('No document exists');
-        }
-
-        // const usersRef = firebase.firestore().collection('users');
-        // usersRef
-        //   .doc(uid)
-        //   .get()
-        //   .then((firestoreDocument) => {
-        //     if (!firestoreDocument.exists) {
-        //       alert('User does not exist anymore.');
-        //       return;
-        //     }
-        //     const user = firestoreDocument.data();
-        //     navigation.navigate('Home', { user: user });
-        //   })
-        //   .catch((error) => {
-        //     alert(error);
-        //   });
+        getDoc(doc(db, 'users', uid)).then((docSnap) => {
+          if (docSnap.exists()) {
+            const user = docSnap.data();
+            navigation.navigate('Home', { user: user });
+          } else {
+            console.log('No such document');
+          }
+        });
       })
       .catch((error) => {
         alert(error);
@@ -101,14 +73,6 @@ export const Login = ({ navigation }) => {
             onSubmitEditing={onLoginPress}
           />
         </View>
-        {/* <TouchableOpacity
-          style={styles.eye}
-          onPress={() =>
-            setPassword({ ...password, showPassword: !password.showPassword })
-          }
-        >
-          <EyeIcon password={password} />
-        </TouchableOpacity> */}
         <View style={styles.middle2}>
           <Button title='Login' onPress={onLoginPress} />
         </View>
