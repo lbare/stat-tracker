@@ -26,8 +26,12 @@ export default () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='Login'
+          name='Register'
+          component={Register}
           options={{
+            animationEnabled: false,
+            headerBackTitleVisible: false,
+            headerLeft: null,
             title: 'Welcome',
             headerStyle: {
               backgroundColor: '#ffffff',
@@ -38,9 +42,25 @@ export default () => {
               ...font.h1,
             },
           }}
-          component={Login}
         />
-        <Stack.Screen name='Register' component={Register} />
+        <Stack.Screen
+          name='Login'
+          component={Login}
+          options={{
+            animationEnabled: false,
+            headerBackTitleVisible: false,
+            headerLeft: null,
+            title: 'Welcome',
+            headerStyle: {
+              backgroundColor: '#ffffff',
+              height: 200,
+            },
+            headerTintColor: colors.blue[900],
+            headerTitleStyle: {
+              ...font.h1,
+            },
+          }}
+        />
         <Stack.Screen name='Home' component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
