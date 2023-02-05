@@ -1,26 +1,26 @@
-import React, { useRef } from 'react';
-import { View, Text } from 'react-native';
-import Button from '../../components/Button';
-import { Input } from '../../components/Input';
-import { styles } from './styles';
+import React, { useRef } from "react";
+import { View, Text } from "react-native";
+import Button from "../../../components/Button";
+import { Input } from "../../../components/Input";
+import { styles } from "./styles";
 import {
   setDoc,
   auth,
   db,
   doc,
   createUserWithEmailAndPassword,
-} from '../../firebase';
+} from "../../../firebase";
 
 export const Register = ({ navigation }) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
 
   const ref_to_input2 = useRef();
   const ref_to_input3 = useRef();
 
   const onLoginPress = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
   };
 
   const onRegisterPress = () => {
@@ -36,8 +36,8 @@ export const Register = ({ navigation }) => {
           uid: uid,
           email,
         };
-        setDoc(doc(db, 'users', uid), data)
-          .then(navigation.navigate('Home', { user: data }))
+        setDoc(doc(db, "users", uid), data)
+          .then(navigation.navigate("HomeScene", { user: data }))
           .catch((error) => {
             alert(error);
           });

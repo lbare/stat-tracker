@@ -1,39 +1,39 @@
-import React, { useRef } from 'react';
-import { View, Text } from 'react-native';
-import Button from '../../components/Button';
-import { Input } from '../../components/Input';
-import { styles } from './styles';
+import React, { useRef } from "react";
+import { View, Text } from "react-native";
+import Button from "../../../components/Button";
+import { Input } from "../../../components/Input";
+import { styles } from "./styles";
 import {
   auth,
   signInWithEmailAndPassword,
   db,
   doc,
   getDoc,
-} from '../../firebase';
+} from "../../../firebase";
 
 export const Login = ({ navigation }) => {
-  const [email, setEmail] = React.useState('levi.bare@gmail.com');
+  const [email, setEmail] = React.useState("levi.bare@gmail.com");
   const [password, setPassword] = React.useState({
-    password: 'password',
+    password: "password",
     showPassword: false,
   });
 
   const ref_to_input2 = useRef();
 
   const onSignupPress = () => {
-    navigation.navigate('Register');
+    navigation.navigate("Register");
   };
 
   const onLoginPress = () => {
     signInWithEmailAndPassword(auth, email, password.password)
       .then((userCredentials) => {
         const uid = userCredentials.user.uid;
-        getDoc(doc(db, 'users', uid)).then((docSnap) => {
+        getDoc(doc(db, "users", uid)).then((docSnap) => {
           if (docSnap.exists()) {
             const user = docSnap.data();
-            navigation.navigate('Home', { user: user });
+            navigation.navigate("HomeScene", { user: user });
           } else {
-            console.log('No such document');
+            console.log("No such document");
           }
         });
       })

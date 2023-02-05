@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { fontSize, font, spacing, colors } from '../../styles';
+import { fontSize, font, spacing, colors } from '../../../styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   middle1: {
     paddingTop: spacing.s,
-    flex: 0.53,
+    flex: 0.35,
     paddingVertical: spacing.s,
   },
   middle2: {
@@ -37,19 +37,5 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.s,
     textAlign: 'center',
     color: 'white',
-  },
-  input: {
-    ...font.body,
-    flex: 1,
-    display: 'flex',
-    color: colors.blue[900],
-    verticalAlign: 'middle',
-    backgroundColor: 'white',
-    borderRadius: 7,
-    paddingVertical: spacing.l,
-    paddingLeft: spacing.l,
-    borderColor: 'transparent',
-    borderWidth: 5,
-    textBreakStrategy: 'simple',
   },
 });
