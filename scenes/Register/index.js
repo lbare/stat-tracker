@@ -1,15 +1,12 @@
 import React, { useRef } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text } from 'react-native';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import { styles } from './styles';
-import { Form } from '../../components/Form';
 import {
   setDoc,
-  addDoc,
   auth,
   db,
-  collection,
   doc,
   createUserWithEmailAndPassword,
 } from '../../firebase';
@@ -39,7 +36,7 @@ export const Register = ({ navigation }) => {
           uid: uid,
           email,
         };
-        const userRef = setDoc(doc(db, 'users', uid), data)
+        setDoc(doc(db, 'users', uid), data)
           .then(navigation.navigate('Home', { user: data }))
           .catch((error) => {
             alert(error);
@@ -54,14 +51,6 @@ export const Register = ({ navigation }) => {
     <View style={styles.container}>
       {/* Main Content */}
       <View style={styles.main}>
-        {/* <Form
-          title={{
-            first: 'Email',
-            second: 'Password',
-            third: 'Confirm Password',
-          }}
-          onLastSubmit={onRegisterPress}
-        /> */}
         <View style={styles.middle1}>
           <Input
             title='EMAIL'

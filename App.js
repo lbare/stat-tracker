@@ -4,9 +4,9 @@ import { Login } from './scenes/Login';
 import { useFonts } from 'expo-font';
 import { Register } from './scenes/Register';
 import { Home } from './scenes/Home';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { colors, spacing, font } from './styles';
+import { colors, font } from './styles';
 
 const Stack = createStackNavigator();
 
