@@ -61,7 +61,16 @@ export default () => {
             },
           }}
         />
-        <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen
+          name='Home'
+          component={Home}
+          options={{
+            headerShown: false,
+            animationEnabled: false,
+            headerBackTitleVisible: false,
+            headerLeft: null,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
