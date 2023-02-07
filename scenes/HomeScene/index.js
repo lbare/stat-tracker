@@ -11,6 +11,7 @@ import {
   House,
   Gear,
   ChartLine,
+  ChartLineUp,
   PlusCircle,
 } from "phosphor-react-native";
 
@@ -22,23 +23,47 @@ export const HomeScene = ({ navigation }) => {
       initialRouteName='Home'
       barStyle={styles.nav}
       labeled={false}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          if (route.name === "Home") {
-            return <House size={40} color={colors.blue[900]} />;
-          } else if (route.name === "Stats") {
-            return <ChartLine size={40} color={colors.blue[900]} />;
-          } else {
-            return <PlusCircle size={40} color={colors.blue[900]} />;
-          }
-        },
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
-      })}
+      activeColor={colors.blue[900]}
+      inactiveColor='gray'
+      sceneAnimationEnabled={true}
+      sceneAnimationType='shifting'
     >
-      <Tab.Screen name='Stats' component={Stats} />
-      <Tab.Screen name='Home' component={Home} />
-      <Tab.Screen name='LogGame' component={LogGame} />
+      <Tab.Screen
+        name='Stats'
+        component={Stats}
+        options={{
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <ChartLineUp size={32} color={color} weight='fill' />
+            ) : (
+              <ChartLineUp size={32} color={color} />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name='Home'
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <House size={32} color={color} weight='fill' />
+            ) : (
+              <House size={32} color={color} />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name='LogGame'
+        component={LogGame}
+        options={{
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <PlusCircle size={32} color={color} weight='fill' />
+            ) : (
+              <PlusCircle size={32} color={color} />
+            ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
