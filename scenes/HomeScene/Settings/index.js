@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { List } from 'phosphor-react-native';
 import { styles } from '../Stats/styles';
 
-export const LogGame = () => {
+export const Settings = () => {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
