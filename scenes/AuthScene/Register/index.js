@@ -1,26 +1,27 @@
-import React, { useRef } from "react";
-import { View, Text } from "react-native";
-import Button from "../../../components/Button";
-import { Input } from "../../../components/Input";
-import { styles } from "./styles";
+import React, { useRef } from 'react';
+import { View, Text } from 'react-native';
+import Button from '../../../components/Button';
+import { Input } from '../../../components/Input';
+import { styles } from './styles';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   setDoc,
   auth,
   db,
   doc,
   createUserWithEmailAndPassword,
-} from "../../../firebase";
+} from '../../../firebase';
 
 export const Register = ({ navigation }) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
 
   const ref_to_input2 = useRef();
   const ref_to_input3 = useRef();
 
   const onLoginPress = () => {
-    navigation.navigate("Login");
+    navigation.navigate('Login');
   };
 
   const onRegisterPress = () => {
@@ -36,8 +37,8 @@ export const Register = ({ navigation }) => {
           uid: uid,
           email,
         };
-        setDoc(doc(db, "users", uid), data)
-          .then(navigation.navigate("HomeScene", { user: data }))
+        setDoc(doc(db, 'users', uid), data)
+          .then(navigation.navigate('HomeScene', { user: data }))
           .catch((error) => {
             alert(error);
           });
@@ -50,7 +51,12 @@ export const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Main Content */}
-      <View style={styles.main}>
+      <LinearGradient
+        colors={['#4B79A1', '#283E51']}
+        style={styles.main}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
         <View style={styles.middle1}>
           <Input
             title='Email'
@@ -90,16 +96,15 @@ export const Register = ({ navigation }) => {
         </View>
         <View style={styles.middle2}>
           <Button title='Create Account' onPress={onRegisterPress} />
+          <Text
+            style={styles.p}
+            onPress={onLoginPress}
+            suppressHighlighting={true}
+          >
+            Already have an account?{'\n'}SIGN IN
+          </Text>
         </View>
-      </View>
-
-      {/* Bottom Bar */}
-      <View style={styles.bottom}>
-        <Text style={styles.p}>Already have an account?</Text>
-        <Text style={styles.p} onPress={onLoginPress}>
-          SIGN IN
-        </Text>
-      </View>
+      </LinearGradient>
     </View>
   );
 };

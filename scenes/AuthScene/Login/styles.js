@@ -8,23 +8,17 @@ export const styles = StyleSheet.create({
   },
   main: {
     borderTopLeftRadius: 50,
-    backgroundColor: colors.blue[900],
     flex: 1,
     paddingVertical: spacing.m,
   },
   middle1: {
-    paddingTop: spacing.s,
-    flex: 0.35,
+    paddingTop: 10,
+    flex: 0.335,
     paddingVertical: spacing.s,
   },
   middle2: {
     flex: 0.4,
     paddingVertical: spacing.s,
-  },
-  bottom: {
-    flex: 0.12,
-    backgroundColor: colors.blue[900],
-    justifyContent: 'flex-start',
   },
   // Text
   h1: {
@@ -34,6 +28,7 @@ export const styles = StyleSheet.create({
   },
   p: {
     ...font.body,
+    paddingTop: spacing.m,
     fontSize: fontSize.s,
     textAlign: 'center',
     color: 'white',
