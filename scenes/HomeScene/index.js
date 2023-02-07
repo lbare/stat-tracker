@@ -1,11 +1,10 @@
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import React from "react";
-import { View, Text } from "react-native";
-import { Home } from "./Home";
-import { styles } from "./styles";
-import { LogGame } from "./LogGame";
-import { Stats } from "./Stats";
-import { colors } from "../../styles";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import React from 'react';
+import { View, Text, SectionList, SafeAreaView, StatusBar } from 'react-native';
+import { styles } from './styles';
+import { LogGame } from './LogGame';
+import { Stats } from './Stats';
+import { colors } from '../../styles';
 import {
   UserCircle,
   House,
@@ -13,57 +12,43 @@ import {
   ChartLine,
   ChartLineUp,
   PlusCircle,
-} from "phosphor-react-native";
+} from 'phosphor-react-native';
 
-const Tab = createMaterialBottomTabNavigator();
+const DATA = [
+  {
+    title: 'Section 1',
+    data: ['1', '2'],
+  },
+  {
+    title: 'Section 2',
+    data: ['1', '2', '3'],
+  },
+  {
+    title: 'Section 3',
+    data: ['1'],
+  },
+  {
+    title: 'Section 4',
+    data: ['1', '2', '3', '4'],
+  },
+];
 
 export const HomeScene = ({ navigation }) => {
   return (
-    <Tab.Navigator
-      initialRouteName='Home'
-      barStyle={styles.nav}
-      labeled={false}
-      activeColor={colors.blue[900]}
-      inactiveColor='gray'
-      sceneAnimationEnabled={true}
-      sceneAnimationType='shifting'
-    >
-      <Tab.Screen
-        name='Stats'
-        component={Stats}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <ChartLineUp size={32} color={color} weight='fill' />
-            ) : (
-              <ChartLineUp size={32} color={color} />
-            ),
-        }}
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle='dark-content' />
+      <SectionList
+        sections={DATA}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.title}>{item}</Text>
+          </View>
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.header}>{title}</Text>
+        )}
       />
-      <Tab.Screen
-        name='Home'
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <House size={32} color={color} weight='fill' />
-            ) : (
-              <House size={32} color={color} />
-            ),
-        }}
-      />
-      <Tab.Screen
-        name='LogGame'
-        component={LogGame}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <PlusCircle size={32} color={color} weight='fill' />
-            ) : (
-              <PlusCircle size={32} color={color} />
-            ),
-        }}
-      />
-    </Tab.Navigator>
+    </SafeAreaView>
   );
 };
