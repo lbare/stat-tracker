@@ -1,0 +1,65 @@
+{
+  "user": {
+    "season": {
+      "year": 2022,
+      "teamName": "Monarchs",
+      "wins": 4,
+      "losses": 1,
+      "games": {
+        "atHome": false,
+        "opponent": "Red Sox",
+        "stats": {
+          "batting": [
+            {
+              "pitches_balls": 3,
+              "pitches_stikes": 2,
+              "on-base": true,
+              "ruling": "e8",
+              "rbis": 0,
+              "hit_hard": false,
+              "scored": false
+            },
+            {
+              "pitches_balls": 4,
+              "pitches_stikes": 1,
+              "on-base": true,
+              "ruling": "bb",
+              "rbis": 0,
+              "hit_hard": null,
+              "scored": false
+            },
+            {
+              "pitches_balls": 1,
+              "pitches_stikes": 1,
+              "on-base": true,
+              "ruling": "1b",
+              "rbis": 1,
+              "hit_hard": true,
+              "scored": false
+            },
+            {
+              "pitches_balls": 0,
+              "pitches_stikes": 1,
+              "on-base": true,
+              "ruling": "2b",
+              "rbis": 1,
+              "hit_hard": true,
+              "scored": true
+            }
+          ],
+          "pitching": {
+            "innings": 4,
+            "earned_runs": 1,
+            "strikeouts": 4
+          },
+          "fielding": [
+            {
+              "position": 8,
+              "innings": 3
+            }
+          ]
+        }
+      }
+    }
+  }
+}
