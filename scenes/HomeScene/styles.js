@@ -38,4 +38,45 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     color: 'black',
   },
+  baseballIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 100,
+    position: 'absolute',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    bottom: -10,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  baseballIconActive: {
+    backgroundColor: '#E84444',
+  },
+  baseballIconInactive: {
+    backgroundColor: 'white',
+  },
+  nav: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    marginBottom: 25,
+    marginTop: 5,
+    paddingTop: 30,
+    height: 70,
+    borderColor: '#fff',
+    marginHorizontal: 20,
+    position: 'absolute',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
 });

@@ -57,7 +57,6 @@ export const Stats = (props) => {
           )}
         />
       </LinearGradient>
-      <FloatingButton />
     </SafeAreaView>
   );
 };
