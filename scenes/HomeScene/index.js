@@ -1,4 +1,3 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import React from 'react';
 import { View, Text, SectionList, SafeAreaView, StatusBar } from 'react-native';
 import { styles } from './styles';
@@ -17,22 +16,24 @@ import {
   ChartLine,
   ChartLineUp,
   PlusCircle,
+  Baseball,
 } from 'phosphor-react-native';
 
-const Tab = createMaterialBottomTabNavigator();
+const BottomBar = createBottomTabNavigator();
 
 export const HomeScene = ({ navigation }) => {
   return (
-    <Tab.Navigator
+    <BottomBar.Navigator
+      detachInactiveScreens={false}
       initialRouteName='Stats'
-      barStyle={styles.nav}
-      labeled={false}
-      activeColor={colors.blue[900]}
-      inactiveColor='gray'
-      sceneAnimationEnabled={true}
-      sceneAnimationType='shifting'
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: styles.nav,
+      }}
     >
-      <Tab.Screen
+      <BottomBar.Screen
         name='Stats'
         component={Stats}
         options={{
@@ -44,19 +45,30 @@ export const HomeScene = ({ navigation }) => {
             ),
         }}
       />
-      <Tab.Screen
+      <BottomBar.Screen
         name='LogGame'
         component={LogGame}
         options={{
-          tabBarIcon: ({ color, focused }) =>
+          tabBarIcon: ({ focused }) =>
             focused ? (
-              <PlusCircle size={32} color={color} weight='fill' />
+              <View
+                style={{ ...styles.baseballIcon, ...styles.baseballIconActive }}
+              >
+                <Baseball size={80} color='white' />
+              </View>
             ) : (
-              <PlusCircle size={32} color={color} />
+              <View
+                style={{
+                  ...styles.baseballIcon,
+                  ...styles.baseballIconInactive,
+                }}
+              >
+                <Baseball size={80} color='#E84444' />
+              </View>
             ),
         }}
       />
-      <Tab.Screen
+      <BottomBar.Screen
         name='Settings'
         component={Settings}
         options={{
@@ -68,6 +80,6 @@ export const HomeScene = ({ navigation }) => {
             ),
         }}
       />
-    </Tab.Navigator>
+    </BottomBar.Navigator>
   );
 };
