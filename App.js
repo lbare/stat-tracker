@@ -47,17 +47,17 @@ export default () => {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Stack.Screen
-          name='HomeScene'
-          component={HomeScene}
-          options={{
-            headerShown: false,
-            animationEnabled: false,
-            headerBackTitleVisible: false,
-            headerLeft: null,
-          }}
-        />
         <Stack.Navigator>
+          <Stack.Screen
+            name='HomeScene'
+            component={HomeScene}
+            options={{
+              headerShown: false,
+              animationEnabled: false,
+              headerBackTitleVisible: false,
+              headerLeft: null,
+            }}
+          />
           <Stack.Screen
             name='Login'
             component={Login}
