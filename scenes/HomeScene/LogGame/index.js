@@ -1,24 +1,32 @@
 import React from 'react';
-import { View, SafeAreaView, Text, StatusBar } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StatusBar,
+  Button,
+  Alert,
+  SectionList,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { List } from 'phosphor-react-native';
-import { styles } from '../Stats/styles';
+import { styles } from './styles';
+import { Input } from '../../../components/Input';
+import { HitLocation } from '../../../components/GameData/HitLocation';
 
 export const LogGame = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StatusBar barStyle='dark-content' />
       <LinearGradient
         colors={['#4B79A1', '#283E51']}
-        style={styles.main}
+        style={styles.bg}
         start={{ x: 1, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <StatusBar barStyle='dark-content' />
-        <View style={styles.top}>
-          <Text style={styles.h1}>TEST</Text>
+        <View style={styles.middle}>
+          <HitLocation />
         </View>
-        <View style={styles.middle}></View>
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 };

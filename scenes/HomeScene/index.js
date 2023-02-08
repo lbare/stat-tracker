@@ -6,7 +6,6 @@ import { LogGame } from './LogGame';
 import { Stats } from './Stats';
 import { Settings } from './Settings';
 import { colors } from '../../styles';
-import { FloatingButton } from '../../components/FAB';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
@@ -25,7 +24,7 @@ export const HomeScene = ({ navigation }) => {
   return (
     <BottomBar.Navigator
       detachInactiveScreens={false}
-      initialRouteName='Stats'
+      initialRouteName='LogGame'
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: 'black',
