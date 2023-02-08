@@ -14,8 +14,7 @@ export const styles = StyleSheet.create({
   inputContainer: {
     color: '#283E51',
     backgroundColor: 'white',
-    fontFamily: fontSize[400],
-
+    fontFamily: fontSize[500],
     borderRadius: 8,
   },
   inputText: {
