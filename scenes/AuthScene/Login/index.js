@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import Button from '../../../components/Button';
 import { Input } from '../../../components/Input';
@@ -19,8 +19,6 @@ export const Login = ({ navigation }) => {
     password: 'password',
     showPassword: false,
   });
-
-  const ref_to_input2 = useRef();
 
   const onSignupPress = () => {
     navigation.navigate('Register');
@@ -63,12 +61,11 @@ export const Login = ({ navigation }) => {
             value={email}
             onChangeText={(value) => setEmail(value)}
             returnKeyType='next'
-            onSubmitEditing={() => ref_to_input2.current.focus()}
           />
           <Input
             title='Password'
             blurOnSubmit={true}
-            secureTextEntry={!password.showPassword}
+            secureTextEntry={true}
             keyboardType='default'
             textContentType='password'
             value={password}
@@ -76,7 +73,6 @@ export const Login = ({ navigation }) => {
               setPassword({ ...password, password: value })
             }
             returnKeyType='done'
-            refInner={ref_to_input2}
             onSubmitEditing={onLoginPress}
           />
         </View>

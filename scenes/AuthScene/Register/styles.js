@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
   },
   middle2: {
     flex: 0.4,
-    paddingVertical: spacing.s,
   },
   // Text
   h1: {
@@ -32,19 +31,5 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.s,
     textAlign: 'center',
     color: 'white',
-  },
-  input: {
-    ...font.body,
-    flex: 1,
-    display: 'flex',
-    color: colors.blue[900],
-    verticalAlign: 'middle',
-    backgroundColor: 'white',
-    borderRadius: 7,
-    paddingVertical: spacing.l,
-    paddingLeft: spacing.l,
-    borderColor: 'transparent',
-    borderWidth: 5,
-    textBreakStrategy: 'simple',
   },
 });

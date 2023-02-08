@@ -17,9 +17,6 @@ export const Register = ({ navigation }) => {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
 
-  const ref_to_input2 = useRef();
-  const ref_to_input3 = useRef();
-
   const onLoginPress = () => {
     navigation.navigate('Login');
   };
@@ -67,7 +64,6 @@ export const Register = ({ navigation }) => {
             value={email}
             onChangeText={(value) => setEmail(value)}
             returnKeyType='next'
-            onSubmitEditing={() => ref_to_input2.current.focus()}
           />
           <Input
             title='Password'
@@ -78,8 +74,6 @@ export const Register = ({ navigation }) => {
             value={password}
             onChangeText={(value) => setPassword(value)}
             returnKeyType='next'
-            refInner={ref_to_input2}
-            onSubmitEditing={() => ref_to_input3.current.focus()}
           />
           <Input
             title='Confirm Password'
@@ -90,7 +84,6 @@ export const Register = ({ navigation }) => {
             value={confirmPassword}
             onChangeText={(value) => setConfirmPassword(value)}
             returnKeyType='done'
-            refInner={ref_to_input3}
             onSubmitEditing={onRegisterPress}
           />
         </View>

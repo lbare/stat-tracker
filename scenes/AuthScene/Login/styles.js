@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
   },
   middle2: {
     flex: 0.4,
-    paddingVertical: spacing.s,
   },
   // Text
   h1: {
