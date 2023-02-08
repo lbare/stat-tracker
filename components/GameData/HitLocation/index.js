@@ -1,10 +1,15 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { styles } from './style';
+import Field from '../../../assets/field';
 
-export const HitLocation = (props) => {
+export const HitLocation = () => {
   return (
     <View style={styles.container}>
-      <Text>TEST</Text>
+      <Field
+        fillColor={styles.fillColor}
+        strokeColor={styles.strokeColor}
+        strokeWidth={styles.strokeWidth}
+      />
     </View>
   );
 };

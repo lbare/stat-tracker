@@ -6,9 +6,9 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   top: {
-    flex: 0.1,
+    flex: 0.3,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: spacing.m,
   },
@@ -17,8 +17,18 @@ export const styles = StyleSheet.create({
     paddingVertical: spacing.l,
   },
   h1: {
-    ...font.h2,
-    color: colors.blue[900],
+    ...font.h1,
+    fontSize: 50,
+    color: colors.red[300],
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    bottom: -10,
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
   },
   bg: {
     flex: 1,

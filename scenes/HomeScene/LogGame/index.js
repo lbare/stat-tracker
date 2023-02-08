@@ -23,9 +23,7 @@ export const LogGame = () => {
         start={{ x: 1, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <View style={styles.middle}>
-          <HitLocation />
-        </View>
+        <HitLocation />
       </LinearGradient>
     </View>
   );
