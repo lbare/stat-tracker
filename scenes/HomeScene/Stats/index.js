@@ -13,7 +13,6 @@ import {
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Text } from 'react-native-paper';
 import React, { useState } from 'react';
-import { FloatingButton } from '../../../components/FAB';
 
 const DATA = [
   {
