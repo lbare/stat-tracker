@@ -4,8 +4,10 @@ import { fontSize, font, spacing, colors } from '../../styles';
 export const styles = StyleSheet.create({
   text: {
     ...font.h2,
+    fontSize: spacing.l,
     textAlign: 'center',
-    color: colors.blue[900],
+    color: '#385976',
+    fontWeight: '900',
   },
   button: {
     backgroundColor: 'white',
