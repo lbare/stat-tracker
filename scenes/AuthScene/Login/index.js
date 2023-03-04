@@ -1,15 +1,17 @@
 import React, { useRef } from 'react';
 import { View, Text } from 'react-native';
-import Button from '../../components/Button';
-import { Input } from '../../components/Input';
+import Button from '../../../components/Button';
+import { Input } from '../../../components/Input';
 import { styles } from './styles';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import {
   auth,
   signInWithEmailAndPassword,
   db,
   doc,
   getDoc,
-} from '../../firebase';
+} from '../../../firebase';
 
 export const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState('levi.bare@gmail.com');
@@ -31,7 +33,7 @@ export const Login = ({ navigation }) => {
         getDoc(doc(db, 'users', uid)).then((docSnap) => {
           if (docSnap.exists()) {
             const user = docSnap.data();
-            navigation.navigate('Home', { user: user });
+            navigation.navigate('HomeScene', { user: user });
           } else {
             console.log('No such document');
           }
@@ -45,10 +47,15 @@ export const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Main Content */}
-      <View style={styles.main}>
+      <LinearGradient
+        colors={['#4B79A1', '#283E51']}
+        style={styles.main}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
         <View style={styles.middle1}>
           <Input
-            title='EMAIL'
+            title='Email'
             blurOnSubmit={false}
             secureTextEntry={false}
             keyboardType='email-address'
@@ -59,7 +66,7 @@ export const Login = ({ navigation }) => {
             onSubmitEditing={() => ref_to_input2.current.focus()}
           />
           <Input
-            title='PASSWORD'
+            title='Password'
             blurOnSubmit={true}
             secureTextEntry={!password.showPassword}
             keyboardType='default'
@@ -75,16 +82,15 @@ export const Login = ({ navigation }) => {
         </View>
         <View style={styles.middle2}>
           <Button title='Login' onPress={onLoginPress} />
+          <Text
+            style={styles.p}
+            onPress={onSignupPress}
+            suppressHighlighting={true}
+          >
+            Don't have an account?{'\n'}SIGN UP
+          </Text>
         </View>
-      </View>
-
-      {/* Bottom Bar */}
-      <View style={styles.bottom}>
-        <Text style={styles.p}>Don't have an account?</Text>
-        <Text style={styles.p} onPress={onSignupPress}>
-          SIGN UP
-        </Text>
-      </View>
+      </LinearGradient>
     </View>
   );
 };

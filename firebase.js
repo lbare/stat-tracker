@@ -1,10 +1,11 @@
-import { getApps, initializeApp, getApp } from 'firebase/app';
+import { getApps, initializeApp, getApp } from "firebase/app";
+import Constants from "expo-constants";
 import {
   initializeAuth,
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-} from 'firebase/auth';
+} from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -13,17 +14,17 @@ import {
   doc,
   getDoc,
   setDoc,
-} from 'firebase/firestore';
-import { getReactNativePersistence } from 'firebase/auth/react-native';
-import { useEffect } from 'react';
+} from "firebase/firestore";
+import { getReactNativePersistence } from "firebase/auth/react-native";
+import { useEffect } from "react";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBOgTaYS8HJA1uFEebcKBFukJ72Je_j5GM',
-  authDomain: 'stat-tracker-9f25a.firebaseapp.com',
-  projectId: 'stat-tracker-9f25a',
-  storageBucket: 'stat-tracker-9f25a.appspot.com',
-  messagingSenderId: '491322406723',
-  appId: '1:491322406723:web:c3c263d8e4907f92a621f6',
+  apiKey: Constants.manifest.extra.firebaseApiKey,
+  authDomain: Constants.manifest.extra.firebaseAuthDomain,
+  projectId: Constants.manifest.extra.firebaseProjectId,
+  storageBucket: Constants.manifest.extra.firebaseStorageBucket,
+  messagingSenderId: Constants.manifest.extra.firebaseMessagingSenderId,
+  appId: Constants.manifest.extra.firebaseAppId,
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
