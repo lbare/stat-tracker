@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import Button from '../../../components/Button/Button';
-import { styles } from './styles';
+import Button from '../components/Button';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   setDoc,
@@ -9,7 +8,7 @@ import {
   db,
   doc,
   createUserWithEmailAndPassword,
-} from '../../../firebase';
+} from '../firebase';
 
 export const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState('');

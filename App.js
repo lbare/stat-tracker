@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import { Login } from './scenes/AuthScene/Login/Login';
+import { Login } from './scenes/Login';
 import {
   useFonts,
   Lexend_100Thin,
@@ -13,7 +13,7 @@ import {
   Lexend_800ExtraBold,
   Lexend_900Black,
 } from '@expo-google-fonts/lexend';
-import { Register } from './scenes/AuthScene/Register/Register';
+import { Register } from './scenes/Register';
 import { HomeScene } from './scenes/HomeScene/HomeScene';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

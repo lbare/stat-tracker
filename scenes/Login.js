@@ -1,16 +1,9 @@
 import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { styles } from './styles';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from '../../../components/Button/Button';
+import { Button } from '../components/Button';
 
-import {
-  auth,
-  signInWithEmailAndPassword,
-  db,
-  doc,
-  getDoc,
-} from '../../../firebase';
+import { auth, signInWithEmailAndPassword, db, doc, getDoc } from '../firebase';
 
 export const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState('');
