@@ -49,11 +49,11 @@ export const Register = ({ navigation }) => {
 
   return (
     <View className='flex-1 justify-center bg-white'>
-      <Text className='text-7xl pb-20 font-black text-center text-blue-500'>
-        Welcome
+      <Text className='text-7xl pb-20 font-black text-center text-blue-500 pt-1'>
+        Sign Up
       </Text>
       <TextInput
-        className='bg-gray-100 border border-gray-500 mx-10 p-4 rounded-lg text-lg'
+        className='bg-gray-100 border border-gray-500 mx-10 p-4 rounded-lg'
         title='Email'
         placeholder='Email'
         blurOnSubmit={false}
@@ -66,7 +66,7 @@ export const Register = ({ navigation }) => {
         onSubmitEditing={() => ref_to_input2.current.focus()}
       />
       <TextInput
-        className='bg-gray-100 border border-gray-500 mx-10 mt-5 p-4 rounded-lg text-lg'
+        className='bg-gray-100 border border-gray-500 mx-10 mt-5 p-4 rounded-lg'
         title='Password'
         placeholder='Password'
         blurOnSubmit={false}
@@ -80,7 +80,7 @@ export const Register = ({ navigation }) => {
         onSubmitEditing={() => ref_to_input3.current.focus()}
       />
       <TextInput
-        className='bg-gray-100 border border-gray-500 mx-10 mt-5 p-4 rounded-lg text-lg'
+        className='bg-gray-100 border border-gray-500 mx-10 mt-5 p-4 rounded-lg'
         title='Confirm Password'
         placeholder='Confirm Password'
         blurOnSubmit={true}
