@@ -10,33 +10,16 @@ export const HitLocation = () => {
 
   const handlePress = (event) => {
     const { nativeEvent } = event;
-    const { pageX, pageY } = nativeEvent;
+    const { locationX, locationY } = nativeEvent;
     console.log(
       Math.round(nativeEvent.locationX),
       Math.round(nativeEvent.locationY)
     );
     setHitLocation({
-      x: pageX,
-      y: pageY,
+      x: locationX,
+      y: locationY,
     });
   };
-
-  const gridLineComponents = [];
-
-  for (let i = 1; i < 10; i++) {
-    gridLineComponents.push(
-      <View
-        key={`vertical-${i}`}
-        style={[styles.gridLine, { left: `${(i / 10) * 100}%` }]}
-      />
-    );
-    gridLineComponents.push(
-      <View
-        key={`horizontal-${i}`}
-        style={[styles.gridLine, { top: `${(i / 10) * 100}%` }]}
-      />
-    );
-  }
 
   return (
     <TouchableOpacity
@@ -53,7 +36,7 @@ export const HitLocation = () => {
         style={[
           {
             position: 'absolute',
-            top: hitLocation.y - 108,
+            top: hitLocation.y - 100,
             left: hitLocation.x - 16,
           },
         ]}
