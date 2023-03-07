@@ -1,18 +1,8 @@
-import { View, SafeAreaView, StatusBar } from 'react-native';
+import { View, SafeAreaView, StatusBar, Text } from 'react-native';
 import { styles } from './styles';
-import { colors } from '../../../styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SectionList } from 'react-native';
-import {
-  UserCircle,
-  House,
-  Gear,
-  ChartLine,
-  PlusCircle,
-} from 'phosphor-react-native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Text } from 'react-native-paper';
-import React, { useState } from 'react';
+import React from 'react';
 
 const DATA = [
   {
