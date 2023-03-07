@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text, SectionList, SafeAreaView, StatusBar } from "react-native";
-import { styles } from "./styles";
-import { LinearGradient } from "expo-linear-gradient";
-import { LogGame } from "./LogGame";
-import { Stats } from "./Stats";
-import { Settings } from "./Settings";
-import { colors } from "../../styles";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from 'react';
+import { View, Text, SectionList, SafeAreaView, StatusBar } from 'react-native';
+import { styles } from './styles';
+import { LinearGradient } from 'expo-linear-gradient';
+import { LogGame } from './LogGame/LogGame';
+import { Stats } from './Stats/Stats';
+import { Settings } from './Settings';
+import { colors } from '../../styles';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   UserCircle,
   House,
@@ -16,7 +16,7 @@ import {
   ChartLineUp,
   PlusCircle,
   Baseball,
-} from "phosphor-react-native";
+} from 'phosphor-react-native';
 
 const BottomBar = createBottomTabNavigator();
 
@@ -27,8 +27,8 @@ export const HomeScene = ({ navigation }) => {
       initialRouteName='Stats'
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "black",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
         tabBarStyle: styles.nav,
       }}
     >
