@@ -3,8 +3,8 @@ import { styles } from "./styles";
 
 const Button = ({ title, onPress }) => {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
+    <Pressable className='bg-white mx-30 py-20' onPress={onPress}>
+      <Text className='text-30 text-center text-white'>{title}</Text>
     </Pressable>
   );
 };

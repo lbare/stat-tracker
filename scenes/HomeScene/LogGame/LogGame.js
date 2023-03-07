@@ -1,14 +1,14 @@
-import React from 'react';
-import { View, SafeAreaView, Text, StatusBar } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { List } from 'phosphor-react-native';
-import { styles } from '../Stats/styles';
+import React from "react";
+import { View, SafeAreaView, Text, StatusBar } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { List } from "phosphor-react-native";
+import { styles } from "../Stats/styles";
 
 export const LogGame = () => {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
-        colors={['#4B79A1', '#283E51']}
+        colors={["#4B79A1", "#283E51"]}
         style={styles.main}
         start={{ x: 1, y: 0 }}
         end={{ x: 1, y: 1 }}
