@@ -1,24 +1,38 @@
-import React from 'react';
-import { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Alert } from 'react-native';
+import Stepper from 'react-native-stepper-ui';
 import { HitLocation } from '../components/HitLocation';
 import { Result } from '../components/Result';
 import { Trajectory } from '../components/Trajectory';
-import Stepper from 'react-native-stepper-ui';
 
 export const LogGame = () => {
-  const [active, setActive] = useState(0);
+  const [activePage, setActivePage] = useState(0);
+  const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
+  const [value, setValue] = useState('');
+
+  const handleNext = () => setActivePage(activePage + 1);
+  const handleBack = () => setActivePage(activePage - 1);
+
+  const handleFinish = () => {
+    Alert.alert('Finish');
+    console.log(inputValues);
+  };
+
+  const content = [
+    <HitLocation hitLocation={hitLocation} setHitLocation={setHitLocation} />,
+    <Result value={value} setValue={setValue} />,
+  ];
 
   return (
     <View className='flex flex-col items-center justify-center h-full py-5'>
       <Stepper
-        active={active}
+        active={activePage}
         content={content}
-        onNext={() => setActive((p) => p + 1)}
-        onBack={() => setActive((p) => p - 1)}
-        onFinish={() => Alert.alert('Finish')}
+        onNext={handleNext}
+        onBack={handleBack}
+        onFinish={handleFinish}
         wrapperStyle={{
-          marginBottom: 100,
+          marginBottom: 120,
         }}
         stepStyle={{
           backgroundColor: 'white',
@@ -43,9 +57,3 @@ export const LogGame = () => {
     </View>
   );
 };
-
-const content = [
-  <HitLocation title='Component 1' />,
-  <Trajectory title='Component 2' />,
-  <Result title='Component 3' />,
-];
