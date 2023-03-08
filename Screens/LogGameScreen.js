@@ -24,7 +24,7 @@ export const LogGame = () => {
   ];
 
   return (
-    <View className='flex flex-col items-center justify-center h-full py-5'>
+    <View className='flex flex-col items-center justify-center h-full w-full py-5'>
       <Stepper
         active={activePage}
         content={content}
@@ -33,6 +33,10 @@ export const LogGame = () => {
         onFinish={handleFinish}
         wrapperStyle={{
           marginBottom: 120,
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
+          padding: 10,
         }}
         stepStyle={{
           backgroundColor: 'white',
