@@ -68,7 +68,6 @@ exports[`<LoginScreen /> renders correctly 1`] = `
       blurOnSubmit={false}
       keyboardType="email-address"
       onChangeText={[Function]}
-      onSubmitEditing={[Function]}
       placeholder="Email"
       returnKeyType="next"
       secureTextEntry={false}
@@ -117,13 +116,7 @@ exports[`<LoginScreen /> renders correctly 1`] = `
       onChangeText={[Function]}
       onSubmitEditing={[Function]}
       placeholder="Password"
-      refInner={
-        {
-          "current": undefined,
-        }
-      }
       returnKeyType="done"
-      secureTextEntry={true}
       style={
         [
           {
@@ -164,12 +157,7 @@ exports[`<LoginScreen /> renders correctly 1`] = `
       }
       textContentType="password"
       title="Password"
-      value={
-        {
-          "password": "",
-          "showPassword": false,
-        }
-      }
+      value=""
     />
     <View
       accessibilityState={
