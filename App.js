@@ -4,14 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { House, ChartLineUp, Baseball } from 'phosphor-react-native';
-import { Login } from './Screens/LoginScreen';
-import { Register } from './Screens/RegisterScreen';
-import { LogGame } from './Screens/LogGameScreen';
-import { Stats } from './Screens/StatsScreen';
-import { Settings } from './Screens/SettingsScreen';
-import { LogBox } from 'react-native';
-
-LogBox.ignoreLogs(['AsyncStorage']);
+import Login from './Screens/LoginScreen';
+import Register from './Screens/RegisterScreen';
+import LogGame from './Screens/LogGameScreen';
+import Stats from './Screens/StatsScreen';
+import Settings from './Screens/SettingsScreen';
+import LogBox from 'react-native';
 
 const Stack = createStackNavigator();
 const BottomBar = createBottomTabNavigator();

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Trajectory /> renders correctly 1`] = `
+<Text
+  style={
+    [
+      {
+        "textAlign": "center",
+      },
+      {
+        "color": "#000",
+      },
+    ]
+  }
+>
+  TRAJECTORY
+</Text>
+`;

@@ -1,0 +1,348 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Result /> renders correctly 1`] = `
+<View
+  style={
+    [
+      {
+        "flexBasis": "0%",
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+      {
+        "width": "100%",
+      },
+      {
+        "justifyContent": "center",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "height": "25%",
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "fontSize": 72,
+            "lineHeight": 72,
+          },
+          {
+            "paddingBottom": 80,
+          },
+          {
+            "fontWeight": "900",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#3b82f6",
+          },
+          {
+            "paddingTop": 4,
+          },
+        ]
+      }
+    >
+      Result
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "height": "25%",
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f3f4f6",
+          "borderBottomColor": "#6b7280",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderBottomWidth": 1,
+          "borderLeftColor": "#6b7280",
+          "borderLeftWidth": 1,
+          "borderRightColor": "#6b7280",
+          "borderRightWidth": 1,
+          "borderTopColor": "#6b7280",
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "borderTopWidth": 1,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "opacity": 1,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+          "paddingTop": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "fontSize": 20,
+              "lineHeight": 28,
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "color": "#000",
+            },
+          ]
+        }
+      >
+        Single
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f3f4f6",
+          "borderBottomColor": "#6b7280",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderBottomWidth": 1,
+          "borderLeftColor": "#6b7280",
+          "borderLeftWidth": 1,
+          "borderRightColor": "#6b7280",
+          "borderRightWidth": 1,
+          "borderTopColor": "#6b7280",
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "borderTopWidth": 1,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "marginTop": 20,
+          "opacity": 1,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+          "paddingTop": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "fontSize": 20,
+              "lineHeight": 28,
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "color": "#000",
+            },
+          ]
+        }
+      >
+        Double
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f3f4f6",
+          "borderBottomColor": "#6b7280",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderBottomWidth": 1,
+          "borderLeftColor": "#6b7280",
+          "borderLeftWidth": 1,
+          "borderRightColor": "#6b7280",
+          "borderRightWidth": 1,
+          "borderTopColor": "#6b7280",
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "borderTopWidth": 1,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "marginTop": 20,
+          "opacity": 1,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+          "paddingTop": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "fontSize": 20,
+              "lineHeight": 28,
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "color": "#000",
+            },
+          ]
+        }
+      >
+        Triple
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f3f4f6",
+          "borderBottomColor": "#6b7280",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderBottomWidth": 1,
+          "borderLeftColor": "#6b7280",
+          "borderLeftWidth": 1,
+          "borderRightColor": "#6b7280",
+          "borderRightWidth": 1,
+          "borderTopColor": "#6b7280",
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "borderTopWidth": 1,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "marginTop": 20,
+          "opacity": 1,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+          "paddingTop": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "fontSize": 20,
+              "lineHeight": 28,
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "color": "#000",
+            },
+          ]
+        }
+      >
+        Home Run
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f3f4f6",
+          "borderBottomColor": "#6b7280",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderBottomWidth": 1,
+          "borderLeftColor": "#6b7280",
+          "borderLeftWidth": 1,
+          "borderRightColor": "#6b7280",
+          "borderRightWidth": 1,
+          "borderTopColor": "#6b7280",
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "borderTopWidth": 1,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "marginTop": 20,
+          "opacity": 1,
+          "paddingBottom": 16,
+          "paddingLeft": 16,
+          "paddingRight": 16,
+          "paddingTop": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "fontSize": 20,
+              "lineHeight": 28,
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "color": "#000",
+            },
+          ]
+        }
+      >
+        Out
+      </Text>
+    </View>
+  </View>
+</View>
+`;
