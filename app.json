@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -31,6 +33,7 @@
       "eas": {
         "projectId": "52d09482-d742-4c77-bd45-deee2b30d0f6"
       }
-    }
+    },
+    "owner": "lbare"
   }
 }
