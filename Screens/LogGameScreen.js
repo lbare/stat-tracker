@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
-import Stepper from 'react-native-stepper-ui';
-import { HitLocation } from '../components/HitLocation';
-import { Result } from '../components/Result';
-import { Trajectory } from '../components/Trajectory';
+import { View, Alert, TouchableOpacity, Text } from 'react-native';
+import StepIndicator from 'react-native-step-indicator';
+import HitLocation from '../components/HitLocation';
+import Result from '../components/Result';
+import Trajectory from '../components/Trajectory';
 
-export const LogGame = () => {
+const labels = ['Hit Location', 'Result'];
+
+const LogGame = () => {
   const [activePage, setActivePage] = useState(0);
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [value, setValue] = useState('');
@@ -24,40 +26,70 @@ export const LogGame = () => {
   ];
 
   return (
-    <View className='flex flex-col items-center justify-center h-full w-full py-5'>
-      <Stepper
-        active={activePage}
-        content={content}
-        onNext={handleNext}
-        onBack={handleBack}
-        onFinish={handleFinish}
-        wrapperStyle={{
-          marginBottom: 120,
-          justifyContent: 'center',
-          width: '100%',
-          height: '100%',
-          padding: 10,
+    <View className='flex flex-col h-full w-full py-5'>
+      <StepIndicator
+        customStyles={{
+          stepIndicatorSize: 25,
+          currentStepIndicatorSize: 30,
+          separatorStrokeWidth: 2,
+          currentStepStrokeWidth: 3,
+          stepStrokeCurrentColor: '#fe7013',
+          stepStrokeWidth: 3,
+          stepStrokeFinishedColor: '#fe7013',
+          stepStrokeUnFinishedColor: '#aaaaaa',
+          separatorFinishedColor: '#fe7013',
+          separatorUnFinishedColor: '#aaaaaa',
+          stepIndicatorFinishedColor: '#fe7013',
+          stepIndicatorUnFinishedColor: '#ffffff',
+          stepIndicatorCurrentColor: '#ffffff',
+          stepIndicatorLabelFontSize: 13,
+          currentStepIndicatorLabelFontSize: 13,
+          stepIndicatorLabelCurrentColor: '#fe7013',
+          stepIndicatorLabelFinishedColor: '#ffffff',
+          stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+          labelColor: '#999999',
+          labelSize: 13,
+          currentStepLabelColor: '#fe7013',
         }}
-        stepStyle={{
-          backgroundColor: 'white',
-          borderWidth: 1,
-          borderColor: 'black',
-        }}
-        stepTextStyle={{
-          color: 'black',
-        }}
-        buttonStyle={{
-          backgroundColor: 'black',
-          borderWidth: 1,
-          borderRadius: 10,
-          borderColor: 'black',
-          width: 100,
-        }}
-        buttonTextStyle={{
-          color: 'white',
-          textAlign: 'center',
-        }}
+        currentPosition={0}
+        labels={labels}
+        stepCount={2}
       />
+      <View
+        className='flex-1 align-items `justify-content` max-h-96'
+        style={{ overflow: 'hidden' }}
+      >
+        {content[activePage]}
+      </View>
+
+      <View className='flex flex-row justify-between'>
+        {activePage > 0 && (
+          <TouchableOpacity
+            className='bg-gray-300 rounded-full p-3'
+            onPress={handleBack}
+          >
+            <Text className='text-2xl text-center text-black'>Back</Text>
+          </TouchableOpacity>
+        )}
+        {activePage < 1 && (
+          <TouchableOpacity
+            className='bg-gray-300 rounded-full p-3'
+            onPress={handleNext}
+          >
+            <Text className='text-2xl text-center text-black'>Next</Text>
+          </TouchableOpacity>
+        )}
+        {activePage === 1 && (
+          <TouchableOpacity
+            className='bg-gray-300 rounded-full p-3'
+            onPress={handleFinish}
+          >
+            <Text className='text-2xl text-center text-black'>Finish</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
+
+export default LogGame;

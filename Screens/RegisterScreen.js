@@ -8,7 +8,7 @@ import {
   createUserWithEmailAndPassword,
 } from '../firebase';
 
-export const Register = ({ navigation }) => {
+const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -110,3 +110,5 @@ export const Register = ({ navigation }) => {
     </View>
   );
 };
+
+export default Register;

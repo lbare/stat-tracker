@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { auth, signInWithEmailAndPassword, db, doc, getDoc } from '../firebase';
 
-export const Login = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState({
     password: '',
@@ -87,3 +87,5 @@ export const Login = ({ navigation }) => {
     </View>
   );
 };
+
+export default Login;

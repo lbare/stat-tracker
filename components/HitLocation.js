@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { CrosshairSimple } from 'phosphor-react-native';
 import { StyleSheet } from 'react-native';
 
-export const HitLocation = ({ hitLocation, setHitLocation }) => {
+const HitLocation = ({ hitLocation, setHitLocation }) => {
   const handlePress = (event) => {
     const { nativeEvent } = event;
     const { locationX, locationY } = nativeEvent;
@@ -79,6 +79,8 @@ export const HitLocation = ({ hitLocation, setHitLocation }) => {
     </View>
   );
 };
+
+export default HitLocation
 
 export const styles = StyleSheet.create({
   container: {

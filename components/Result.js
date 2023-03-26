@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-export const Result = ({ value, setValue }) => {
+const Result = ({ value, setValue }) => {
   return (
     <View className='flex-1 w-full justify-center'>
       <View className='h-1/4'>
@@ -44,3 +44,5 @@ export const Result = ({ value, setValue }) => {
     </View>
   );
 };
+
+export default Result;
