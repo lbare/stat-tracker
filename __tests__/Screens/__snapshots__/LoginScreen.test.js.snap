@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoginScreen /> renders correctly 1`] = `
+<View
+  style={
+    [
+      {
+        "flexBasis": "0%",
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+      {
+        "justifyContent": "center",
+      },
+      {
+        "backgroundColor": "#fff",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "height": "25%",
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "fontSize": 72,
+            "lineHeight": 72,
+          },
+          {
+            "paddingBottom": 80,
+          },
+          {
+            "fontWeight": "900",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#3b82f6",
+          },
+          {
+            "paddingTop": 4,
+          },
+        ]
+      }
+    >
+      Sign In
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "height": "25%",
+        },
+      ]
+    }
+  >
+    <TextInput
+      blurOnSubmit={false}
+      keyboardType="email-address"
+      onChangeText={[Function]}
+      placeholder="Email"
+      returnKeyType="next"
+      secureTextEntry={false}
+      style={
+        [
+          {
+            "backgroundColor": "#f3f4f6",
+          },
+          {
+            "borderBottomWidth": 1,
+            "borderLeftWidth": 1,
+            "borderRightWidth": 1,
+            "borderTopWidth": 1,
+          },
+          {
+            "borderBottomColor": "#6b7280",
+            "borderLeftColor": "#6b7280",
+            "borderRightColor": "#6b7280",
+            "borderTopColor": "#6b7280",
+          },
+          {
+            "marginLeft": 40,
+            "marginRight": 40,
+          },
+          {
+            "paddingBottom": 16,
+            "paddingLeft": 16,
+            "paddingRight": 16,
+            "paddingTop": 16,
+          },
+          {
+            "borderBottomLeftRadius": 8,
+            "borderBottomRightRadius": 8,
+            "borderTopLeftRadius": 8,
+            "borderTopRightRadius": 8,
+          },
+        ]
+      }
+      textContentType="emailAddress"
+      title="Email"
+      value=""
+    />
+    <TextInput
+      blurOnSubmit={true}
+      keyboardType="default"
+      onChangeText={[Function]}
+      onSubmitEditing={[Function]}
+      placeholder="Password"
+      returnKeyType="done"
+      style={
+        [
+          {
+            "backgroundColor": "#f3f4f6",
+          },
+          {
+            "borderBottomWidth": 1,
+            "borderLeftWidth": 1,
+            "borderRightWidth": 1,
+            "borderTopWidth": 1,
+          },
+          {
+            "borderBottomColor": "#6b7280",
+            "borderLeftColor": "#6b7280",
+            "borderRightColor": "#6b7280",
+            "borderTopColor": "#6b7280",
+          },
+          {
+            "marginLeft": 40,
+            "marginRight": 40,
+          },
+          {
+            "marginTop": 20,
+          },
+          {
+            "paddingBottom": 16,
+            "paddingLeft": 16,
+            "paddingRight": 16,
+            "paddingTop": 16,
+          },
+          {
+            "borderBottomLeftRadius": 8,
+            "borderBottomRightRadius": 8,
+            "borderTopLeftRadius": 8,
+            "borderTopRightRadius": 8,
+          },
+        ]
+      }
+      textContentType="password"
+      title="Password"
+      value=""
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#3b82f6",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "marginTop": 20,
+          "opacity": 1,
+          "paddingBottom": 20,
+          "paddingTop": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "fontSize": 20,
+              "lineHeight": 28,
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "color": "#fff",
+            },
+          ]
+        }
+      >
+        Login
+      </Text>
+    </View>
+    <Text
+      onPress={[Function]}
+      style={
+        [
+          {
+            "marginTop": 20,
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#1e3a8a",
+          },
+          {
+            "fontSize": 14,
+            "lineHeight": 20,
+          },
+        ]
+      }
+      suppressHighlighting={true}
+    >
+      Don't have an account?
+      
+
+      SIGN UP
+    </Text>
+  </View>
+</View>
+`;
