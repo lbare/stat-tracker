@@ -4,9 +4,6 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 const Count = ({ count, setCount }) => {
-  const [strikes, setStrikes] = useState(0);
-  const [balls, setBalls] = useState(0);
-
   return (
     <View className="flex-1 w-full justify-center">
       <Text className="text-4xl font-black text-center text-blue-500 pt-10">
@@ -15,10 +12,9 @@ const Count = ({ count, setCount }) => {
       <View className="flex-1 flex-row justify-evenly items-center">
         <View className="w-1/3">
           <Picker
-            selectedValue={strikes}
-            onValueChange={(k) => setStrikes(k)}
-            accessibilityLabel="Basic Picker Accessibility Label"
-            itemStyle={{ fontSize: 64, fontWeight: "bold" }}
+            selectedValue={count.strikes}
+            onValueChange={(n) => setCount({ ...count, strikes: n })}
+            itemStyle={{ fontSize: 48, fontWeight: "bold" }}
           >
             <Picker.Item label="4" value={4} />
             <Picker.Item label="3" value={3} />
@@ -30,10 +26,9 @@ const Count = ({ count, setCount }) => {
         <Text className="text-7xl">-</Text>
         <View className="w-1/3">
           <Picker
-            selectedValue={balls}
-            onValueChange={(b) => setBalls(b)}
-            accessibilityLabel="Basic Picker Accessibility Label"
-            itemStyle={{ fontSize: 64, fontWeight: "bold" }}
+            selectedValue={count.balls}
+            onValueChange={(n) => setCount({ ...count, balls: n })}
+            itemStyle={{ fontSize: 48, fontWeight: "bold" }}
           >
             <Picker.Item label="3" value={3} />
             <Picker.Item label="2" value={2} />

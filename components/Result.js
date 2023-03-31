@@ -5,7 +5,7 @@ const Result = ({ result, setResult }) => {
   return (
     <View className="flex-1 w-full justify-center">
       <Text className="text-4xl font-black text-center text-blue-500 pt-10">
-        Outcome
+        Result
       </Text>
       <View className="flex-row justify-evenly p-6">
         <TouchableOpacity
