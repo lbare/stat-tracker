@@ -1,32 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
-import { auth, signInWithEmailAndPassword, db, doc, getDoc } from "../firebase";
+import { login } from "../services/firebase";
+import { AuthContext } from "../components/AuthContext";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const onSignupPress = () => {
-    navigation.navigate("Register");
+  const onRegisterPress = () => navigation.navigate("Register");
+  const onLoginPress = () => {
+    console.log(email, password);
+    login(email, password);
   };
 
-  const onLoginPress = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const uid = userCredentials.user.uid;
-        getDoc(doc(db, "users", uid)).then((docSnap) => {
-          if (docSnap.exists()) {
-            const user = docSnap.data();
-            navigation.navigate("HomeScene", { user: user });
-          } else {
-            console.log("No such document");
-          }
-        });
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
+  const user = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) navigation.navigate("Home");
+  }, []);
 
   return (
     <View className="flex-1 justify-center bg-white">
@@ -68,7 +59,7 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
         <Text
           className="mt-5 text-center text-20 text-blue-900 text-sm"
-          onPress={onSignupPress}
+          onPress={onRegisterPress}
           suppressHighlighting={true}
         >
           Don't have an account?{"\n"}SIGN UP

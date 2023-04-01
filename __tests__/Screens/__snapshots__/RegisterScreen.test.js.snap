@@ -68,7 +68,6 @@ exports[`<RegisterScreen /> renders correctly 1`] = `
       blurOnSubmit={false}
       keyboardType="email-address"
       onChangeText={[Function]}
-      onSubmitEditing={[Function]}
       placeholder="Email"
       returnKeyType="next"
       secureTextEntry={false}
@@ -115,13 +114,7 @@ exports[`<RegisterScreen /> renders correctly 1`] = `
       blurOnSubmit={false}
       keyboardType="default"
       onChangeText={[Function]}
-      onSubmitEditing={[Function]}
       placeholder="Password"
-      refInner={
-        {
-          "current": undefined,
-        }
-      }
       returnKeyType="next"
       secureTextEntry={true}
       style={
@@ -172,11 +165,6 @@ exports[`<RegisterScreen /> renders correctly 1`] = `
       onChangeText={[Function]}
       onSubmitEditing={[Function]}
       placeholder="Confirm Password"
-      refInner={
-        {
-          "current": undefined,
-        }
-      }
       returnKeyType="done"
       secureTextEntry={true}
       style={
