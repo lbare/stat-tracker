@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<LogGameScreen /> renders correctly 1`] = `
+exports[`<LogAtBatScreen /> renders correctly 1`] = `
 <View
   style={
     [

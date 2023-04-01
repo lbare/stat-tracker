@@ -1,12 +1,12 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import LogGameScreen from "../../Screens/LogGameScreen";
+import LogAtBatScreen from "../../Screens/LogAtBatScreen";
 
 jest.mock("react-native-step-indicator");
 
-describe("<LogGameScreen />", () => {
+describe("<LogAtBatScreen />", () => {
   it("renders correctly", () => {
-    const tree = renderer.create(<LogGameScreen />).toJSON();
+    const tree = renderer.create(<LogAtBatScreen />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });
