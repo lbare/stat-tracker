@@ -7,7 +7,7 @@ import Count from "../components/Count";
 import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
 
-const LogGame = () => {
+const LogAtBatScreen = () => {
   const [activePage, setActivePage] = useState(0);
   const [result, setResult] = useState(null);
   const [count, setCount] = useState({
@@ -163,4 +163,4 @@ const LogGame = () => {
   );
 };
 
-export default LogGame;
+export default LogAtBatScreen;
