@@ -7,7 +7,6 @@ import {
   House,
   ChartLineUp,
   Baseball,
-  PlusCircle,
   CalendarPlus,
 } from "phosphor-react-native";
 import Login from "./Screens/LoginScreen";
@@ -16,7 +15,6 @@ import LogAtBatScreen from "./Screens/LogAtBatScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
 import Settings from "./Screens/SettingsScreen";
-import AddScreen from "./Screens/AddScreen";
 import { onAuthStateChanged, auth, db, doc, getDoc } from "./services/firebase";
 import { AuthContext } from "./components/AuthContext";
 import { FloatingAction } from "react-native-floating-action";
