@@ -70,27 +70,38 @@ const LogGame = () => {
   const handleStep = (step) => {
     if (step === -1 && activePage === 0) return;
     else if (step === 1 && activePage === stepCount - 1) {
-      console.log(
-        stepCount === 5
-          ? {
-              result: result,
-              hitLocation: {
-                x: Math.floor(hitLocation.x),
-                y: Math.floor(hitLocation.y),
-              },
-              count: count,
-              trajectory: trajectory,
-              hardHit: hardHit,
-              runScored: runScored,
-              RBI: RBI,
-            }
-          : {
-              result: result,
-              count: count,
-              runScored: runScored,
-              RBI: RBI,
-            }
-      );
+      Alert.alert("Confirm", "Are you sure you want to submit this at-bat?", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            console.log(
+              stepCount === 5
+                ? {
+                    result: result,
+                    hitLocation: {
+                      x: Math.floor(hitLocation.x),
+                      y: Math.floor(hitLocation.y),
+                    },
+                    count: count,
+                    trajectory: trajectory,
+                    hardHit: hardHit,
+                    runScored: runScored,
+                    RBI: RBI,
+                  }
+                : {
+                    result: result,
+                    count: count,
+                    runScored: runScored,
+                    RBI: RBI,
+                  }
+            );
+          },
+        },
+      ]);
     } else setActivePage(activePage + step);
   };
 
