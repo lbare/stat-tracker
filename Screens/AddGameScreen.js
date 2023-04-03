@@ -1,26 +1,67 @@
-import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  ScrollView,
+  Keyboard,
+} from "react-native";
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+
+const teams = [
+  "Brewers",
+  "Giants",
+  "Pirates",
+  "Red Sox",
+  "Reds",
+  "Rockies",
+  "Royals",
+  "White Sox",
+];
 
 const AddGameScreen = ({ navigation }) => {
   const [opponent, setOpponent] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [home, setHome] = useState(null);
+  const [showTeamPicker, setShowTeamPicker] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(teams[0]);
 
   return (
-    <View className="flex-1 justify-center items-center">
-      <TextInput
-        className="bg-gray-100 border border-gray-500 mx-10 p-4 rounded-xl w-1/2 text-center"
-        title="Opponent"
-        placeholder="Opponent"
-        blurOnSubmit={false}
-        secureTextEntry={false}
-        keyboardType="default"
-        textContentType="none"
-        returnKeyType="next"
-        onChangeText={(value) => setOpponent(value)}
-      />
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <View className="justify-center w-full items-center py-16">
+        {showTeamPicker ? (
+          <View className="w-1/2">
+            <Picker
+              selectedValue={selectedTeam}
+              onValueChange={(value) => {
+                setSelectedTeam(value);
+                setShowTeamPicker(false);
+              }}
+            >
+              {teams.map((team) => (
+                <Picker.Item label={team} value={team} />
+              ))}
+            </Picker>
+          </View>
+        ) : (
+          <TouchableOpacity
+            className="border border-gray-500 rounded-xl w-1/2 h-12 justify-center"
+            onPress={() => setShowTeamPicker(!showTeamPicker)}
+          >
+            <Text className="text-center text-xl">{selectedTeam}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <View className="justify-center items-center h-12 w-1/2 border border-grey-500 rounded-xl">
         <DateTimePicker
           value={date}
@@ -92,7 +133,7 @@ const AddGameScreen = ({ navigation }) => {
       >
         <Text className="text-center text-xl text-white">Add Game</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
