@@ -1,13 +1,15 @@
 {
   "user": {
     "season": {
-      "year": 2022,
+      "year": 2023,
       "teamName": "Monarchs",
       "wins": 4,
       "losses": 1,
       "games": {
         "atHome": false,
         "opponent": "Red Sox",
+        "date": "2023-04-08 18:00:00",
+        "playoff": false,
         "stats": {
           "batting": [
             {
