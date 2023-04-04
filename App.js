@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
-  House,
+  List,
   ChartLineUp,
   Baseball,
   CalendarPlus,
@@ -15,7 +15,16 @@ import LogAtBatScreen from "./Screens/LogAtBatScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
 import Settings from "./Screens/SettingsScreen";
-import { onAuthStateChanged, auth, db, doc, getDoc } from "./services/firebase";
+import {
+  onAuthStateChanged,
+  auth,
+  db,
+  doc,
+  getDoc,
+  getAllSeasons,
+  getAllGames,
+  getAllAtBats,
+} from "./services/firebase";
 import { AuthContext } from "./components/AuthContext";
 import { FloatingAction } from "react-native-floating-action";
 
@@ -83,14 +92,14 @@ function AppStack() {
         }}
       >
         <BottomBar.Screen
-          name="Stats"
-          component={Stats}
+          name="Settings"
+          component={Settings}
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
-                <ChartLineUp size={40} color={color} weight="fill" />
+                <List size={40} color={color} weight="fill" />
               ) : (
-                <ChartLineUp size={40} color={color} />
+                <List size={40} color={color} />
               ),
           }}
         />
@@ -113,14 +122,14 @@ function AppStack() {
           }}
         />
         <BottomBar.Screen
-          name="Settings"
-          component={Settings}
+          name="Stats"
+          component={Stats}
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
-                <House size={40} color={color} weight="fill" />
+                <ChartLineUp size={40} color={color} weight="fill" />
               ) : (
-                <House size={40} color={color} />
+                <ChartLineUp size={40} color={color} />
               ),
           }}
         />
@@ -188,9 +197,26 @@ export default function App() {
         if (user) {
           const docSnap = await getDoc(doc(db, "users", user.uid));
           if (docSnap.exists()) {
-            const data = docSnap.data();
-            setUserData(data);
-            setUser(user);
+            const userSnap = docSnap.data();
+            try {
+              const [seasons, games, atBats] = await Promise.all([
+                getAllSeasons(),
+                getAllGames(),
+                getAllAtBats(),
+              ]).catch((error) => {
+                console.log("promise error");
+                console.log(error);
+              });
+              setUser(user);
+              setUserData({
+                ...userSnap,
+                seasons,
+                games,
+                atBats,
+              });
+            } catch (error) {
+              console.log(error);
+            }
           } else {
             console.log("No such document");
           }
@@ -208,7 +234,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={userData}>
       <NavigationContainer>
-        {!user ? <AppStack /> : <AuthStack />}
+        {user ? <AppStack /> : <AuthStack />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
