@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import { addGame } from "../services/firebase";
 
 const teams = [
   "Brewers",
@@ -118,14 +119,15 @@ const AddGameScreen = ({ navigation }) => {
             {
               text: "Add",
               onPress: () => {
-                const datetime = new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate(),
-                  time.getHours(),
-                  time.getMinutes()
-                ).toISOString();
-                console.log(opponent, datetime, home);
+                try {
+                  addGame({
+                    opponent: selectedTeam,
+                    date,
+                    home,
+                  });
+                } catch (error) {
+                  console.log(error);
+                }
               },
             },
           ]);
