@@ -15,6 +15,7 @@ import {
   getDocs,
   setDoc,
 } from "firebase/firestore";
+import uuid from "react-native-uuid";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBOgTaYS8HJA1uFEebcKBFukJ72Je_j5GM",
@@ -60,38 +61,44 @@ export const addUser = async (email, password) => {
     );
     const uid = response.user.uid;
     const data = { uid: uid, email };
-    await setDoc(doc(db, "users", uid), data);
-    return data;
+    const result = await setDoc(doc(db, "users", uid), data);
+    return result;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
 
-export const addSeason = async (season) => {
+export const addSeason = async (season, id = null) => {
   try {
-    await addDoc(collection(db, "seasons"), season);
+    const docRef = id ? doc(db, "seasons", id) : doc(collection(db, "seasons"));
+    const result = await setDoc(docRef, season);
     console.log("Season added successfully!");
+    return result;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
 
-export const addGame = async (game) => {
+export const addGame = async (game, id = null) => {
   try {
-    await addDoc(collection(db, "games"), game);
+    const docRef = id ? doc(db, "games", id) : doc(collection(db, "games"));
+    const result = await setDoc(docRef, game);
     console.log("Game added successfully!");
+    return result;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
 
-export const addAtBat = async (atBat) => {
+export const addAtBat = async (atBat, id = null) => {
   try {
-    await addDoc(collection(db, "atBats"), atBat);
+    const docRef = id ? doc(db, "atBats", id) : doc(collection(db, "atBats"));
+    const result = await setDoc(docRef, atBat);
     console.log("At-bat added successfully!");
+    return result;
   } catch (error) {
     console.error(error);
     throw error;
@@ -170,6 +177,10 @@ export const getAllAtBatsByGame = async (gameId) => {
   });
 
   return atBats;
+};
+
+export const generateId = () => {
+  return uuid.v4();
 };
 
 export {
