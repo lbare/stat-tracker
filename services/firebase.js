@@ -12,6 +12,7 @@ import {
   docRef,
   doc,
   getDoc,
+  getDocs,
   setDoc,
 } from "firebase/firestore";
 
@@ -28,48 +29,147 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export const login = (email, password) => {
-  let user = null;
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredentials) => {
-      const uid = userCredentials.user.uid;
-      getDoc(doc(db, "users", uid)).then((docSnap) => {
-        if (docSnap.exists()) {
-          user = docSnap.data();
-        } else {
-          console.log("No such document");
-        }
-      });
-    })
-    .catch((error) => {
-      alert(error);
-    });
-
-  return user;
+/* AUTH */
+export const login = async (email, password) => {
+  try {
+    const userCredentials = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const uid = userCredentials.user.uid;
+    const docSnap = await getDoc(doc(db, "users", uid));
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      console.log("No such document");
+      return null;
+    }
+  } catch (error) {
+    alert(error);
+    return null;
+  }
 };
 
-export const register = (email, password) => {
-  let user = null;
+export const addUser = async (email, password) => {
+  try {
+    const response = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const uid = response.user.uid;
+    const data = { uid: uid, email };
+    await setDoc(doc(db, "users", uid), data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((response) => {
-      const uid = response.user.uid;
-      const data = {
-        uid: uid,
-        email,
-      };
-      setDoc(doc(db, "users", uid), data)
-        .then((user = data))
-        .catch((error) => {
-          alert(error);
-        });
-    })
-    .catch((error) => {
-      alert(error);
-    });
+export const addSeason = async (season) => {
+  try {
+    await addDoc(collection(db, "seasons"), season);
+    console.log("Season added successfully!");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
-  return user;
+export const addGame = async (game) => {
+  try {
+    await addDoc(collection(db, "games"), game);
+    console.log("Game added successfully!");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const addAtBat = async (atBat) => {
+  try {
+    await addDoc(collection(db, "atBats"), atBat);
+    console.log("At-bat added successfully!");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/* WRITES */
+export const getAllSeasons = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "seasons"));
+    const seasons = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return seasons;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllGames = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "games"));
+    const games = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return games;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllAtBats = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "atBats"));
+    const atBats = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return atBats;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllGamesBySeason = async (seasonId) => {
+  try {
+    const snapshot = await getDocs(
+      query(collection(db, "games"), where("seasonId", "==", seasonId))
+    );
+    const games = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return games;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllAtBatsBySeason = async (seasonId) => {
+  try {
+    const snapshot = await getDocs(
+      query(collection(db, "atBats"), where("seasonId", "==", seasonId))
+    );
+    const atBats = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return atBats;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllAtBatsByGame = async (gameId) => {
+  let atBats = [];
+
+  const querySnapshot = await collection(db, "atBats")
+    .where("gameId", "==", gameId)
+    .get();
+
+  querySnapshot.forEach((doc) => {
+    atBats.push(doc.data());
+  });
+
+  return atBats;
 };
 
 export {
