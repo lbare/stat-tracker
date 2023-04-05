@@ -15,8 +15,6 @@ const Register = ({ navigation }) => {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
-  const user = useContext(AuthContext);
-
   const onLoginPress = () => navigation.navigate("Login");
   const onRegisterPress = () => {
     if (password !== confirmPassword) {
@@ -31,10 +29,6 @@ const Register = ({ navigation }) => {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    if (user) navigation.navigate("Home");
-  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -105,3 +99,24 @@ const Register = ({ navigation }) => {
 };
 
 export default Register;
+
+const test1 = [{ data: [[Object], [Object]], title: "jan" }];
+
+const userGames = [
+  {
+    date: [Object],
+    home: true,
+    id: "8K9v3UsTuedbVesepPjQ",
+    opponent: "Brewers",
+  },
+  {
+    date: [Object],
+    didWin: true,
+    homeTeam: true,
+    id: "AaImGG4m8z9x0haZbngs",
+    isPlayoff: false,
+    opponent: "Reds",
+    runsAllowed: 5,
+    runsScored: 12,
+  },
+];

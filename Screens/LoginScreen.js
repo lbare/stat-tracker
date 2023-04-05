@@ -28,10 +28,6 @@ const Login = ({ navigation }) => {
 
   const user = useContext(AuthContext);
 
-  useEffect(() => {
-    if (user) navigation.navigate("Home");
-  }, []);
-
   return (
     <KeyboardAvoidingView
       className="flex-1 justify-center bg-white"
