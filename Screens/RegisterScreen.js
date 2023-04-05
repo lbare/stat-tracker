@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { addUser } from "../services/firebase";
-import { AuthContext } from "../components/AuthContext";
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState("");

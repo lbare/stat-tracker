@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { login } from "../services/firebase";
-import { AuthContext } from "../components/AuthContext";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = React.useState("levi.bare@gmail.com");
@@ -25,8 +24,6 @@ const Login = ({ navigation }) => {
         console.log(error);
       });
   };
-
-  const user = useContext(AuthContext);
 
   return (
     <KeyboardAvoidingView
