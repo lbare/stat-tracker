@@ -85,7 +85,6 @@ export const addGame = async (game, id = null) => {
   try {
     const docRef = id ? doc(db, "games", id) : doc(collection(db, "games"));
     const result = await setDoc(docRef, game);
-    console.log("Game added successfully!");
     return result;
   } catch (error) {
     console.error(error);
@@ -120,7 +119,11 @@ export const getAllSeasons = async () => {
 export const getAllGames = async () => {
   try {
     const snapshot = await getDocs(collection(db, "games"));
-    const games = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const games = snapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+      date: doc.data().date.toDate(),
+    }));
     return games;
   } catch (error) {
     console.error(error);
