@@ -14,6 +14,7 @@ import {
   getDoc,
   getDocs,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import uuid from "react-native-uuid";
 
@@ -180,6 +181,37 @@ export const getAllAtBatsByGame = async (gameId) => {
   });
 
   return atBats;
+};
+
+/* DELETES */
+export const deleteSeason = async (id) => {
+  try {
+    const result = await deleteDoc(doc(db, "seasons", id));
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteGame = async (id) => {
+  try {
+    const result = await deleteDoc(doc(db, "games", id));
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteAtBat = async (id) => {
+  try {
+    const result = await deleteDoc(doc(db, "atBats", id));
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const generateId = () => {

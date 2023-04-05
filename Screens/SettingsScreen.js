@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { UserContext } from "../services/UserContext";
+import { deleteGame } from "../services/firebase";
 
 const Settings = () => {
   const { userGames, setUserGames, userAtBats, setUserAtBats } =
@@ -36,6 +37,15 @@ const Settings = () => {
     }
   }, [userGames]);
 
+  const handleDeleteGame = async (id) => {
+    try {
+      await deleteGame(id);
+      setUserGames(userGames.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting game:", error);
+    }
+  };
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -52,9 +62,7 @@ const Settings = () => {
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => {
-              console.log("Pressed");
-            }}
+            onPress={() => handleDeleteGame(item.id)}
             className="border-b border-gray-500 p-4 flex-row justify-between"
           >
             <Text className="text-xl">
