@@ -2,18 +2,24 @@
 
 exports[`<RegisterScreen /> renders correctly 1`] = `
 <View
+  onLayout={[Function]}
   style={
     [
+      [
+        {
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "backgroundColor": "#fff",
+        },
+      ],
       {
-        "flexBasis": "0%",
-        "flexGrow": 1,
-        "flexShrink": 1,
-      },
-      {
-        "justifyContent": "center",
-      },
-      {
-        "backgroundColor": "#fff",
+        "paddingBottom": 0,
       },
     ]
   }
@@ -68,6 +74,7 @@ exports[`<RegisterScreen /> renders correctly 1`] = `
       blurOnSubmit={false}
       keyboardType="email-address"
       onChangeText={[Function]}
+      onSubmitEditing={[Function]}
       placeholder="Email"
       returnKeyType="next"
       secureTextEntry={false}
@@ -114,6 +121,7 @@ exports[`<RegisterScreen /> renders correctly 1`] = `
       blurOnSubmit={false}
       keyboardType="default"
       onChangeText={[Function]}
+      onSubmitEditing={[Function]}
       placeholder="Password"
       returnKeyType="next"
       secureTextEntry={true}

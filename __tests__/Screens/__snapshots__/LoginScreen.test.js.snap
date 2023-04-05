@@ -2,18 +2,24 @@
 
 exports[`<LoginScreen /> renders correctly 1`] = `
 <View
+  onLayout={[Function]}
   style={
     [
+      [
+        {
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "backgroundColor": "#fff",
+        },
+      ],
       {
-        "flexBasis": "0%",
-        "flexGrow": 1,
-        "flexShrink": 1,
-      },
-      {
-        "justifyContent": "center",
-      },
-      {
-        "backgroundColor": "#fff",
+        "paddingBottom": 0,
       },
     ]
   }
@@ -68,6 +74,7 @@ exports[`<LoginScreen /> renders correctly 1`] = `
       blurOnSubmit={false}
       keyboardType="email-address"
       onChangeText={[Function]}
+      onSubmitEditing={[Function]}
       placeholder="Email"
       returnKeyType="next"
       secureTextEntry={false}
@@ -108,7 +115,7 @@ exports[`<LoginScreen /> renders correctly 1`] = `
       }
       textContentType="emailAddress"
       title="Email"
-      value=""
+      value="levi.bare@gmail.com"
     />
     <TextInput
       blurOnSubmit={true}
@@ -157,7 +164,7 @@ exports[`<LoginScreen /> renders correctly 1`] = `
       }
       textContentType="password"
       title="Password"
-      value=""
+      value="password"
     />
     <View
       accessibilityState={
