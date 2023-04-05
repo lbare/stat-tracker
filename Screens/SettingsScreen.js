@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { AuthContext } from "../App";
+import { UserContext } from "../services/UserContext";
 
 const Settings = () => {
   const { userGames, setUserGames, userAtBats, setUserAtBats } =
-    useContext(AuthContext);
+    useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
   const [newData, setNewData] = useState(null);

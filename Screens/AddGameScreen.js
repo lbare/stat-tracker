@@ -11,7 +11,7 @@ import { useState, useContext } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { addGame, generateId } from "../services/firebase";
-import { AuthContext } from "../App";
+import { UserContext } from "../services/UserContext";
 
 const teams = [
   "Brewers",
@@ -31,7 +31,7 @@ const AddGameScreen = ({ navigation }) => {
   const [showTeamPicker, setShowTeamPicker] = useState(false);
   const [opponent, setOpponent] = useState(teams[0]);
 
-  const { userGames, setUserGames } = useContext(AuthContext);
+  const { userGames, setUserGames } = useContext(UserContext);
 
   const handleAddGame = async () => {
     try {

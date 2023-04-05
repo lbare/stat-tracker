@@ -26,10 +26,10 @@ import {
   getAllAtBats,
 } from "./services/firebase";
 import { FloatingAction } from "react-native-floating-action";
+import { UserContext } from "./services/UserContext";
 
 const Stack = createStackNavigator();
 const BottomBar = createBottomTabNavigator();
-export const AuthContext = createContext(null);
 
 function AuthStack() {
   return (
@@ -228,7 +228,7 @@ export default function App() {
   }, [user]);
 
   return (
-    <AuthContext.Provider
+    <UserContext.Provider
       value={{
         user,
         setUser,
@@ -243,6 +243,6 @@ export default function App() {
       <NavigationContainer>
         {user ? <AppStack /> : <AuthStack />}
       </NavigationContainer>
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 }

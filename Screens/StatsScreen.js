@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { TouchableOpacity } from "react-native";
 import { View, Text } from "react-native";
-import { AuthContext } from "../App";
 import { auth } from "../services/firebase";
+import { UserContext } from "../services/UserContext";
 
 const Stats = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(UserContext);
 
   const handleSignOut = async () => {
     try {
