@@ -7,10 +7,11 @@ import {
   ScrollView,
   Keyboard,
 } from "react-native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
-import { addGame } from "../services/firebase";
+import { addGame, generateId } from "../services/firebase";
+import { AuthContext } from "../App";
 
 const teams = [
   "Brewers",
@@ -24,12 +25,29 @@ const teams = [
 ];
 
 const AddGameScreen = ({ navigation }) => {
-  const [opponent, setOpponent] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [home, setHome] = useState(null);
   const [showTeamPicker, setShowTeamPicker] = useState(false);
-  const [selectedTeam, setSelectedTeam] = useState(teams[0]);
+  const [opponent, setOpponent] = useState(teams[0]);
+
+  const { userGames, setUserGames } = useContext(AuthContext);
+
+  const handleAddGame = async () => {
+    try {
+      const newGame = {
+        opponent,
+        date,
+        home,
+      };
+      await addGame(newGame, generateId()).then(() => {
+        setUserGames([...userGames, newGame]);
+        navigation.navigate("Settings");
+      });
+    } catch (error) {
+      console.error("Error adding game:", error);
+    }
+  };
 
   return (
     <ScrollView
@@ -43,14 +61,14 @@ const AddGameScreen = ({ navigation }) => {
         {showTeamPicker ? (
           <View className="w-1/2">
             <Picker
-              selectedValue={selectedTeam}
+              selectedValue={opponent}
               onValueChange={(value) => {
-                setSelectedTeam(value);
+                setOpponent(value);
                 setShowTeamPicker(false);
               }}
             >
-              {teams.map((team) => (
-                <Picker.Item label={team} value={team} />
+              {teams.map((team, index) => (
+                <Picker.Item label={team} value={team} key={index} />
               ))}
             </Picker>
           </View>
@@ -59,7 +77,7 @@ const AddGameScreen = ({ navigation }) => {
             className="border border-gray-500 rounded-xl w-1/2 h-12 justify-center"
             onPress={() => setShowTeamPicker(!showTeamPicker)}
           >
-            <Text className="text-center text-xl">{selectedTeam}</Text>
+            <Text className="text-center text-xl">{opponent}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -119,15 +137,7 @@ const AddGameScreen = ({ navigation }) => {
             {
               text: "Add",
               onPress: () => {
-                try {
-                  addGame({
-                    opponent: selectedTeam,
-                    date,
-                    home,
-                  });
-                } catch (error) {
-                  console.log(error);
-                }
+                handleAddGame();
               },
             },
           ]);

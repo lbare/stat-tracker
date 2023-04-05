@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import React, { useState, useEffect, createContext } from "react";
+import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -25,11 +25,11 @@ import {
   getAllGames,
   getAllAtBats,
 } from "./services/firebase";
-import { AuthContext } from "./components/AuthContext";
 import { FloatingAction } from "react-native-floating-action";
 
 const Stack = createStackNavigator();
 const BottomBar = createBottomTabNavigator();
+export const AuthContext = createContext(null);
 
 function AuthStack() {
   return (
@@ -189,7 +189,9 @@ function AppStack() {
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [userSeasons, setUserSeasons] = useState(null);
+  const [userGames, setUserGames] = useState(null);
+  const [userAtBats, setUserAtBats] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -197,23 +199,18 @@ export default function App() {
         if (user) {
           const docSnap = await getDoc(doc(db, "users", user.uid));
           if (docSnap.exists()) {
-            const userSnap = docSnap.data();
             try {
               const [seasons, games, atBats] = await Promise.all([
                 getAllSeasons(),
                 getAllGames(),
                 getAllAtBats(),
               ]).catch((error) => {
-                console.log("promise error");
-                console.log(error);
+                console.log("Promise Error: ", error);
               });
               setUser(user);
-              setUserData({
-                ...userSnap,
-                seasons,
-                games,
-                atBats,
-              });
+              setUserSeasons(seasons);
+              setUserGames(games);
+              setUserAtBats(atBats);
             } catch (error) {
               console.log(error);
             }
@@ -227,12 +224,22 @@ export default function App() {
         console.log(error);
       }
     });
-
     return unsubscribe;
-  }, []);
+  }, [user]);
 
   return (
-    <AuthContext.Provider value={userData}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        userSeasons,
+        setUserSeasons,
+        userGames,
+        setUserGames,
+        userAtBats,
+        setUserAtBats,
+      }}
+    >
       <NavigationContainer>
         {user ? <AppStack /> : <AuthStack />}
       </NavigationContainer>
