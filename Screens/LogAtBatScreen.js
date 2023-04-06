@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import { View, Alert, TouchableOpacity, Text } from "react-native";
 import StepIndicator from "react-native-step-indicator";
 import HitLocation from "../components/HitLocation";
@@ -6,9 +6,13 @@ import Result from "../components/Result";
 import Count from "../components/Count";
 import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
+import SelectGame from "../components/SelectGame";
+import { UserContext } from "../services/UserContext";
+import { addAtBat } from "../services/firebase";
 
 const LogAtBatScreen = () => {
   const [activePage, setActivePage] = useState(0);
+  const [game, setGame] = useState(null);
   const [result, setResult] = useState(null);
   const [count, setCount] = useState({
     balls: 0,
@@ -16,37 +20,41 @@ const LogAtBatScreen = () => {
   });
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [trajectory, setTrajectory] = useState(null);
-  const [hardHit, setHardHit] = useState(null);
+  const [hardHit, setHardHit] = useState(false);
   const [RBI, setRBI] = useState(0);
-  const [runScored, setRunScored] = useState(null);
+  const [runScored, setRunScored] = useState(false);
+  const [numAtBat, setNumAtBat] = useState(0);
+
+  const { userGames, setUserGames, userAtBats, setUserAtBats } =
+    useContext(UserContext);
 
   const canProceed = useMemo(() => {
     switch (activePage) {
       case 0:
-        return result !== null;
+        return game !== null;
       case 1:
-        return true;
+        return result !== null;
       case 2:
-        return runScored !== null;
+        return true;
       case 3:
-        return hitLocation.y !== 0;
+        return runScored !== null;
       case 4:
+        return hitLocation.y !== 0;
+      case 5:
         return trajectory !== null && hardHit !== null;
       default:
         return true;
     }
-  }, [activePage, result, hitLocation.y, trajectory, hardHit, runScored]);
-
-  const handleNext = () => setActivePage(activePage + 1);
-  const handleBack = () => setActivePage(activePage - 1);
+  }, [activePage, game, result, hitLocation.y, trajectory, hardHit, runScored]);
 
   const stepCount =
-    result === "BB" || result === "K" || result === "HBP" ? 3 : 5;
+    result === "BB" || result === "K" || result === "HBP" ? 4 : 6;
 
   const content = {
-    0: <Result result={result} setResult={setResult} />,
-    1: <Count count={count} setCount={setCount} />,
-    2: (
+    0: <SelectGame game={game} setGame={setGame} gameList={userGames} />,
+    1: <Result result={result} setResult={setResult} />,
+    2: <Count count={count} setCount={setCount} />,
+    3: (
       <Runs
         runScored={runScored}
         setRunScored={setRunScored}
@@ -54,10 +62,10 @@ const LogAtBatScreen = () => {
         setRBI={setRBI}
       />
     ),
-    3: (
+    4: (
       <HitLocation hitLocation={hitLocation} setHitLocation={setHitLocation} />
     ),
-    4: (
+    5: (
       <Trajectory
         trajectory={trajectory}
         setTrajectory={setTrajectory}
@@ -78,31 +86,46 @@ const LogAtBatScreen = () => {
         {
           text: "OK",
           onPress: () => {
-            console.log(
-              stepCount === 5
-                ? {
-                    result: result,
-                    hitLocation: {
-                      x: Math.floor(hitLocation.x),
-                      y: Math.floor(hitLocation.y),
-                    },
-                    count: count,
-                    trajectory: trajectory,
-                    hardHit: hardHit,
-                    runScored: runScored,
-                    RBI: RBI,
-                  }
-                : {
-                    result: result,
-                    count: count,
-                    runScored: runScored,
-                    RBI: RBI,
-                  }
-            );
+            handleAddAtBat();
           },
         },
       ]);
     } else setActivePage(activePage + step);
+  };
+
+  const clearFields = () => {
+    setResult(null);
+    setCount({ balls: 0, strikes: 0 });
+    setHitLocation({ x: 0, y: 0 });
+    setTrajectory(null);
+    setHardHit(null);
+    setRunScored(null);
+    setRBI(0);
+  };
+
+  const handleAddAtBat = async () => {
+    try {
+      const newAtBat = {
+        result: result,
+        hitLocation: {
+          x: Math.floor(hitLocation.x),
+          y: Math.floor(hitLocation.y),
+        },
+        count: count,
+        trajectory: trajectory,
+        hardHit: hardHit,
+        runScored: runScored,
+        RBI: RBI,
+        game: game,
+      };
+      await addAtBat(newAtBat, game).then(() => {
+        setUserAtBats([...userAtBats, newAtBat]);
+        setActivePage(0);
+        clearFields();
+      });
+    } catch (error) {
+      console.error("Error adding AtBat:", error);
+    }
   };
 
   return (
@@ -155,7 +178,7 @@ const LogAtBatScreen = () => {
           disabled={!canProceed}
         >
           <Text className="text-white text-2xl">
-            {activePage === 4 ? "Finish" : "Next"}
+            {activePage === 5 ? "Finish" : "Next"}
           </Text>
         </TouchableOpacity>
       </View>

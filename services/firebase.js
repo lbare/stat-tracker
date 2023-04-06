@@ -93,10 +93,14 @@ export const addGame = async (game, id = null) => {
   }
 };
 
-export const addAtBat = async (atBat, id = null) => {
+export const addAtBat = async (atBat, gameId, atBatId = null) => {
   try {
-    const docRef = id ? doc(db, "atBats", id) : doc(collection(db, "atBats"));
-    const result = await setDoc(docRef, atBat);
+    console.log("Adding at-bat...");
+    const gameRef = doc(db, "games", gameId);
+    const atBatRef = atBatId
+      ? doc(gameRef, "atBats", atBatId)
+      : doc(collection(gameRef, "atBats"));
+    const result = await setDoc(atBatRef, atBat);
     console.log("At-bat added successfully!");
     return result;
   } catch (error) {
