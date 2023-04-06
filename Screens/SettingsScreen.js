@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { UserContext } from "../services/UserContext";
 import { deleteGame } from "../services/firebase";
+import { Alert } from "react-native";
+
 
 const Settings = () => {
   const { userGames, setUserGames, userAtBats, setUserAtBats } =
@@ -19,10 +21,13 @@ const Settings = () => {
   useEffect(() => {
     if (userGames !== null && userGames.length > 0) {
       setLoading(true);
+
+      const sortedGames = userGames.sort((a, b) => a.date - b.date);
+
       setNewData([
         {
           title: "Games",
-          data: userGames.map((item) => ({
+          data: sortedGames.map((item) => ({
             date: item.date,
             id: item.id,
             opponent: item.opponent,
@@ -39,8 +44,25 @@ const Settings = () => {
 
   const handleDeleteGame = async (id) => {
     try {
-      await deleteGame(id);
-      setUserGames(userGames.filter((item) => item.id !== id));
+      Alert.alert(
+        "Delete Game",
+        "Are you sure you want to delete this game?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: async () => {
+              await deleteGame(id);
+              setUserGames(userGames.filter((item) => item.id !== id));
+            },
+            style: "destructive",
+          },
+        ],
+        { cancelable: false }
+      );
     } catch (error) {
       console.error("Error deleting game:", error);
     }
@@ -73,7 +95,11 @@ const Settings = () => {
             </Text>
             <Text className="text-xl text-left">{item.opponent}</Text>
             <Text className="text-xl">
-              {item.runsAllowed || ""}-{item.runsScored || ""}
+              {item.runsAllowed !== null && item.runsScored !== null
+                ? item.home === true
+                  ? "H"
+                  : "A"
+                : "N/A"}
             </Text>
           </TouchableOpacity>
         )}
