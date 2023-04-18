@@ -6,13 +6,21 @@ import Result from "../components/Result";
 import Count from "../components/Count";
 import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
-import SelectGame from "../components/SelectGame";
 import { UserContext } from "../services/UserContext";
 import { addAtBat } from "../services/firebase";
 
 const LogAtBatScreen = () => {
+  const {
+    userGames,
+    setUserGames,
+    userAtBats,
+    setUserAtBats,
+    currentGame,
+    setCurrentGame,
+  } = useContext(UserContext);
+
   const [activePage, setActivePage] = useState(0);
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState(currentGame);
   const [result, setResult] = useState(null);
   const [count, setCount] = useState({
     balls: 0,
@@ -25,22 +33,19 @@ const LogAtBatScreen = () => {
   const [runScored, setRunScored] = useState(false);
   const [numAtBat, setNumAtBat] = useState(0);
 
-  const { userGames, setUserGames, userAtBats, setUserAtBats } =
-    useContext(UserContext);
+  useEffect(() => setGame(currentGame), [currentGame]);
 
   const canProceed = useMemo(() => {
     switch (activePage) {
       case 0:
-        return game !== null;
-      case 1:
         return result !== null;
-      case 2:
+      case 1:
         return true;
-      case 3:
+      case 2:
         return runScored !== null;
-      case 4:
+      case 3:
         return hitLocation.y !== 0;
-      case 5:
+      case 4:
         return trajectory !== null && hardHit !== null;
       default:
         return true;
@@ -48,13 +53,14 @@ const LogAtBatScreen = () => {
   }, [activePage, game, result, hitLocation.y, trajectory, hardHit, runScored]);
 
   const stepCount =
-    result === "BB" || result === "K" || result === "HBP" ? 4 : 6;
+    result === null || result === "BB" || result === "K" || result === "HBP"
+      ? 3
+      : 5;
 
   const content = {
-    0: <SelectGame game={game} setGame={setGame} gameList={userGames} />,
-    1: <Result result={result} setResult={setResult} />,
-    2: <Count count={count} setCount={setCount} />,
-    3: (
+    0: <Result result={result} setResult={setResult} />,
+    1: <Count count={count} setCount={setCount} />,
+    2: (
       <Runs
         runScored={runScored}
         setRunScored={setRunScored}
@@ -62,10 +68,10 @@ const LogAtBatScreen = () => {
         setRBI={setRBI}
       />
     ),
-    4: (
+    3: (
       <HitLocation hitLocation={hitLocation} setHitLocation={setHitLocation} />
     ),
-    5: (
+    4: (
       <Trajectory
         trajectory={trajectory}
         setTrajectory={setTrajectory}
@@ -178,7 +184,7 @@ const LogAtBatScreen = () => {
           disabled={!canProceed}
         >
           <Text className="text-white text-2xl">
-            {activePage === 5 ? "Finish" : "Next"}
+            {activePage === 4 ? "Finish" : "Next"}
           </Text>
         </TouchableOpacity>
       </View>
