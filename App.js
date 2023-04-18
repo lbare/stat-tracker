@@ -14,7 +14,7 @@ import Register from "./Screens/RegisterScreen";
 import LogAtBatScreen from "./Screens/LogAtBatScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
-import Settings from "./Screens/SettingsScreen";
+import GamesScreen from "./Screens/GamesScreen";
 import {
   onAuthStateChanged,
   auth,
@@ -92,8 +92,8 @@ function AppStack() {
         }}
       >
         <BottomBar.Screen
-          name="Settings"
-          component={Settings}
+          name="Games"
+          component={GamesScreen}
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
@@ -192,6 +192,7 @@ export default function App() {
   const [userSeasons, setUserSeasons] = useState(null);
   const [userGames, setUserGames] = useState(null);
   const [userAtBats, setUserAtBats] = useState(null);
+  const [currentGame, setCurrentGame] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -238,6 +239,8 @@ export default function App() {
         setUserGames,
         userAtBats,
         setUserAtBats,
+        currentGame,
+        setCurrentGame,
       }}
     >
       <NavigationContainer>
