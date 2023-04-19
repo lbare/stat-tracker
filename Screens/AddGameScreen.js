@@ -43,6 +43,7 @@ const AddGameScreen = ({ navigation }) => {
         home,
         location,
         gameType,
+        numAtBats: 0,
       };
       await addGame(newGame, generateId()).then(() => {
         setUserGames([...userGames, newGame]);

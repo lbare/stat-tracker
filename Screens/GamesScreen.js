@@ -45,6 +45,7 @@ const Settings = ({ navigation }) => {
             didWin: item.didWin !== null ? item.didWin : "N/A",
             runsScored: item.runsScored !== null ? item.runsScored : null,
             runsAllowed: item.runsAllowed !== null ? item.runsAllowed : null,
+            numAtBats: item.numAtBats !== null ? item.numAtBats : null,
           })),
         },
       ]);
@@ -95,7 +96,7 @@ const Settings = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              setCurrentGame(item.id);
+              setCurrentGame(item);
               navigation.navigate("Log AB");
               // handleDeleteGame(item.id);
             }}

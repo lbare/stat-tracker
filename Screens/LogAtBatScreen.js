@@ -7,9 +7,9 @@ import Count from "../components/Count";
 import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
 import { UserContext } from "../services/UserContext";
-import { addAtBat } from "../services/firebase";
+import { addAtBat, getNumberOfAtBatsByGame } from "../services/firebase";
 
-const LogAtBatScreen = () => {
+const LogAtBatScreen = ({ navigation }) => {
   const {
     userGames,
     setUserGames,
@@ -31,7 +31,7 @@ const LogAtBatScreen = () => {
   const [hardHit, setHardHit] = useState(false);
   const [RBI, setRBI] = useState(0);
   const [runScored, setRunScored] = useState(false);
-  const [numAtBat, setNumAtBat] = useState(0);
+  const [numAtBat, setNumAtBat] = useState(game.numAtBats);
 
   useEffect(() => setGame(currentGame), [currentGame]);
 
@@ -114,20 +114,21 @@ const LogAtBatScreen = () => {
       const newAtBat = {
         result: result,
         hitLocation: {
-          x: Math.floor(hitLocation.x),
-          y: Math.floor(hitLocation.y),
+          x: hitLocation.x !== 0 ? Math.floor(hitLocation.x) : null,
+          y: hitLocation.x !== 0 ? Math.floor(hitLocation.y) : null,
         },
         count: count,
         trajectory: trajectory,
         hardHit: hardHit,
         runScored: runScored,
         RBI: RBI,
-        game: game,
       };
-      await addAtBat(newAtBat, game).then(() => {
+      await addAtBat(newAtBat, game.id).then(() => {
         setUserAtBats([...userAtBats, newAtBat]);
         setActivePage(0);
+        setNumAtBat(numAtBat + 1);
         clearFields();
+        navigation.navigate("Games");
       });
     } catch (error) {
       console.error("Error adding AtBat:", error);
@@ -136,6 +137,7 @@ const LogAtBatScreen = () => {
 
   return (
     <View className="flex flex-col h-full w-full py-5 pb-48">
+      <Text>AB #{numAtBat}</Text>
       <StepIndicator
         customStyles={{
           stepIndicatorSize: 25,
