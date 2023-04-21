@@ -40,8 +40,8 @@ const Settings = ({ navigation }) => {
           data: sortedGames.map((item) => ({
             date: item.date,
             id: item.id,
-            opponent: item.opponent,
-            home: item.home,
+            homeTeam: item.homeTeam,
+            awayTeam: item.awayTeam,
             didWin: item.didWin !== null ? item.didWin : "N/A",
             runsScored: item.runsScored !== null ? item.runsScored : null,
             runsAllowed: item.runsAllowed !== null ? item.runsAllowed : null,
@@ -100,7 +100,11 @@ const Settings = ({ navigation }) => {
               navigation.navigate("Log AB");
               // handleDeleteGame(item.id);
             }}
-            className="border-b border-gray-500 p-4 flex-row justify-between"
+            className={`border-b border-gray-500 p-4 flex-row justify-between ${
+              item.awayTeam === "Monarchs" || item.homeTeam === "Monarchs"
+                ? "bg-green-400"
+                : ""
+            }`}
           >
             <Text className="text-xl">
               {item.date.toLocaleString("en-US", {
@@ -108,13 +112,20 @@ const Settings = ({ navigation }) => {
                 day: "2-digit",
               })}
             </Text>
-            <Text className="text-xl text-left">{item.opponent}</Text>
-            <Text className="text-xl">
-              {item.runsAllowed !== null && item.runsScored !== null
-                ? item.home === true
-                  ? "H"
-                  : "A"
-                : "N/A"}
+            <Text
+              className={`text-xl text-left ${
+                item.awayTeam === "Monarchs" ? "font-bold" : ""
+              }`}
+            >
+              {item.awayTeam}
+            </Text>
+            <Text className="text-xl text-left">@</Text>
+            <Text
+              className={`text-xl text-left ${
+                item.homeTeam === "Monarchs" ? "font-bold" : ""
+              }`}
+            >
+              {item.homeTeam}
             </Text>
           </TouchableOpacity>
         )}
@@ -124,17 +135,6 @@ const Settings = ({ navigation }) => {
           </View>
         )}
       />
-      <View className="flex-1 flex-row justify-evenly items-center w-full pb-10">
-        <TouchableOpacity
-          className="justify-center items-center bg-red-200 h-20 w-1/3 rounded-lg"
-          onPress={() => navigation.navigate("Add Game")}
-        >
-          <Text>Add</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="justify-center items-center bg-red-200 h-20 w-1/3 rounded-lg">
-          <Text>Import</Text>
-        </TouchableOpacity>
-      </View>
       {/* <SwipeListView
         className="w-full"
         data={newData}
