@@ -115,81 +115,33 @@ export const addAtBat = async (atBat, gameId) => {
 };
 
 /* WRITES */
-export const getAllSeasons = async () => {
-  try {
-    const snapshot = await getDocs(collection(db, "seasons"));
-    const seasons = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    return seasons;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
 export const getAllGames = async () => {
   try {
-    const snapshot = await getDocs(collection(db, "games"));
-    const games = snapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-      date: doc.data().date.toDate(),
-    }));
+    const gamesSnapshot = await getDocs(collection(db, "games"));
+    const games = await Promise.all(
+      gamesSnapshot.docs.map(async (gameDoc) => {
+        let atBats = [];
+        const atBatsRef = collection(gameDoc.ref, "atBats");
+        const atBatsSnapshot = await getDocs(atBatsRef);
+        if (!atBatsSnapshot.empty) {
+          atBats = atBatsSnapshot.docs.map((atBatDoc) => ({
+            ...atBatDoc.data(),
+            id: atBatDoc.id,
+          }));
+        }
+        return {
+          ...gameDoc.data(),
+          atBats: atBats,
+          date: gameDoc.data().date.toDate(),
+          id: gameDoc.id,
+        };
+      })
+    );
     return games;
   } catch (error) {
     console.error(error);
     throw error;
   }
-};
-
-export const getAllAtBats = async () => {
-  try {
-    const snapshot = await getDocs(collection(db, "atBats"));
-    const atBats = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    return atBats;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const getAllGamesBySeason = async (seasonId) => {
-  try {
-    const snapshot = await getDocs(
-      query(collection(db, "games"), where("seasonId", "==", seasonId))
-    );
-    const games = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    return games;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const getAllAtBatsBySeason = async (seasonId) => {
-  try {
-    const snapshot = await getDocs(
-      query(collection(db, "atBats"), where("seasonId", "==", seasonId))
-    );
-    const atBats = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    return atBats;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const getAllAtBatsByGame = async (gameId) => {
-  let atBats = [];
-
-  const querySnapshot = await collection(db, "atBats")
-    .where("gameId", "==", gameId)
-    .get();
-
-  querySnapshot.forEach((doc) => {
-    atBats.push(doc.data());
-  });
-
-  return atBats;
 };
 
 /* DELETES */
@@ -206,16 +158,6 @@ export const deleteSeason = async (id) => {
 export const deleteGame = async (id) => {
   try {
     const result = await deleteDoc(doc(db, "games", id));
-    return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const deleteAtBat = async (id) => {
-  try {
-    const result = await deleteDoc(doc(db, "atBats", id));
     return result;
   } catch (error) {
     console.error(error);
