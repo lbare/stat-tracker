@@ -10,14 +10,8 @@ import { UserContext } from "../services/UserContext";
 import { addAtBat, getNumberOfAtBatsByGame } from "../services/firebase";
 
 const LogAtBatScreen = ({ navigation }) => {
-  const {
-    userGames,
-    setUserGames,
-    userAtBats,
-    setUserAtBats,
-    currentGame,
-    setCurrentGame,
-  } = useContext(UserContext);
+  const { userGames, setUserGames, currentGame, setCurrentGame } =
+    useContext(UserContext);
 
   const [activePage, setActivePage] = useState(0);
   const [game, setGame] = useState(currentGame);
@@ -122,9 +116,17 @@ const LogAtBatScreen = ({ navigation }) => {
         hardHit: hardHit,
         runScored: runScored,
         RBI: RBI,
+        numAtBat: numAtBat,
       };
       await addAtBat(newAtBat, game.id).then(() => {
-        setUserAtBats([...userAtBats, newAtBat]);
+        setUserGames(
+          userGames.map((g) => {
+            if (g.id === game.id) {
+              g.numAtBats = numAtBat;
+              return g;
+            } else return g;
+          })
+        );
         setActivePage(0);
         setNumAtBat(numAtBat + 1);
         clearFields();
@@ -137,7 +139,7 @@ const LogAtBatScreen = ({ navigation }) => {
 
   return (
     <View className="flex flex-col h-full w-full py-5 pb-48">
-      <Text>AB #{numAtBat}</Text>
+      <Text className="self-center text-xl font-bold">AB #{numAtBat + 1}</Text>
       <StepIndicator
         customStyles={{
           stepIndicatorSize: 25,

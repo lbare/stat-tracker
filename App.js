@@ -15,6 +15,7 @@ import LogAtBatScreen from "./Screens/LogAtBatScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
 import GamesScreen from "./Screens/GamesScreen";
+import GameInfoScreen from "./Screens/GameInfoScreen";
 import {
   onAuthStateChanged,
   auth,
@@ -122,6 +123,15 @@ function AppStack() {
           }}
         />
         <BottomBar.Screen
+          name="Game Info"
+          component={GameInfoScreen}
+          options={{
+            tabBarIcon: () => (
+              <CalendarPlus size={0} color="white" weight="fill" />
+            ),
+          }}
+        />
+        <BottomBar.Screen
           name="Stats"
           component={Stats}
           options={{
@@ -189,9 +199,7 @@ function AppStack() {
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [userSeasons, setUserSeasons] = useState(null);
   const [userGames, setUserGames] = useState(null);
-  const [userAtBats, setUserAtBats] = useState(null);
   const [currentGame, setCurrentGame] = useState(null);
 
   useEffect(() => {
@@ -201,17 +209,12 @@ export default function App() {
           const docSnap = await getDoc(doc(db, "users", user.uid));
           if (docSnap.exists()) {
             try {
-              const [seasons, games, atBats] = await Promise.all([
-                getAllSeasons(),
-                getAllGames(),
-                getAllAtBats(),
-              ]).catch((error) => {
+              const games = await getAllGames().catch((error) => {
                 console.log("Promise Error: ", error);
               });
+              console.log(games);
               setUser(user);
-              setUserSeasons(seasons);
               setUserGames(games);
-              setUserAtBats(atBats);
             } catch (error) {
               console.log(error);
             }
@@ -233,12 +236,8 @@ export default function App() {
       value={{
         user,
         setUser,
-        userSeasons,
-        setUserSeasons,
         userGames,
         setUserGames,
-        userAtBats,
-        setUserAtBats,
         currentGame,
         setCurrentGame,
       }}
