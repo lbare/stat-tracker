@@ -144,6 +144,17 @@ export const getAllGames = async () => {
   }
 };
 
+export const updateGameScore = async (gameId, homeScore, awayScore) => {
+  try {
+    const gameRef = doc(db, "games", gameId);
+    const result = await updateDoc(gameRef, { homeScore, awayScore });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 /* DELETES */
 export const deleteSeason = async (id) => {
   try {
