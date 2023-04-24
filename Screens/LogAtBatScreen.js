@@ -127,10 +127,15 @@ const LogAtBatScreen = ({ navigation }) => {
             } else return g;
           })
         );
+        setCurrentGame({
+          ...game,
+          numAtBats: numAtBat,
+          atBats: [...game.atBats, newAtBat],
+        });
         setActivePage(0);
         setNumAtBat(numAtBat + 1);
         clearFields();
-        navigation.navigate("Games");
+        navigation.navigate("Game Info");
       });
     } catch (error) {
       console.error("Error adding AtBat:", error);
