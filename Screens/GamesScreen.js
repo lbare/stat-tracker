@@ -43,9 +43,10 @@ const Settings = ({ navigation }) => {
             homeTeam: item.homeTeam,
             awayTeam: item.awayTeam,
             didWin: item.didWin !== null ? item.didWin : "N/A",
-            runsScored: item.runsScored !== null ? item.runsScored : null,
-            runsAllowed: item.runsAllowed !== null ? item.runsAllowed : null,
+            homeScore: item.homeScore !== null ? item.homeScore : null,
+            awayScore: item.awayScore !== null ? item.awayScore : null,
             numAtBats: item.numAtBats !== null ? item.numAtBats : null,
+            atBats: item.atBats !== null ? item.atBats : null,
           })),
         },
       ]);
@@ -97,7 +98,7 @@ const Settings = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => {
               setCurrentGame(item);
-              navigation.navigate("Log AB");
+              navigation.navigate("Game Info");
               // handleDeleteGame(item.id);
             }}
             className={`border-b border-gray-500 p-4 flex-row justify-between ${
