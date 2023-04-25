@@ -18,13 +18,13 @@ const GameInfoScreen = ({ navigation }) => {
     useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
-  const [atBats, setAtBats] = useState(null);
-  const [pitching, setPitching] = useState(null);
   const [isMonarchs, setIsMonarchs] = useState(false);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
 
   useEffect(() => {
+    setLoading(true);
+
     setHomeScore(
       currentGame.homeScore !== null ? currentGame.homeScore.toString() : ""
     );
@@ -35,32 +35,6 @@ const GameInfoScreen = ({ navigation }) => {
       currentGame.homeTeam === "Monarchs" || currentGame.awayTeam === "Monarchs"
     );
 
-    if (
-      currentGame.homeTeam === "Monarchs" ||
-      currentGame.awayTeam === "Monarchs"
-    ) {
-      setLoading(true);
-
-      if (currentGame.pitching !== null) setPitching(currentGame.pitching);
-
-      if (currentGame.atBats !== null && currentGame.atBats.length > 0) {
-        setAtBats([
-          {
-            title: "At Bats",
-            data: currentGame.map((item) => ({
-              numAtBat: item.numAtBat + 1,
-              count: item.count,
-              RBI: item.RBI,
-              result: item.result,
-              runsScored: item.runsScored,
-              hardHit: item.hardHit !== null ? item.hardHit : null,
-              trajectory: item.trajectory !== null ? item.trajectory : null,
-              hitLocation: item.hitLocation !== null ? item.hitLocation : null,
-            })),
-          },
-        ]);
-      }
-    }
     setLoading(false);
   }, [currentGame]);
 
@@ -83,7 +57,6 @@ const GameInfoScreen = ({ navigation }) => {
   const clearFields = () => {
     setHomeScore("");
     setAwayScore("");
-    setAtBats([]);
   };
 
   const handleScoreUpdate = async () => {
@@ -121,47 +94,43 @@ const GameInfoScreen = ({ navigation }) => {
   };
 
   function AtBatStack() {
-    return atBats && atBats.length > 0 ? (
-      <SectionList
-        className="w-full"
-        sections={atBats}
-        style={{ flexGrow: 0 }}
-        renderItem={({ item }) => (
-          <View className="flex-row justify-between px-2">
-            <Text className="text-sm">{item.numAtBat}</Text>
-            <Text className="text-sm">{item.result}</Text>
-            <Text className="text-sm">{item.hardHit ? "T" : "F"}</Text>
-            <Text className="text-sm">{item.pitches}</Text>
-            <Text className="text-sm">{item.runsScored ? "T" : "F"}</Text>
-            <Text className="text-sm">{item.RBI}</Text>
-            <Text className="text-sm">{item.trajectory ? "T" : "F"}</Text>
-          </View>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <View className="flex-1 justify-evenly items-center border-b border-gray-500 px-2">
-            <View className="flex-row justify-evenly items-start w-full">
-              <Text className="text-2xl font-bold w-full">{title}</Text>
+    return currentGame.atBats && currentGame.atBats.length > 0 ? (
+      <View className="flex-1 justify-start items-center px-2">
+        <View className="flex-row justify-evenly items-start w-full">
+          <Text className="text-2xl font-bold w-full">At Bats</Text>
+        </View>
+        <View className="flex-row justify-between items-center w-full border-b">
+          <Text className="text-sm font-bold">#</Text>
+          <Text className="text-sm font-bold">Result</Text>
+          <Text className="text-sm font-bold">Hard Hit</Text>
+          <Text className="text-sm font-bold">Pitches</Text>
+          <Text className="text-sm font-bold">Run</Text>
+          <Text className="text-sm font-bold">RBI</Text>
+          <Text className="text-sm font-bold">Trajectory</Text>
+        </View>
+        <View className="justify-evenly items-center w-full">
+          {currentGame.atBats.map((atBat, index) => (
+            <View
+              key={index}
+              className="flex-row justify-between items-center w-full"
+            >
+              <Text className="text-sm">{index + 1}</Text>
+              <Text className="text-sm">{atBat.result}</Text>
+              <Text className="text-sm">{atBat.hardHit ? "T" : "F"}</Text>
+              <Text className="text-sm">{atBat.pitches}</Text>
+              <Text className="text-sm">{atBat.runsScored ? "T" : "F"}</Text>
+              <Text className="text-sm">{atBat.RBI}</Text>
+              <Text className="text-sm">{atBat.trajectory ? "T" : "F"}</Text>
             </View>
-            <View className="flex-row justify-between items-center w-full">
-              <Text className="text-sm font-bold">#</Text>
-              <Text className="text-sm font-bold">Result</Text>
-              <Text className="text-sm font-bold">Hard Hit</Text>
-              <Text className="text-sm font-bold">Pitches</Text>
-              <Text className="text-sm font-bold">Run</Text>
-              <Text className="text-sm font-bold">RBI</Text>
-              <Text className="text-sm font-bold">Trajectory</Text>
-            </View>
-          </View>
-        )}
-        renderSectionFooter={() => (
-          <TouchableOpacity
-            className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"
-            onPress={() => navigation.navigate("Log AB")}
-          >
-            <Text className="text-2xl font-bold w-full text-center">+</Text>
-          </TouchableOpacity>
-        )}
-      />
+          ))}
+        </View>
+        <TouchableOpacity
+          className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"
+          onPress={() => navigation.navigate("Log AB")}
+        >
+          <Text className="text-2xl font-bold w-full text-center">+</Text>
+        </TouchableOpacity>
+      </View>
     ) : (
       <View className="flex-1 justify-center items-center">
         <Text className="text-2xl font-bold">No At Bats Logged</Text>
@@ -176,7 +145,7 @@ const GameInfoScreen = ({ navigation }) => {
   }
 
   function PitchingStack() {
-    return pitching ? (
+    return currentGame.pitching ? (
       <View className="flex-1 justify-start items-center border-b border-gray-500 px-2">
         <View className="flex-row justify-evenly items-start w-full">
           <Text className="text-2xl font-bold w-full">Pitching</Text>
@@ -190,12 +159,22 @@ const GameInfoScreen = ({ navigation }) => {
           <Text className="text-sm font-bold">BB</Text>
         </View>
         <View className="flex-row justify-between items-center w-full">
-          <Text className="text-sm">{pitching.inningsPitched}</Text>
-          <Text className="text-sm">{pitching && pitching.earnedRuns}</Text>
-          <Text className="text-sm">{pitching && pitching.runs}</Text>
-          <Text className="text-sm">{pitching && pitching.hits}</Text>
-          <Text className="text-sm">{pitching && pitching.strikeouts}</Text>
-          <Text className="text-sm">{pitching && pitching.walks}</Text>
+          <Text className="text-sm">{currentGame.pitching.inningsPitched}</Text>
+          <Text className="text-sm">
+            {currentGame.pitching && currentGame.pitching.earnedRuns}
+          </Text>
+          <Text className="text-sm">
+            {currentGame.pitching && currentGame.pitching.runs}
+          </Text>
+          <Text className="text-sm">
+            {currentGame.pitching && currentGame.pitching.hits}
+          </Text>
+          <Text className="text-sm">
+            {currentGame.pitching && currentGame.pitching.strikeouts}
+          </Text>
+          <Text className="text-sm">
+            {currentGame.pitching && currentGame.pitching.walks}
+          </Text>
         </View>
         <View className="flex-row justify-evenly items-center w-full">
           <TouchableOpacity
