@@ -16,6 +16,7 @@ import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
 import GamesScreen from "./Screens/GamesScreen";
 import GameInfoScreen from "./Screens/GameInfoScreen";
+import LogPitchingScreen from "./Screens/LogPitchingScreen";
 import {
   onAuthStateChanged,
   auth,
@@ -107,6 +108,15 @@ function AppStack() {
         <BottomBar.Screen
           name="Log AB"
           component={LogAtBatScreen}
+          options={{
+            tabBarIcon: () => (
+              <CalendarPlus size={0} color="white" weight="fill" />
+            ),
+          }}
+        />
+        <BottomBar.Screen
+          name="Log Pitching"
+          component={LogPitchingScreen}
           options={{
             tabBarIcon: () => (
               <CalendarPlus size={0} color="white" weight="fill" />
@@ -212,7 +222,6 @@ export default function App() {
               const games = await getAllGames().catch((error) => {
                 console.log("Promise Error: ", error);
               });
-              console.log(games);
               setUser(user);
               setUserGames(games);
             } catch (error) {
