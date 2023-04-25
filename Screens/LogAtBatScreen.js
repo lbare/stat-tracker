@@ -3,7 +3,7 @@ import { View, Alert, TouchableOpacity, Text } from "react-native";
 import StepIndicator from "react-native-step-indicator";
 import HitLocation from "../components/HitLocation";
 import Result from "../components/Result";
-import Count from "../components/Count";
+import Pitches from "../components/Pitches";
 import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
 import { UserContext } from "../services/UserContext";
@@ -16,13 +16,10 @@ const LogAtBatScreen = ({ navigation }) => {
   const [activePage, setActivePage] = useState(0);
   const [game, setGame] = useState(currentGame);
   const [result, setResult] = useState(null);
-  const [count, setCount] = useState({
-    balls: 0,
-    strikes: 0,
-  });
+  const [pitches, setPitches] = useState(0);
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [trajectory, setTrajectory] = useState(null);
-  const [hardHit, setHardHit] = useState(false);
+  const [hardHit, setHardHit] = useState(null);
   const [RBI, setRBI] = useState(0);
   const [runScored, setRunScored] = useState(false);
   const [numAtBat, setNumAtBat] = useState(game.numAtBats);
@@ -53,7 +50,7 @@ const LogAtBatScreen = ({ navigation }) => {
 
   const content = {
     0: <Result result={result} setResult={setResult} />,
-    1: <Count count={count} setCount={setCount} />,
+    1: <Pitches pitches={pitches} setPitches={setPitches} />,
     2: (
       <Runs
         runScored={runScored}
@@ -95,7 +92,7 @@ const LogAtBatScreen = ({ navigation }) => {
 
   const clearFields = () => {
     setResult(null);
-    setCount({ balls: 0, strikes: 0 });
+    setPitches({ balls: 0, strikes: 0 });
     setHitLocation({ x: 0, y: 0 });
     setTrajectory(null);
     setHardHit(null);
@@ -111,7 +108,7 @@ const LogAtBatScreen = ({ navigation }) => {
           x: hitLocation.x !== 0 ? Math.floor(hitLocation.x) : null,
           y: hitLocation.x !== 0 ? Math.floor(hitLocation.y) : null,
         },
-        count: count,
+        pitches: pitches,
         trajectory: trajectory,
         hardHit: hardHit,
         runScored: runScored,
