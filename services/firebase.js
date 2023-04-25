@@ -181,7 +181,6 @@ export const getAllGames = async () => {
         }
         return {
           ...gameDoc.data(),
-          atBats: atBats,
           date: gameDoc.data().date.toDate(),
           id: gameDoc.id,
         };
