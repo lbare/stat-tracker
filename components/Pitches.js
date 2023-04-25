@@ -15,7 +15,7 @@ const Pitches = ({ pitches, setPitches }) => {
         <View className="w-1/3">
           <Picker
             selectedValue={pitches.strikes}
-            onValueChange={(n) => setPitches({ ...pitches, strikes: n })}
+            onValueChange={(n) => setPitches(pitches)}
             itemStyle={{ fontSize: 48, fontWeight: "bold" }}
           >
             {numbers.map((num) => (
