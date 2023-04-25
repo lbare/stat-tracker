@@ -71,6 +71,7 @@ export const addUser = async (email, password) => {
   }
 };
 
+/* WRITES */
 export const addSeason = async (season, id = null) => {
   try {
     const docRef = id ? doc(db, "seasons", id) : doc(collection(db, "seasons"));
@@ -114,7 +115,53 @@ export const addAtBat = async (atBat, gameId) => {
   }
 };
 
-/* WRITES */
+export const addPitchingGame = async (gameId, pitching) => {
+  try {
+    const gameRef = doc(db, "games", gameId);
+    const result = await updateDoc(gameRef, { pitching: { ...pitching } });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const addPitchingInning = async (gameId, newInning) => {
+  try {
+    const gameRef = doc(db, "games", gameId);
+    const gameDoc = await getDoc(gameRef);
+
+    let { pitching } = gameDoc.data();
+
+    if (!pitching) {
+      // If there's no existing pitching object, create a new one with the new inning
+      pitching = {
+        inningsPitched: 1,
+        earnedRuns: newInning.earnedRuns,
+        runs: newInning.runs,
+        strikeouts: newInning.strikeouts,
+        walks: newInning.walks,
+        hits: newInning.hits,
+      };
+    } else {
+      // If there's an existing pitching object, merge the new inning with it
+      pitching = {
+        inningsPitched: pitching.inningsPitched + 1,
+        earnedRuns: pitching.earnedRuns + newInning.earnedRuns,
+        runs: pitching.runs + newInning.runs,
+        strikeouts: pitching.strikeouts + newInning.strikeouts,
+        walks: pitching.walks + newInning.walks,
+        hits: pitching.hits + newInning.hits,
+      };
+    }
+
+    await updateDoc(gameRef, { pitching: { ...pitching } });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getAllGames = async () => {
   try {
     const gamesSnapshot = await getDocs(collection(db, "games"));
