@@ -222,8 +222,8 @@ export default function App() {
               const games = await getAllGames().catch((error) => {
                 console.log("Promise Error: ", error);
               });
-              setUser(user);
               setUserGames(games);
+              setUser(user);
             } catch (error) {
               console.log(error);
             }
