@@ -147,33 +147,44 @@ const Settings = ({ navigation }) => {
               setCurrentGame(item);
               navigation.navigate("Game Info");
             }}
-            className={`border-b border-gray-500 p-4 flex-row justify-between ${
+            className={`border-b border-gray-500 p-4 flex-row justify-between w-screen ${
               item.awayTeam === "Monarchs" || item.homeTeam === "Monarchs"
                 ? "bg-green-400"
                 : ""
             }`}
           >
-            <Text className="text-xl">
-              {item.date.toLocaleString("en-US", {
-                month: "numeric",
-                day: "2-digit",
-              })}
-            </Text>
-            <Text
-              className={`text-xl text-left ${
-                item.awayTeam === "Monarchs" ? "font-bold" : ""
-              }`}
-            >
-              {item.awayTeam}
-            </Text>
-            <Text className="text-xl text-left">@</Text>
-            <Text
-              className={`text-xl text-left ${
-                item.homeTeam === "Monarchs" ? "font-bold" : ""
-              }`}
-            >
-              {item.homeTeam}
-            </Text>
+            <View className="flex-col justify-between items-center self-start">
+              <Text className="text-lg">
+                {item.date.toLocaleString("en-US", {
+                  weekday: "short",
+                  month: "numeric",
+                  day: "2-digit",
+                })}
+              </Text>
+              <Text>
+                {item.date.toLocaleString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
+              </Text>
+            </View>
+            <View className="flex-row justify-between items-center w-full pl-10 pr-24">
+              <Text
+                className={`text-xl text-left ${
+                  item.awayTeam === "Monarchs" ? "font-bold" : ""
+                }`}
+              >
+                {item.awayTeam}
+              </Text>
+              <Text className="text-xl text-center">@</Text>
+              <Text
+                className={`text-xl text-right ${
+                  item.homeTeam === "Monarchs" ? "font-bold" : ""
+                }`}
+              >
+                {item.homeTeam}
+              </Text>
+            </View>
           </TouchableOpacity>
         )}
         renderSectionHeader={({ section: { title } }) => (
