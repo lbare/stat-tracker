@@ -12,6 +12,7 @@ import { useContext, useState, useEffect, useCallback } from "react";
 import { UserContext } from "../services/UserContext";
 import { updateGameScore } from "../services/firebase";
 import { useFocusEffect } from "@react-navigation/native";
+import { StatsCalculator } from "../services/StatsCalculator";
 
 const GameInfoScreen = ({ navigation }) => {
   const { currentGame, setCurrentGame, userGames, setUserGames } =
@@ -21,28 +22,28 @@ const GameInfoScreen = ({ navigation }) => {
   const [isMonarchs, setIsMonarchs] = useState(false);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
+  const [stats, setStats] = useState(new StatsCalculator());
 
   useEffect(() => {
     setLoading(true);
 
+    setIsMonarchs(
+      currentGame.homeTeam === "Monarchs" || currentGame.awayTeam === "Monarchs"
+    );
     setHomeScore(
       currentGame.homeScore !== null ? currentGame.homeScore.toString() : ""
     );
     setAwayScore(
       currentGame.awayScore !== null ? currentGame.awayScore.toString() : ""
     );
-    setIsMonarchs(
-      currentGame.homeTeam === "Monarchs" || currentGame.awayTeam === "Monarchs"
+    setStats(
+      new StatsCalculator(currentGame.atBats || [], [
+        currentGame.pitching || [],
+      ])
     );
 
     setLoading(false);
   }, [currentGame]);
-
-  useEffect(() => {
-    return () => {
-      clearFields();
-    };
-  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -123,6 +124,46 @@ const GameInfoScreen = ({ navigation }) => {
               <Text className="text-sm">{atBat.trajectory ? "T" : "F"}</Text>
             </View>
           ))}
+          <View className="flex-row justify-between items-center w-full border-t">
+            <Text className="text-sm font-bold">AB</Text>
+            <Text className="text-sm font-bold">R</Text>
+            <Text className="text-sm font-bold">H</Text>
+            <Text className="text-sm font-bold">2B</Text>
+            <Text className="text-sm font-bold">3B</Text>
+            <Text className="text-sm font-bold">HR</Text>
+            <Text className="text-sm font-bold">AVG</Text>
+            <Text className="text-sm font-bold">OBP</Text>
+            <Text className="text-sm font-bold">OPS</Text>
+          </View>
+          <View className="flex-row justify-between items-center w-full">
+            <Text className="text-sm font-bold">
+              {currentGame.atBats.length}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.getR() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.getH() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.get2B() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.get3B() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.getHR() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.getAVG() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.getOBP() : 0}
+            </Text>
+            <Text className="text-sm font-bold">
+              {stats ? stats.getOPS() : 0}
+            </Text>
+          </View>
         </View>
         <TouchableOpacity
           className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"

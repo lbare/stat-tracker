@@ -139,7 +139,10 @@ const LogAtBatScreen = ({ navigation }) => {
   return (
     <View className="flex flex-col h-full w-full py-5 pb-48">
       <Text className="self-center text-xl font-bold">
-        AB #{currentGame.atBats.length}
+        AB #
+        {currentGame.atBats && currentGame.atBats.length > 0
+          ? currentGame.atBats.length
+          : 1}
       </Text>
       <StepIndicator
         customStyles={{
