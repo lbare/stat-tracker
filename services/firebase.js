@@ -194,10 +194,10 @@ export const getAllGames = async () => {
   }
 };
 
-export const updateGameScore = async (gameId, homeScore, awayScore) => {
+export const updateGameScore = async (gameId, homeScore, awayScore, winner) => {
   try {
     const gameRef = doc(db, "games", gameId);
-    const result = await updateDoc(gameRef, { homeScore, awayScore });
+    const result = await updateDoc(gameRef, { homeScore, awayScore, winner });
     return result;
   } catch (error) {
     console.error(error);

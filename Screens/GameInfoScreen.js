@@ -44,20 +44,16 @@ const GameInfoScreen = ({ navigation }) => {
       if (currentGame.pitching !== null) setPitching(currentGame.pitching);
 
       if (currentGame.atBats !== null && currentGame.atBats.length > 0) {
-        const sortedAtBats = currentGame.atBats
-          .slice()
-          .sort((a, b) => a.numAtBat - b.numAtBat);
-
         setAtBats([
           {
             title: "At Bats",
-            data: sortedAtBats.map((item) => ({
+            data: currentGame.map((item) => ({
               numAtBat: item.numAtBat + 1,
               count: item.count,
               RBI: item.RBI,
               result: item.result,
-              hardHit: item.hardHit,
               runsScored: item.runsScored,
+              hardHit: item.hardHit !== null ? item.hardHit : null,
               trajectory: item.trajectory !== null ? item.trajectory : null,
               hitLocation: item.hitLocation !== null ? item.hitLocation : null,
             })),
@@ -87,15 +83,26 @@ const GameInfoScreen = ({ navigation }) => {
   const clearFields = () => {
     setHomeScore("");
     setAwayScore("");
-    setAtBats(null);
+    setAtBats([]);
   };
 
   const handleScoreUpdate = async () => {
     if (homeScore !== "" && awayScore !== "") {
       const homeScoreInt = parseInt(homeScore);
       const awayScoreInt = parseInt(awayScore);
+      const winner =
+        homeScoreInt > awayScoreInt
+          ? currentGame.homeTeam
+          : homeScoreInt < awayScoreInt
+          ? currentGame.awayTeam
+          : "Tie";
       if (homeScoreInt >= 0 && awayScoreInt >= 0) {
-        await updateGameScore(currentGame.id, homeScoreInt, awayScoreInt);
+        await updateGameScore(
+          currentGame.id,
+          homeScoreInt,
+          awayScoreInt,
+          winner
+        );
         setUserGames(
           userGames.map((game) => {
             if (game.id === currentGame.id) {
@@ -124,9 +131,7 @@ const GameInfoScreen = ({ navigation }) => {
             <Text className="text-sm">{item.numAtBat}</Text>
             <Text className="text-sm">{item.result}</Text>
             <Text className="text-sm">{item.hardHit ? "T" : "F"}</Text>
-            <Text className="text-sm">
-              {item.count.strikes}-{item.count.balls}
-            </Text>
+            <Text className="text-sm">{item.pitches}</Text>
             <Text className="text-sm">{item.runsScored ? "T" : "F"}</Text>
             <Text className="text-sm">{item.RBI}</Text>
             <Text className="text-sm">{item.trajectory ? "T" : "F"}</Text>
@@ -141,7 +146,7 @@ const GameInfoScreen = ({ navigation }) => {
               <Text className="text-sm font-bold">#</Text>
               <Text className="text-sm font-bold">Result</Text>
               <Text className="text-sm font-bold">Hard Hit</Text>
-              <Text className="text-sm font-bold">Count</Text>
+              <Text className="text-sm font-bold">Pitches</Text>
               <Text className="text-sm font-bold">Run</Text>
               <Text className="text-sm font-bold">RBI</Text>
               <Text className="text-sm font-bold">Trajectory</Text>
