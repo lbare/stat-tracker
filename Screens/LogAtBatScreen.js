@@ -22,7 +22,6 @@ const LogAtBatScreen = ({ navigation }) => {
   const [hardHit, setHardHit] = useState(null);
   const [RBI, setRBI] = useState(0);
   const [runScored, setRunScored] = useState(false);
-  const [numAtBat, setNumAtBat] = useState(game.numAtBats);
 
   useEffect(() => setGame(currentGame), [currentGame]);
 
@@ -113,13 +112,12 @@ const LogAtBatScreen = ({ navigation }) => {
         hardHit: hardHit,
         runScored: runScored,
         RBI: RBI,
-        numAtBat: numAtBat,
       };
       await addAtBat(newAtBat, game.id).then(() => {
         setUserGames(
           userGames.map((g) => {
             if (g.id === game.id) {
-              g.numAtBats = numAtBat;
+              if (g.atBats === undefined) g.atBats = [];
               g.atBats.push(newAtBat);
               return g;
             } else return g;
@@ -127,11 +125,9 @@ const LogAtBatScreen = ({ navigation }) => {
         );
         setCurrentGame({
           ...game,
-          numAtBats: numAtBat,
-          atBats: [...game.atBats, newAtBat],
+          atBats: [...(game.atBats || []), newAtBat],
         });
         setActivePage(0);
-        setNumAtBat(numAtBat + 1);
         clearFields();
         navigation.navigate("Game Info");
       });
@@ -142,7 +138,9 @@ const LogAtBatScreen = ({ navigation }) => {
 
   return (
     <View className="flex flex-col h-full w-full py-5 pb-48">
-      <Text className="self-center text-xl font-bold">AB #{numAtBat + 1}</Text>
+      <Text className="self-center text-xl font-bold">
+        AB #{currentGame.atBats.length}
+      </Text>
       <StepIndicator
         customStyles={{
           stepIndicatorSize: 25,
