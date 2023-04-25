@@ -125,44 +125,60 @@ const GameInfoScreen = ({ navigation }) => {
             </View>
           ))}
           <View className="flex-row justify-between items-center w-full border-t">
-            <Text className="text-sm font-bold">AB</Text>
-            <Text className="text-sm font-bold">R</Text>
-            <Text className="text-sm font-bold">H</Text>
-            <Text className="text-sm font-bold">2B</Text>
-            <Text className="text-sm font-bold">3B</Text>
-            <Text className="text-sm font-bold">HR</Text>
-            <Text className="text-sm font-bold">AVG</Text>
-            <Text className="text-sm font-bold">OBP</Text>
-            <Text className="text-sm font-bold">OPS</Text>
-          </View>
-          <View className="flex-row justify-between items-center w-full">
-            <Text className="text-sm font-bold">
-              {currentGame.atBats.length}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.getR() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.getH() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.get2B() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.get3B() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.getHR() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.getAVG() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.getOBP() : 0}
-            </Text>
-            <Text className="text-sm font-bold">
-              {stats ? stats.getOPS() : 0}
-            </Text>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">AB</Text>
+              <Text className="text-sm font-bold">
+                {currentGame.atBats.length}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">R</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getR() : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">H</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getH() : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">2B</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.get2B() : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">3B</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.get3B() : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">HR</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getHR() : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">AVG</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getAVG().toFixed(3).substring(1) : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">OBP</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getOBP().toFixed(3).substring(1) : 0}
+              </Text>
+            </View>
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">OPS</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getOPS().toFixed(3) : 0}
+              </Text>
+            </View>
           </View>
         </View>
         <TouchableOpacity
