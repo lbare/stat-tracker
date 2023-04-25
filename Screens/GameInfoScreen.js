@@ -8,12 +8,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { UserContext } from "../services/UserContext";
 import { updateGameScore } from "../services/firebase";
+import { useFocusEffect } from "@react-navigation/native";
 
 const GameInfoScreen = ({ navigation }) => {
-  const { currentGame, userGames, setUserGames } = useContext(UserContext);
+  const { currentGame, setCurrentGame, userGames, setUserGames } =
+    useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
   const [atBats, setAtBats] = useState(null);
@@ -72,9 +74,20 @@ const GameInfoScreen = ({ navigation }) => {
     };
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
+
+      return () => {
+        clearFields();
+      };
+    }, [])
+  );
+
   const clearFields = () => {
     setHomeScore("");
     setAwayScore("");
+    setAtBats(null);
   };
 
   const handleScoreUpdate = async () => {
@@ -101,21 +114,7 @@ const GameInfoScreen = ({ navigation }) => {
   };
 
   function AtBatStack() {
-    if (atBats === null || atBats.length === 0) {
-      return (
-        <View className="flex-1 justify-center items-center">
-          <Text className="text-2xl font-bold">No At Bats Logged</Text>
-          <TouchableOpacity
-            className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"
-            onPress={() => navigation.navigate("Log AB")}
-          >
-            <Text className="text-2xl font-bold w-full text-center">+</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-
-    return (
+    return atBats && atBats.length > 0 ? (
       <SectionList
         className="w-full"
         sections={atBats}
@@ -158,6 +157,16 @@ const GameInfoScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
+    ) : (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-2xl font-bold">No At Bats Logged</Text>
+        <TouchableOpacity
+          className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"
+          onPress={() => navigation.navigate("Log AB")}
+        >
+          <Text className="text-2xl font-bold w-full text-center">+</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 
