@@ -97,17 +97,19 @@ export const addGame = async (game, id = null) => {
 
 export const addAtBat = async (atBat, gameId) => {
   try {
-    console.log("Adding at-bat...");
-    let result;
     const gameRef = doc(db, "games", gameId);
     const gameDoc = await getDoc(gameRef);
-    if (gameDoc.exists()) {
-      const currentNumAtBats = gameDoc.data().numAtBats || 0;
-      result = await updateDoc(gameRef, { numAtBats: currentNumAtBats + 1 });
-      setDoc(doc(collection(db, "games", gameId, "atBats")), atBat);
-      console.log("At-bat added successfully!");
-    }
 
+    let { atBats } = gameDoc.data();
+    let result;
+
+    if (!atBats) {
+      atBats = [];
+      atBats.push(atBat);
+    } else {
+      atBats.push(atBat);
+    }
+    result = await updateDoc(gameRef, { atBats: atBats });
     return result;
   } catch (error) {
     console.error(error);
@@ -155,7 +157,8 @@ export const addPitchingInning = async (gameId, newInning) => {
       };
     }
 
-    await updateDoc(gameRef, { pitching: { ...pitching } });
+    const result = await updateDoc(gameRef, { pitching: { ...pitching } });
+    return result;
   } catch (error) {
     console.error(error);
     throw error;
