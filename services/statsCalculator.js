@@ -57,9 +57,9 @@ export class StatsCalculator {
     this.ERA = 0.0;
     this.WHIP = 0.0;
     this.BAA = 0.0;
-    this.K9 = 0.0;
-    this.BB9 = 0.0;
-    this.H9 = 0.0;
+    this.K7 = 0.0;
+    this.BB7 = 0.0;
+    this.H7 = 0.0;
     this.KpBB = 0.0;
     this.BABIPA = 0.0;
 
@@ -68,18 +68,44 @@ export class StatsCalculator {
     this.A = 0;
     this.E = 0;
 
+    this.processData();
+  }
+
+  processData() {
     this.calculateBattingTotals();
-    pitching.length === 0
+    this.pitching.length === 0
       ? this.calculateSinglePitchingTotals()
-      : this.calculateAggregatePitchingTotals();
+      : this.calculateMultiplePitchingTotals();
+    this.calculateAggregateTotals();
+  }
+
+  calculateAggregateTotals() {
+    this.AVG = this.getAVG();
+    this.OBP = this.getOBP();
+    this.SLG = this.getSLG();
+    this.OPS = this.getOPS();
+    this.BABIP = this.getBABIP();
+    this.ISO = this.getISO();
+    this.BBpK = this.getBBperK();
+    this.BBper = this.getBBpercent();
+    this.Kper = this.getKpercent();
+
+    this.ERA = this.getERA();
+    this.WHIP = this.getWHIP();
+    this.BAA = this.getBAA();
+    this.K7 = this.getK7();
+    this.BB7 = this.getBB7();
+    this.H7 = this.getH7();
+    this.KpBB = this.getKperBB();
+    this.BABIPA = this.getBABIPA();
   }
 
   calculateBattingTotals() {
     const resultMap = {
-      "1B": { H: 1, AB: 1, TB: 1, PA: 1 },
-      "2B": { Do: 1, AB: 1, TB: 2, XBH: 1, PA: 1 },
-      "3B": { Tr: 1, AB: 1, TB: 3, XBH: 1, PA: 1 },
-      HR: { HR: 1, AB: 1, TB: 4, XBH: 1, PA: 1 },
+      "1B": { H: 1, Si: 1, AB: 1, TB: 1, PA: 1 },
+      "2B": { H: 1, Do: 1, AB: 1, TB: 2, XBH: 1, PA: 1 },
+      "3B": { H: 1, Tr: 1, AB: 1, TB: 3, XBH: 1, PA: 1 },
+      HR: { H: 1, HR: 1, AB: 1, TB: 4, XBH: 1, PA: 1 },
       BB: { BB: 1, PA: 1 },
       IBB: { IBB: 1, PA: 1 },
       SF: { PA: 1 },
@@ -134,7 +160,7 @@ export class StatsCalculator {
     this.L = this.pitching.lose ? 1 : 0;
   }
 
-  calculateAggregatePitchingTotals() {
+  calculateMultiplePitchingTotals() {
     this.pitching.forEach((appearance) => {
       this.IP += appearance.inningsPitched;
       this.BP +=
@@ -163,139 +189,233 @@ export class StatsCalculator {
     });
   }
 
-  calculateHits() {
-    return this.atBats.reduce((totalHits, atBat) => {
-      if (["1B", "2B", "3B", "HR"].includes(atBat.result)) {
-        return totalHits + 1;
-      } else {
-        return totalHits;
-      }
-    }, 0);
+  /************/
+  /* Hitting */
+  /************/
+
+  getH() {
+    return this.H;
   }
 
-  calculateNumAtBats() {
-    return this.atBats.reduce((totalAtBats, atBat) => {
-      if (
-        atBat.result !== "BB" ||
-        atBat.result !== "HBP" ||
-        atBat.result !== "SF" ||
-        atBat.result !== "SAC"
-      ) {
-        return totalAtBats + 1;
-      } else {
-        return totalAtBats;
-      }
-    }, 0);
+  get1B() {
+    return this.Si;
   }
 
-  calculateRuns() {
-    return this.atBats.reduce((totalRuns, atBat) => {
-      if (atBat.runScored) {
-        return totalRuns + 1;
-      } else {
-        return totalRuns;
-      }
-    }, 0);
+  get2B() {
+    return this.Do;
   }
 
-  calculateRBI() {
-    return this.atBats.reduce((totalRBI, atBat) => {
-      return totalRBI + atBat.RBI;
-    }, 0);
+  get3B() {
+    return this.Tr;
   }
 
-  calculateWalks() {
-    return this.atBats.reduce((totalWalks, atBat) => {
-      if (atBat.result === "BB") {
-        return totalWalks + 1;
-      } else {
-        return totalWalks;
-      }
-    }, 0);
+  getHR() {
+    return this.HR;
   }
 
-  calculateStolenBases() {
-    return this.atBats.reduce((totalSB, atBat) => {
-      return totalSB + atBat.stolenBases;
-    }, 0);
+  getXBH() {
+    return this.XBH;
   }
 
-  calculateCaughtStealing() {
-    return this.atBats.reduce((totalCS, atBat) => {
-      return totalCS + atBat.caughtStealing;
-    }, 0);
+  getTB() {
+    return this.TB;
+  }
+
+  getPA() {
+    return this.PA;
+  }
+
+  getAB() {
+    return this.AB;
+  }
+
+  getR() {
+    return this.R;
+  }
+
+  getRBI() {
+    return this.RBI;
+  }
+
+  getBB() {
+    return this.BB;
+  }
+
+  getIBB() {
+    return this.IBB;
+  }
+
+  getHBP() {
+    return this.HBP;
+  }
+
+  getK() {
+    return this.K;
+  }
+
+  getGIDP() {
+    return this.GIDP;
+  }
+
+  getSB() {
+    return this.SB;
+  }
+
+  getCS() {
+    return this.CS;
+  }
+
+  getSF() {
+    return this.SF;
+  }
+
+  getE() {
+    return this.E;
+  }
+
+  getSAC() {
+    return this.SAC;
   }
 
   getAVG() {
-    return this.atBats === 0 ? 0 : this.hits / this.atBats;
+    return this.AB === 0 ? 0 : this.H / this.AB;
   }
 
   getOBP() {
-    return this.atBats === 0 ? 0 : (this.hits + this.walks) / this.atBats;
+    return this.AB === 0 ? 0 : (this.H + this.BB) / this.AB;
   }
 
   getSLG() {
-    return this.atBats === 0
-      ? 0
-      : (this.hits + this.doubles + this.triples * 2 + this.homeRuns * 3) /
-          this.atBats;
+    return this.AB === 0 ? 0 : this.TB / this.AB;
   }
 
   getOPS() {
-    return this.atBats === 0
-      ? 0
-      : (this.hits +
-          this.doubles +
-          this.triples * 2 +
-          this.homeRuns * 3 +
-          this.walks) /
-          this.atBats;
-  }
-
-  getERA() {
-    return this.inningsPitched === 0
-      ? 0
-      : (this.earnedRuns * 9) / this.inningsPitched;
-  }
-
-  getWHIP() {
-    return this.inningsPitched === 0
-      ? 0
-      : (this.walks + this.hits) / this.inningsPitched;
-  }
-
-  getKPer7() {
-    return this.inningsPitched === 0
-      ? 0
-      : (this.strikeouts * 7) / this.inningsPitched;
-  }
-
-  getBBPer7() {
-    return this.inningsPitched === 0
-      ? 0
-      : (this.walks * 7) / this.inningsPitched;
-  }
-
-  getHPer7() {
-    return this.inningsPitched === 0
-      ? 0
-      : (this.hits * 7) / this.inningsPitched;
-  }
-
-  getKPerBB() {
-    return this.walks === 0 ? 0 : this.strikeouts / this.walks;
+    return this.OBP + this.SLG;
   }
 
   getBABIP() {
-    return this.atBats === 0
+    return this.AB === 0
       ? 0
-      : (this.hits - this.homeRuns) /
-          (this.atBats - this.strikeouts - this.homeRuns + this.sacFlies);
+      : (this.H - this.HR) / (this.AB - this.K - this.HR);
   }
 
   getISO() {
-    return this.atBats === 0
-      ? 0
-      : (this.doubles + this.triples * 2 + this.homeRuns * 3) / this.atBats;
+    return this.AB === 0 ? 0 : this.SLG - this.AVG;
+  }
+
+  getBBperK() {
+    return this.K === 0 ? 0 : this.BB / this.K;
+  }
+
+  getBBpercent() {
+    return this.PA === 0 ? 0 : this.BB / this.PA;
+  }
+
+  getKpercent() {
+    return this.PA === 0 ? 0 : this.K / this.PA;
+  }
+
+  /************/
+  /* Pitching */
+  /************/
+
+  getIP() {
+    return this.IP;
+  }
+
+  getBF() {
+    return this.BF;
+  }
+
+  getG() {
+    return this.G;
+  }
+
+  getGS() {
+    return this.GS;
+  }
+
+  getCG() {
+    return this.CG;
+  }
+
+  getQS() {
+    return this.QS;
+  }
+
+  getER() {
+    return this.ER;
+  }
+
+  getRA() {
+    return this.RA;
+  }
+
+  getBBA() {
+    return this.BBA;
+  }
+
+  getIBBA() {
+    return this.IBBA;
+  }
+
+  getHBPA() {
+    return this.HBPA;
+  }
+
+  getPK() {
+    return this.PK;
+  }
+
+  getEA() {
+    return this.EA;
+  }
+
+  getKA() {
+    return this.KA;
+  }
+
+  getHA() {
+    return this.HA;
+  }
+
+  getW() {
+    return this.W;
+  }
+
+  getL() {
+    return this.L;
+  }
+
+  getERA() {
+    return this.IP === 0 ? 0 : (this.ER * 9) / this.IP;
+  }
+
+  getWHIP() {
+    return this.IP === 0 ? 0 : (this.BBA + this.HA) / this.IP;
+  }
+
+  getBAA() {
+    return this.IP === 0 ? 0 : (this.HA * 7) / this.IP;
+  }
+
+  getK7() {
+    return this.IP === 0 ? 0 : (this.KA * 7) / this.IP;
+  }
+
+  getBB7() {
+    return this.IP === 0 ? 0 : (this.BBA * 7) / this.IP;
+  }
+
+  getH7() {
+    return this.IP === 0 ? 0 : (this.HA * 7) / this.IP;
+  }
+
+  getKperBB() {
+    return this.BBA === 0 ? 0 : this.KA / this.BBA;
+  }
+
+  getBABIPA() {
+    return this.IP === 0 ? 0 : (this.HA - this.HRA) / (this.IP - this.KA);
   }
 }
