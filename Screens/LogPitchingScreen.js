@@ -44,76 +44,41 @@ const LogPitchingScreen = ({ navigation }) => {
       walks: parseInt(walks),
       strikeouts: parseInt(strikeouts),
     };
-    if (pitchToggle) {
-      await addPitchingGame(currentGame.id, newGame)
-        .then(console.log("Pitching added successfully"))
-        .catch((error) => {
-          console.log("Error adding pitching", error);
-          throw error;
-        });
+
+    const addPitching = pitchToggle ? addPitchingGame : addPitchingInning;
+
+    try {
+      await addPitching(currentGame.id, newGame);
+      console.log("Pitching added successfully");
+
+      const newPitching = pitchToggle
+        ? newGame
+        : {
+            inningsPitched:
+              parseInt(innings) + parseInt(currentGame.pitching.inningsPitched),
+            earnedRuns:
+              parseInt(earnedRuns) + parseInt(currentGame.pitching.earnedRuns),
+            runs: parseInt(runs) + parseInt(currentGame.pitching.runs),
+            hits: parseInt(hits) + parseInt(currentGame.pitching.hits),
+            walks: parseInt(walks) + parseInt(currentGame.pitching.walks),
+            strikeouts:
+              parseInt(strikeouts) + parseInt(currentGame.pitching.strikeouts),
+          };
 
       setUserGames(
-        userGames.map((game) => {
-          if (game.id === currentGame.id) {
-            return {
-              ...game,
-              pitching: {
-                ...newGame,
-              },
-            };
-          } else {
-            return game;
-          }
-        })
-      );
-      setCurrentGame({
-        ...currentGame,
-        pitching: {
-          ...newGame,
-        },
-      });
-    } else {
-      const newInning = {
-        inningsPitched:
-          parseInt(innings) + parseInt(currentGame.pitching.inningsPitched),
-        earnedRuns:
-          parseInt(earnedRuns) + parseInt(currentGame.pitching.earnedRuns),
-        runs: parseInt(runs) + parseInt(currentGame.pitching.runs),
-        hits: parseInt(hits) + parseInt(currentGame.pitching.hits),
-        walks: parseInt(walks) + parseInt(currentGame.pitching.walks),
-        strikeouts:
-          parseInt(strikeouts) + parseInt(currentGame.pitching.strikeouts),
-      };
-
-      await addPitchingInning(currentGame.id, newGame)
-        .then(console.log("Pitching added successfully"))
-        .catch((error) => {
-          console.log("Error adding pitching", error);
-          throw error;
-        });
-
-      setUserGames(
-        userGames.map((game) => {
-          if (game.id === currentGame.id) {
-            return {
-              ...game,
-              pitching: {
-                ...newInning,
-              },
-            };
-          } else {
-            return game;
-          }
-        })
+        userGames.map((game) =>
+          game.id === currentGame.id
+            ? { ...game, pitching: { ...newPitching } }
+            : game
+        )
       );
 
-      setCurrentGame({
-        ...currentGame,
-        pitching: {
-          ...newInning,
-        },
-      });
+      setCurrentGame({ ...currentGame, pitching: { ...newPitching } });
+    } catch (error) {
+      console.log("Error adding pitching", error);
+      throw error;
     }
+
     clearFields();
     navigation.navigate("Game Info");
   };
