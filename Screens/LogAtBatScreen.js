@@ -92,7 +92,7 @@ const LogAtBatScreen = ({ navigation }) => {
 
   const clearFields = () => {
     setResult(null);
-    setPitches({ balls: 0, strikes: 0 });
+    setPitches(0);
     setHitLocation({ x: 0, y: 0 });
     setTrajectory(null);
     setHardHit(null);
@@ -120,6 +120,7 @@ const LogAtBatScreen = ({ navigation }) => {
           userGames.map((g) => {
             if (g.id === game.id) {
               g.numAtBats = numAtBat;
+              g.atBats.push(newAtBat);
               return g;
             } else return g;
           })
