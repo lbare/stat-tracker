@@ -14,8 +14,8 @@ const Pitches = ({ pitches, setPitches }) => {
       <View className="flex-1 flex-row justify-evenly items-center">
         <View className="w-1/3">
           <Picker
-            selectedValue={pitches.strikes}
-            onValueChange={(n) => setPitches(pitches)}
+            selectedValue={pitches}
+            onValueChange={(n) => setPitches(n)}
             itemStyle={{ fontSize: 48, fontWeight: "bold" }}
           >
             {numbers.map((num) => (
