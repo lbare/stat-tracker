@@ -22,7 +22,9 @@ const Settings = ({ navigation }) => {
   } = useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
-  const [newData, setNewData] = useState(null);
+  const [gameToggle, setGameToggle] = useState(false);
+  const [monarchsGames, setMonarchsGames] = useState(null);
+  const [allGames, setAllGames] = useState(null);
 
   const testData = Array(20)
     .fill("")
@@ -34,10 +36,29 @@ const Settings = ({ navigation }) => {
 
       const sortedGames = userGames.sort((a, b) => a.date - b.date);
 
-      setNewData([
-        {
-          title: "Games",
-          data: sortedGames.map((item) => ({
+      const allGames = {
+        title: "All Games",
+        data: sortedGames.map((item) => ({
+          date: item.date,
+          id: item.id,
+          homeTeam: item.homeTeam,
+          awayTeam: item.awayTeam,
+          didWin: item.didWin !== null ? item.didWin : "N/A",
+          homeScore: item.homeScore !== null ? item.homeScore : null,
+          awayScore: item.awayScore !== null ? item.awayScore : null,
+          numAtBats: item.numAtBats !== null ? item.numAtBats : null,
+          atBats: item.atBats !== null ? item.atBats : null,
+          pitching: item.pitching !== null ? item.pitching : null,
+        })),
+      };
+
+      const monarchsGames = {
+        title: "Monarchs Games",
+        data: sortedGames
+          .filter((item) => {
+            return item.homeTeam === "Monarchs" || item.awayTeam === "Monarchs";
+          })
+          .map((item) => ({
             date: item.date,
             id: item.id,
             homeTeam: item.homeTeam,
@@ -47,9 +68,13 @@ const Settings = ({ navigation }) => {
             awayScore: item.awayScore !== null ? item.awayScore : null,
             numAtBats: item.numAtBats !== null ? item.numAtBats : null,
             atBats: item.atBats !== null ? item.atBats : null,
+            pitching: item.pitching !== null ? item.pitching : null,
           })),
-        },
-      ]);
+      };
+
+      setAllGames([allGames]);
+      setMonarchsGames([monarchsGames]);
+
       setLoading(false);
     }
   }, [userGames]);
@@ -90,16 +115,37 @@ const Settings = ({ navigation }) => {
 
   return (
     <View className="flex-1 w-full justify-center items-center pb-20">
+      <View className="flex-row justify-between items-center w-full border-y-2">
+        <TouchableOpacity
+          onPress={() => setGameToggle(false)}
+          className={`p-4 w-1/2 items-center ${
+            !gameToggle ? "bg-green-400" : ""
+          }`}
+        >
+          <Text className={`text-xl ${!gameToggle ? "font-bold" : ""}`}>
+            All
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setGameToggle(true)}
+          className={`p-4 w-1/2 items-center ${
+            gameToggle ? "bg-green-400" : ""
+          }`}
+        >
+          <Text className={`text-xl ${gameToggle ? "font-bold" : ""}`}>
+            Monarchs
+          </Text>
+        </TouchableOpacity>
+      </View>
       <SectionList
         className="w-full"
-        sections={newData}
+        sections={gameToggle ? monarchsGames : allGames}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
               setCurrentGame(item);
               navigation.navigate("Game Info");
-              // handleDeleteGame(item.id);
             }}
             className={`border-b border-gray-500 p-4 flex-row justify-between ${
               item.awayTeam === "Monarchs" || item.homeTeam === "Monarchs"
