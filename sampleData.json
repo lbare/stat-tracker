@@ -1,67 +1,114 @@
 {
-  "user": {
-    "season": {
+  "seasons": {
+    "2021": {
+      "year": 2021,
+      "teamName": "Athletics",
+      "wins": 0,
+      "losses": 11,
+      "place": 7,
+      "playoff": 1,
+      "inProgress": false
+    },
+    "2022": {
+      "year": 2022,
+      "teamName": "Monarchs",
+      "wins": 8,
+      "losses": 8,
+      "place": 4,
+      "playoff": 2,
+      "inProgress": false
+    },
+    "2023": {
       "year": 2023,
       "teamName": "Monarchs",
-      "wins": 4,
-      "losses": 1,
-      "games": {
-        "atHome": false,
-        "opponent": "Red Sox",
-        "date": "2023-04-08 18:00:00",
-        "playoff": false,
-        "stats": {
-          "batting": [
-            {
-              "pitches_balls": 3,
-              "pitches_stikes": 2,
-              "on-base": true,
-              "ruling": "e8",
-              "rbis": 0,
-              "hit_hard": false,
-              "scored": false
-            },
-            {
-              "pitches_balls": 4,
-              "pitches_stikes": 1,
-              "on-base": true,
-              "ruling": "bb",
-              "rbis": 0,
-              "hit_hard": null,
-              "scored": false
-            },
-            {
-              "pitches_balls": 1,
-              "pitches_stikes": 1,
-              "on-base": true,
-              "ruling": "1b",
-              "rbis": 1,
-              "hit_hard": true,
-              "scored": false
-            },
-            {
-              "pitches_balls": 0,
-              "pitches_stikes": 1,
-              "on-base": true,
-              "ruling": "2b",
-              "rbis": 1,
-              "hit_hard": true,
-              "scored": true
-            }
-          ],
-          "pitching": {
-            "innings": 4,
-            "earned_runs": 1,
-            "strikeouts": 4
-          },
-          "fielding": [
-            {
-              "position": 8,
-              "innings": 3
-            }
-          ]
-        }
-      }
+      "wins": 12,
+      "losses": 4,
+      "inProgress": true
     }
+  },
+
+  "games": {
+    "gid1": {
+      "played": true,
+      "atHome": false,
+      "opponent": "Red Sox",
+      "date": "2023-04-08 18:00:00",
+      "win": true,
+      "runs": 4,
+      "runs_allowed": 1,
+      "playoff": false
+    },
+    "gid2": {
+      "played": true,
+      "atHome": false,
+      "opponent": "Red Sox",
+      "date": "2023-04-08 18:00:00",
+      "win": true,
+      "runs": 4,
+      "runs_allowed": 1,
+      "playoff": false
+    },
+    "gid3": {
+      "played": true,
+      "atHome": false,
+      "opponent": "Red Sox",
+      "date": "2023-04-08 18:00:00",
+      "win": true,
+      "runs": 4,
+      "runs_allowed": 1,
+      "playoff": false
+    }
+  },
+
+  "atBats": {
+    "batting": [
+      {
+        "pitches_balls": 3,
+        "pitches_stikes": 2,
+        "on-base": true,
+        "ruling": "e8",
+        "rbis": 0,
+        "hit_hard": false,
+        "scored": false
+      },
+      {
+        "pitches_balls": 4,
+        "pitches_stikes": 1,
+        "on-base": true,
+        "ruling": "bb",
+        "rbis": 0,
+        "hit_hard": null,
+        "scored": false
+      },
+      {
+        "pitches_balls": 1,
+        "pitches_stikes": 1,
+        "on-base": true,
+        "ruling": "1b",
+        "rbis": 1,
+        "hit_hard": true,
+        "scored": false
+      },
+      {
+        "pitches_balls": 0,
+        "pitches_stikes": 1,
+        "on-base": true,
+        "ruling": "2b",
+        "rbis": 1,
+        "hit_hard": true,
+        "scored": true
+      }
+    ],
+    "pitching": {
+      "innings": 4,
+      "earned_runs": 1,
+      "strikeouts": 4
+    },
+    "fielding": [
+      {
+        "position": 8,
+        "innings": 3
+      }
+    ]
   }
 }
