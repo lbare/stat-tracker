@@ -11,7 +11,7 @@ import { deleteGame } from "../services/firebase";
 import { Alert } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 
-const Settings = ({ navigation }) => {
+const GamesScreen = ({ navigation }) => {
   const {
     userGames,
     setUserGames,
@@ -25,6 +25,21 @@ const Settings = ({ navigation }) => {
   const [gameToggle, setGameToggle] = useState(false);
   const [monarchsGames, setMonarchsGames] = useState(null);
   const [allGames, setAllGames] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState({
+    Brewers: false,
+    Giants: false,
+    Monarchs: false,
+    Pirates: false,
+    Reds: false,
+    RedSox: false,
+    Rockies: false,
+    Royals: false,
+    WhiteSox: false,
+  });
+  const [selectedYear, setSelectedYear] = useState(
+    new Date().getFullYear().toString()
+  );
+  const [displayGames, setDisplayGames] = useState(null);
 
   const testData = Array(20)
     .fill("")
@@ -77,6 +92,36 @@ const Settings = ({ navigation }) => {
     }
   }, [userGames]);
 
+  useEffect(() => {
+    if (userGames !== null && userGames.length > 0) {
+      const games = getGamesByYear(selectedYear);
+      setAllGames([games]);
+    }
+  }, [selectedYear]);
+
+  function getGamesByYear(selectedYear) {
+    const sortedGames = userGames.sort((a, b) => a.date - b.date);
+
+    return {
+      title: selectedYear + " Games",
+      data: sortedGames
+        .filter((item) => {
+          return item.date.getFullYear().toString() === selectedYear.toString();
+        })
+        .map((item) => ({
+          date: item.date,
+          id: item.id,
+          homeTeam: item.homeTeam,
+          awayTeam: item.awayTeam,
+          didWin: item.didWin !== null ? item.didWin : "N/A",
+          homeScore: item.homeScore !== null ? item.homeScore : null,
+          awayScore: item.awayScore !== null ? item.awayScore : null,
+          atBats: item.atBats !== null ? item.atBats : null,
+          pitching: item.pitching !== null ? item.pitching : null,
+        })),
+    };
+  }
+
   const handleDeleteGame = async (id) => {
     try {
       Alert.alert(
@@ -115,23 +160,151 @@ const Settings = ({ navigation }) => {
     <View className="flex-1 w-full justify-center items-center pb-20">
       <View className="flex-row justify-between items-center w-full border-y-2">
         <TouchableOpacity
-          onPress={() => setGameToggle(false)}
-          className={`p-4 w-1/2 items-center ${
-            !gameToggle ? "bg-green-400" : ""
+          onPress={() => setSelectedYear("2023")}
+          className={`p-4 w-1/3 items-center ${
+            selectedYear === "2023" ? "bg-green-400" : ""
           }`}
         >
-          <Text className={`text-xl ${!gameToggle ? "font-bold" : ""}`}>
-            All
+          <Text
+            className={`text-xl ${selectedYear === "2023" ? "font-bold" : ""}`}
+          >
+            2023
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setGameToggle(true)}
-          className={`p-4 w-1/2 items-center ${
-            gameToggle ? "bg-green-400" : ""
+          onPress={() => setSelectedYear("2022")}
+          className={`p-4 w-1/3 items-center ${
+            selectedYear === "2022" ? "bg-green-400" : ""
           }`}
         >
-          <Text className={`text-xl ${gameToggle ? "font-bold" : ""}`}>
+          <Text
+            className={`text-xl ${selectedYear === "2022" ? "font-bold" : ""}`}
+          >
+            2022
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedYear("2021")}
+          className={`p-4 w-1/3 items-center ${
+            selectedYear === "2021" ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xl ${selectedYear === "2021" ? "font-bold" : ""}`}
+          >
+            2021
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View className="flex-row justify-between items-center w-full">
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(selectedTeam["Brewers"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Brewers"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Brewers"] ? "font-bold" : ""}`}
+          >
+            Brewers
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["Giants"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Giants"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Giants"] ? "font-bold" : ""}`}
+          >
+            Giants
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["Monarchs"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Monarchs"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Monarchs"] ? "font-bold" : ""}`}
+          >
             Monarchs
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["Pirates"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Pirates"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Pirates"] ? "font-bold" : ""}`}
+          >
+            Pirates
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["Reds"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Reds"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Reds"] ? "font-bold" : ""}`}
+          >
+            Reds
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View className="flex-row justify-between items-center w-full border-y-2">
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["RedSox"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["RedSox"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["RedSox"] ? "font-bold" : ""}`}
+          >
+            Red Sox
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["Rockies"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Rockies"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Rockies"] ? "font-bold" : ""}`}
+          >
+            Rockies
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["Royals"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["Royals"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["Royals"] ? "font-bold" : ""}`}
+          >
+            Royals
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedTeam(!selectedTeam["WhiteSox"])}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["WhiteSox"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-xs ${selectedTeam["WhiteSox"] ? "font-bold" : ""}`}
+          >
+            White Sox
           </Text>
         </TouchableOpacity>
       </View>
@@ -145,16 +318,13 @@ const Settings = ({ navigation }) => {
               setCurrentGame(item);
               navigation.navigate("Game Info");
             }}
-            className={`border-b border-gray-500 p-4 flex-row justify-between w-screen ${
-              item.awayTeam === "Monarchs" || item.homeTeam === "Monarchs"
-                ? "bg-green-400"
-                : ""
-            }`}
+            className="border-b border-gray-500 p-4 flex-row justify-between w-screen"
           >
             <View className="flex-col justify-between items-center self-start">
               <Text className="text-lg">
                 {item.date.toLocaleString("en-US", {
                   weekday: "short",
+                  selectedYear: "2-digit",
                   month: "numeric",
                   day: "2-digit",
                 })}
@@ -166,22 +336,20 @@ const Settings = ({ navigation }) => {
                 })}
               </Text>
             </View>
-            <View className="flex-row justify-between items-center w-full pl-10 pr-24">
-              <Text
-                className={`text-xl text-left ${
-                  item.awayTeam === "Monarchs" ? "font-bold" : ""
-                }`}
-              >
-                {item.awayTeam}
-              </Text>
+            <View className="flex-row justify-evenly items-center w-full pl-10 pr-24">
+              <View className="flex-col justify-center items-center">
+                <Text className="text-xl text-left">{item.awayTeam}</Text>
+                <Text className="text-xl text-left">
+                  {item.awayScore !== null ? item.awayScore : ""}
+                </Text>
+              </View>
               <Text className="text-xl text-center">@</Text>
-              <Text
-                className={`text-xl text-right ${
-                  item.homeTeam === "Monarchs" ? "font-bold" : ""
-                }`}
-              >
-                {item.homeTeam}
-              </Text>
+              <View className="flex-col justify-center items-center">
+                <Text className="text-xl text-right">{item.homeTeam}</Text>
+                <Text className="text-xl text-right">
+                  {item.homeScore !== null ? item.homeScore : ""}
+                </Text>
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -220,4 +388,4 @@ const Settings = ({ navigation }) => {
   );
 };
 
-export default Settings;
+export default GamesScreen;
