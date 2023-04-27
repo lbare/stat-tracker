@@ -27,10 +27,10 @@ const GamesScreen = ({ navigation }) => {
   const [monarchsGames, setMonarchsGames] = useState(null);
   const [allGames, setAllGames] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState({
-    All: true,
+    All: false,
     Brewers: false,
     Giants: false,
-    Monarchs: false,
+    Monarchs: true,
     Pirates: false,
     Reds: false,
     "Red Sox": false,
