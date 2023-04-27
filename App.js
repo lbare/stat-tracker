@@ -12,11 +12,12 @@ import {
 import Login from "./Screens/LoginScreen";
 import Register from "./Screens/RegisterScreen";
 import LogAtBatScreen from "./Screens/LogAtBatScreen";
+import LogPitchingScreen from "./Screens/LogPitchingScreen";
+import LogFieldingScreen from "./Screens/LogFieldingScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
 import GamesScreen from "./Screens/GamesScreen";
 import GameInfoScreen from "./Screens/GameInfoScreen";
-import LogPitchingScreen from "./Screens/LogPitchingScreen";
 import {
   onAuthStateChanged,
   auth,
@@ -123,6 +124,16 @@ function AppStack() {
             ),
           }}
         />
+        <BottomBar.Screen
+          name="Log Fielding"
+          component={LogFieldingScreen}
+          options={{
+            tabBarIcon: () => (
+              <CalendarPlus size={0} color="white" weight="fill" />
+            ),
+          }}
+        />
+
         <BottomBar.Screen
           name="Add Game"
           component={AddGameScreen}
