@@ -5,6 +5,7 @@ import {
   SectionList,
   TouchableOpacity,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { UserContext } from "../services/UserContext";
 import { deleteGame } from "../services/firebase";
@@ -26,20 +27,20 @@ const GamesScreen = ({ navigation }) => {
   const [monarchsGames, setMonarchsGames] = useState(null);
   const [allGames, setAllGames] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState({
+    All: true,
     Brewers: false,
     Giants: false,
     Monarchs: false,
     Pirates: false,
     Reds: false,
-    RedSox: false,
+    "Red Sox": false,
     Rockies: false,
     Royals: false,
-    WhiteSox: false,
+    "White Sox": false,
   });
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear().toString()
   );
-  const [displayGames, setDisplayGames] = useState(null);
 
   const testData = Array(20)
     .fill("")
@@ -65,28 +66,7 @@ const GamesScreen = ({ navigation }) => {
           pitching: item.pitching !== null ? item.pitching : null,
         })),
       };
-
-      const monarchsGames = {
-        title: "Monarchs Games",
-        data: sortedGames
-          .filter((item) => {
-            return item.homeTeam === "Monarchs" || item.awayTeam === "Monarchs";
-          })
-          .map((item) => ({
-            date: item.date,
-            id: item.id,
-            homeTeam: item.homeTeam,
-            awayTeam: item.awayTeam,
-            didWin: item.didWin !== null ? item.didWin : "N/A",
-            homeScore: item.homeScore !== null ? item.homeScore : null,
-            awayScore: item.awayScore !== null ? item.awayScore : null,
-            atBats: item.atBats !== null ? item.atBats : null,
-            pitching: item.pitching !== null ? item.pitching : null,
-          })),
-      };
-
       setAllGames([allGames]);
-      setMonarchsGames([monarchsGames]);
 
       setLoading(false);
     }
@@ -94,31 +74,74 @@ const GamesScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (userGames !== null && userGames.length > 0) {
-      const games = getGamesByYear(selectedYear);
-      setAllGames([games]);
-    }
-  }, [selectedYear]);
+      const selectedTeamValue = Object.entries(selectedTeam).find(
+        ([team, value]) => value === true
+      );
 
-  function getGamesByYear(selectedYear) {
+      if (selectedTeamValue) {
+        const selectedTeamName = selectedTeamValue[0]; // Get the team name
+
+        const games = getFilteredGames(selectedYear, selectedTeamName);
+        setAllGames([games]);
+      }
+    }
+  }, [selectedYear, selectedTeam, userGames]);
+
+  const handleButtonPress = (team) => {
+    setSelectedTeam((prevSelectedTeam) => {
+      const updatedSelectedTeam = { ...prevSelectedTeam };
+
+      // If the current team is already pressed, unpress it
+      if (updatedSelectedTeam[team]) {
+        updatedSelectedTeam[team] = false;
+        updatedSelectedTeam["All"] = true;
+      } else {
+        // Press the current team
+        updatedSelectedTeam[team] = true;
+
+        // Unpress all other teams
+        Object.keys(updatedSelectedTeam).forEach((key) => {
+          if (key !== team && (key !== "All" || updatedSelectedTeam[key])) {
+            updatedSelectedTeam[key] = false;
+          }
+        });
+      }
+
+      return updatedSelectedTeam;
+    });
+  };
+
+  function getFilteredGames(selectedYear, team) {
     const sortedGames = userGames.sort((a, b) => a.date - b.date);
 
+    let filteredGames = sortedGames;
+
+    if (selectedYear) {
+      filteredGames = filteredGames.filter((item) => {
+        return item.date.getFullYear().toString() === selectedYear.toString();
+      });
+    }
+
+    if (team && team !== "All") {
+      filteredGames = filteredGames.filter((item) => {
+        return item.homeTeam === team || item.awayTeam === team;
+      });
+    }
+
     return {
-      title: selectedYear + " Games",
-      data: sortedGames
-        .filter((item) => {
-          return item.date.getFullYear().toString() === selectedYear.toString();
-        })
-        .map((item) => ({
-          date: item.date,
-          id: item.id,
-          homeTeam: item.homeTeam,
-          awayTeam: item.awayTeam,
-          didWin: item.didWin !== null ? item.didWin : "N/A",
-          homeScore: item.homeScore !== null ? item.homeScore : null,
-          awayScore: item.awayScore !== null ? item.awayScore : null,
-          atBats: item.atBats !== null ? item.atBats : null,
-          pitching: item.pitching !== null ? item.pitching : null,
-        })),
+      title:
+        (selectedYear ? selectedYear + " " : "") + (team ? team + " " : ""),
+      data: filteredGames.map((item) => ({
+        date: item.date,
+        id: item.id,
+        homeTeam: item.homeTeam,
+        awayTeam: item.awayTeam,
+        didWin: item.didWin !== null ? item.didWin : "N/A",
+        homeScore: item.homeScore !== null ? item.homeScore : null,
+        awayScore: item.awayScore !== null ? item.awayScore : null,
+        atBats: item.atBats !== null ? item.atBats : null,
+        pitching: item.pitching !== null ? item.pitching : null,
+      })),
     };
   }
 
@@ -159,7 +182,7 @@ const GamesScreen = ({ navigation }) => {
   return (
     <View className="flex-1 w-full justify-center items-center pb-20">
       <View className="flex-row justify-between items-center w-full border-y-2">
-        <TouchableOpacity
+        <Pressable
           onPress={() => setSelectedYear("2023")}
           className={`p-4 w-1/3 items-center ${
             selectedYear === "2023" ? "bg-green-400" : ""
@@ -170,8 +193,8 @@ const GamesScreen = ({ navigation }) => {
           >
             2023
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           onPress={() => setSelectedYear("2022")}
           className={`p-4 w-1/3 items-center ${
             selectedYear === "2022" ? "bg-green-400" : ""
@@ -182,8 +205,8 @@ const GamesScreen = ({ navigation }) => {
           >
             2022
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           onPress={() => setSelectedYear("2021")}
           className={`p-4 w-1/3 items-center ${
             selectedYear === "2021" ? "bg-green-400" : ""
@@ -194,11 +217,11 @@ const GamesScreen = ({ navigation }) => {
           >
             2021
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View className="flex-row justify-between items-center w-full">
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(selectedTeam["Brewers"])}
+        <Pressable
+          onPress={() => handleButtonPress("Brewers")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Brewers"] ? "bg-green-400" : ""
           }`}
@@ -208,9 +231,9 @@ const GamesScreen = ({ navigation }) => {
           >
             Brewers
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["Giants"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("Giants")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Giants"] ? "bg-green-400" : ""
           }`}
@@ -220,9 +243,9 @@ const GamesScreen = ({ navigation }) => {
           >
             Giants
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["Monarchs"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("Monarchs")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Monarchs"] ? "bg-green-400" : ""
           }`}
@@ -232,9 +255,9 @@ const GamesScreen = ({ navigation }) => {
           >
             Monarchs
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["Pirates"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("Pirates")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Pirates"] ? "bg-green-400" : ""
           }`}
@@ -244,9 +267,9 @@ const GamesScreen = ({ navigation }) => {
           >
             Pirates
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["Reds"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("Reds")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Reds"] ? "bg-green-400" : ""
           }`}
@@ -256,23 +279,23 @@ const GamesScreen = ({ navigation }) => {
           >
             Reds
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View className="flex-row justify-between items-center w-full border-y-2">
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["RedSox"])}
+        <Pressable
+          onPress={() => handleButtonPress("Red Sox")}
           className={`py-4 w-1/5 items-center ${
-            selectedTeam["RedSox"] ? "bg-green-400" : ""
+            selectedTeam["Red Sox"] ? "bg-green-400" : ""
           }`}
         >
           <Text
-            className={`text-xs ${selectedTeam["RedSox"] ? "font-bold" : ""}`}
+            className={`text-xs ${selectedTeam["Red Sox"] ? "font-bold" : ""}`}
           >
             Red Sox
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["Rockies"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("Rockies")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Rockies"] ? "bg-green-400" : ""
           }`}
@@ -282,9 +305,9 @@ const GamesScreen = ({ navigation }) => {
           >
             Rockies
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["Royals"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("Royals")}
           className={`py-4 w-1/5 items-center ${
             selectedTeam["Royals"] ? "bg-green-400" : ""
           }`}
@@ -294,26 +317,38 @@ const GamesScreen = ({ navigation }) => {
           >
             Royals
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam(!selectedTeam["WhiteSox"])}
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("White Sox")}
           className={`py-4 w-1/5 items-center ${
-            selectedTeam["WhiteSox"] ? "bg-green-400" : ""
+            selectedTeam["White Sox"] ? "bg-green-400" : ""
           }`}
         >
           <Text
-            className={`text-xs ${selectedTeam["WhiteSox"] ? "font-bold" : ""}`}
+            className={`text-xs ${
+              selectedTeam["White Sox"] ? "font-bold" : ""
+            }`}
           >
             White Sox
           </Text>
-        </TouchableOpacity>
+        </Pressable>
+        <Pressable
+          onPress={() => handleButtonPress("All")}
+          className={`py-4 w-1/5 items-center ${
+            selectedTeam["All"] ? "bg-green-400" : ""
+          }`}
+        >
+          <Text className={`text-xs ${selectedTeam["All"] ? "font-bold" : ""}`}>
+            All
+          </Text>
+        </Pressable>
       </View>
       <SectionList
         className="w-full"
         sections={gameToggle ? monarchsGames : allGames}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               setCurrentGame(item);
               navigation.navigate("Game Info");
@@ -351,7 +386,7 @@ const GamesScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         )}
         renderSectionHeader={({ section: { title } }) => (
           <View className="border-b border-gray-500 pl-4 pt-8 bg-gray-100">
