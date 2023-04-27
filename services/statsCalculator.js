@@ -18,6 +18,8 @@ export class StatsCalculator {
     this.IBB = 0;
     this.HBP = 0;
     this.K = 0;
+    this.KL = 0;
+    this.KS = 0;
     this.GIDP = 0;
     this.SB = 0;
     this.CS = 0;
@@ -111,7 +113,8 @@ export class StatsCalculator {
       SF: { PA: 1 },
       SAC: { PA: 1 },
       HBP: { HBP: 1, PA: 1 },
-      K: { K: 1, AB: 1, PA: 1 },
+      KS: { K: 1, KS: 1, AB: 1, PA: 1 },
+      KL: { K: 1, KL: 1, AB: 1, PA: 1 },
       GIDP: { GIDP: 1, AB: 1, PA: 1 },
       E: { E: 1, AB: 1, PA: 1 },
     };
