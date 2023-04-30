@@ -8,11 +8,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import React from "react";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { UserContext } from "../services/UserContext";
 import { updateGameScore } from "../services/firebase";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatsCalculator } from "../services/StatsCalculator";
+import { Check } from "phosphor-react-native";
 
 const GameInfoScreen = ({ navigation }) => {
   const { currentGame, setCurrentGame, userGames, setUserGames } =
@@ -45,21 +47,6 @@ const GameInfoScreen = ({ navigation }) => {
     setLoading(false);
   }, [currentGame]);
 
-  useFocusEffect(
-    useCallback(() => {
-      // Do something when the screen is focused
-
-      return () => {
-        clearFields();
-      };
-    }, [])
-  );
-
-  const clearFields = () => {
-    setHomeScore("");
-    setAwayScore("");
-  };
-
   const handleScoreUpdate = async () => {
     if (homeScore !== "" && awayScore !== "") {
       const homeScoreInt = parseInt(homeScore);
@@ -90,6 +77,7 @@ const GameInfoScreen = ({ navigation }) => {
             }
           })
         );
+        Keyboard.dismiss();
       }
     }
   };
@@ -189,13 +177,13 @@ const GameInfoScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     ) : (
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-2xl font-bold">No At Bats Logged</Text>
+      <View className="justify-start items-center mt-10 border">
+        <Text className="text-2xl font-bold pb-4">No At Bats</Text>
         <TouchableOpacity
-          className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"
+          className="flex-row justify-center items-center self-center border-2 rounded-full w-1/3 py-2"
           onPress={() => navigation.navigate("Log AB")}
         >
-          <Text className="text-2xl font-bold w-full text-center">+</Text>
+          <Text className="text-4xl w-full text-center">+</Text>
         </TouchableOpacity>
       </View>
     );
@@ -243,18 +231,84 @@ const GameInfoScreen = ({ navigation }) => {
         </View>
       </View>
     ) : (
-      <View className="flex-1 justify-center items-center">
-        <View className="flex-row justify-center items-center w-full">
-          <Text className="text-2xl font-bold">No Pitching</Text>
+      <View className="justify-start items-center border">
+        <Text className="text-2xl font-bold pb-4">No Pitching</Text>
+        <TouchableOpacity
+          className="flex-row justify-center items-center self-center border-2 rounded-full w-1/3 py-2"
+          onPress={() => navigation.navigate("Log Pitching")}
+        >
+          <Text className="text-4xl w-full text-center">+</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  function FieldingStack() {
+    return currentGame.fielding ? (
+      <View className="flex-1 justify-start items-start border-b border-gray-500 px-2">
+        <View className="flex-row justify-evenly items-start w-full">
+          <Text className="text-2xl font-bold w-full">Fielding</Text>
+        </View>
+        <View className="flex-row w-1/3 border-b justify-between px-5">
+          <Text className="text-sm font-bold pr-5">POS</Text>
+          <Text className="text-sm font-bold">INN</Text>
+        </View>
+        <View className="flex-row w-full justify-between items-between">
+          <View className="flex-col w-1/3">
+            {currentGame.fielding &&
+              Object.entries(currentGame.fielding).map(([position, value]) =>
+                position === "putouts" ||
+                position === "assists" ||
+                position === "errors" ? (
+                  <React.Fragment key={position}></React.Fragment>
+                ) : (
+                  <View
+                    className="flex-row w-full justify-between px-5"
+                    key={position}
+                  >
+                    <Text className="text-sm">{position}</Text>
+                    <Text className="text-sm">{value}</Text>
+                  </View>
+                )
+              )}
+          </View>
+          <View className="flex-row w-1/3 justify-center items-center self-center bottom-4">
+            <View className="flex-col w-1/2 justify-between">
+              <Text className="text-sm font-bold pr-5">PO:</Text>
+              <Text className="text-sm font-bold">A:</Text>
+              <Text className="text-sm font-bold">E:</Text>
+            </View>
+            <View className="flex-col w-full justify-between px-5">
+              <Text className="text-sm font-bold pr-5">
+                {currentGame.fielding.putouts}
+              </Text>
+              <Text className="text-sm font-bold">
+                {currentGame.fielding.assists}
+              </Text>
+              <Text className="text-sm font-bold">
+                {currentGame.fielding.errors}
+              </Text>
+            </View>
+          </View>
         </View>
         <View className="flex-row justify-evenly items-center w-full">
           <TouchableOpacity
             className="border-2 rounded-xl w-1/3 py-2"
-            onPress={() => navigation.navigate("Log Pitching")}
+            onPress={() => navigation.navigate("Log Fielding")}
           >
             <Text className="text-lg font-bold w-full text-center">+</Text>
           </TouchableOpacity>
         </View>
+      </View>
+    ) : (
+      <View className="justify-start items-center border">
+        <Text className="text-2xl font-bold pb-4">No Fielding</Text>
+        <TouchableOpacity
+          className="flex-row justify-center items-center self-center border-2 rounded-full w-1/3 py-2"
+          onPress={() => navigation.navigate("Log Fielding")}
+        >
+          <Text className="text-4xl w-full text-center">+</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -269,7 +323,7 @@ const GameInfoScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View className="flex-1">
+      <View className="flex-1 justify-start items-center">
         <Text className="font-extrabold text-4xl pt-10">
           {currentGame.awayTeam} vs. {currentGame.homeTeam}
         </Text>
@@ -281,44 +335,42 @@ const GameInfoScreen = ({ navigation }) => {
             minute: "numeric",
           })}
         </Text>
-        <View className="flex-row justify-evenly items-center w-full">
-          <Text className="text-2xl font-bold">{currentGame.homeTeam}</Text>
-          <Text className="text-2xl font-bold">{currentGame.awayTeam}</Text>
-        </View>
-
-        <View className="flex-row justify-evenly items-center w-full">
-          <TextInput
-            className="flex-row justify-center items-center w-1/3 border-2 rounded-xl p-2 text-center font-bold"
-            value={homeScore}
-            onChangeText={(text) => setHomeScore(text)}
-            placeholder="-"
-            inputMode="numeric"
-          />
-          <TextInput
-            className="flex-row justify-center items-center w-1/3 border-2 rounded-xl p-2 text-center font-bold"
-            value={awayScore}
-            onChangeText={(text) => setAwayScore(text)}
-            placeholder="-"
-            inputMode="numeric"
-          />
-        </View>
-        <View className="flex-row justify-evenly items-center w-full pt-4">
+        <View className="flex-row justify-center items-center w-full">
+          <View className="flex-col justify-center items-center w-1/3">
+            <Text className="text-2xl font-bold">{currentGame.homeTeam}</Text>
+            <TextInput
+              className="flex-row text-3xl self-center justify-center items-center w-1/2 border-2 rounded-xl px-2 text-center font-bold h-10"
+              value={homeScore}
+              onChangeText={(text) => setHomeScore(text)}
+              placeholder="-"
+              inputMode="numeric"
+            />
+          </View>
+          <View className="flex-col justify-center items-center w-1/3">
+            <Text className="text-2xl font-bold">{currentGame.awayTeam}</Text>
+            <TextInput
+              className="flex-row text-3xl self-center justify-center items-center w-1/2 border-2 rounded-xl px-2 text-center font-bold h-10"
+              value={awayScore}
+              onChangeText={(text) => setAwayScore(text)}
+              placeholder="-"
+              inputMode="numeric"
+            />
+          </View>
           <TouchableOpacity
-            className="flex-row justify-center items-center self-center border-2 rounded-xl w-1/3 py-2"
+            className="flex-row justify-center items-center self-end border-2 rounded-xl w-10 py-1"
             onPress={handleScoreUpdate}
           >
-            <Text className="text-2xl font-bold w-full text-center">
-              Save Score
-            </Text>
+            <Check size={24} color="#000" weight="bold" />
           </TouchableOpacity>
         </View>
         {!isMonarchs ? (
           <></>
         ) : (
-          <>
+          <View className="w-full justify-evenly h-3/5">
             <AtBatStack />
             <PitchingStack />
-          </>
+            <FieldingStack />
+          </View>
         )}
       </View>
     </TouchableWithoutFeedback>
