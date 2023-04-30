@@ -65,6 +65,7 @@ const GamesScreen = ({ navigation }) => {
           atBats: item.atBats !== null ? item.atBats : null,
           pitching: item.pitching !== null ? item.pitching : null,
           fielding: item.fielding !== null ? item.fielding : null,
+          notes: item.notes !== null ? item.notes : null,
         })),
       };
       setAllGames([allGames]);
@@ -143,6 +144,7 @@ const GamesScreen = ({ navigation }) => {
         atBats: item.atBats !== null ? item.atBats : null,
         pitching: item.pitching !== null ? item.pitching : null,
         fielding: item.fielding !== null ? item.fielding : null,
+        notes: item.notes !== null ? item.notes : null,
       })),
     };
   }
