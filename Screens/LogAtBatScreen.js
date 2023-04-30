@@ -16,7 +16,7 @@ const LogAtBatScreen = ({ navigation }) => {
   const [activePage, setActivePage] = useState(0);
   const [game, setGame] = useState(currentGame);
   const [result, setResult] = useState(null);
-  const [pitches, setPitches] = useState(0);
+  const [pitches, setPitches] = useState(3);
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [trajectory, setTrajectory] = useState(null);
   const [hardHit, setHardHit] = useState(null);
@@ -24,6 +24,34 @@ const LogAtBatScreen = ({ navigation }) => {
   const [runScored, setRunScored] = useState(false);
 
   useEffect(() => setGame(currentGame), [currentGame]);
+
+  useEffect(() => {
+    switch (result) {
+      case "K":
+        Alert.alert("Swinging?", "", [
+          {
+            text: "Yes",
+            onPress: () => {
+              setResult("KS");
+              setRunScored(false);
+              setActivePage(1);
+            },
+          },
+          {
+            text: "No",
+            onPress: () => {
+              setResult("KL");
+              setRunScored(true);
+              setActivePage(1);
+            },
+          },
+        ]);
+
+        break;
+      default:
+        break;
+    }
+  }, [result]);
 
   const canProceed = useMemo(() => {
     switch (activePage) {
@@ -43,7 +71,12 @@ const LogAtBatScreen = ({ navigation }) => {
   }, [activePage, game, result, hitLocation.y, trajectory, hardHit, runScored]);
 
   const stepCount =
-    result === null || result === "BB" || result === "K" || result === "HBP"
+    result === "K" || result === "KS" || result === "KL"
+      ? 2
+      : result === "BB" ||
+        result === "IBB" ||
+        result === "HBP" ||
+        result === null
       ? 3
       : 5;
 
