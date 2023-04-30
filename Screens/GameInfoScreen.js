@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   TextInput,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  ScrollView,
   Keyboard,
 } from "react-native";
 import React from "react";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { UserContext } from "../services/UserContext";
-import { updateGameScore } from "../services/firebase";
+import { updateGameScore, addNotes } from "../services/firebase";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatsCalculator } from "../services/StatsCalculator";
 import { Check } from "phosphor-react-native";
@@ -24,6 +26,7 @@ const GameInfoScreen = ({ navigation }) => {
   const [isMonarchs, setIsMonarchs] = useState(false);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
+  const [notes, setNotes] = useState("");
   const [stats, setStats] = useState(new StatsCalculator());
 
   useEffect(() => {
@@ -38,6 +41,7 @@ const GameInfoScreen = ({ navigation }) => {
     setAwayScore(
       currentGame.awayScore !== null ? currentGame.awayScore.toString() : ""
     );
+    setNotes(currentGame.notes || "");
     setStats(
       new StatsCalculator(currentGame.atBats || [], [
         currentGame.pitching || [],
@@ -46,6 +50,32 @@ const GameInfoScreen = ({ navigation }) => {
 
     setLoading(false);
   }, [currentGame]);
+
+  const handleNotesUpdate = async () => {
+    if (notes !== "") {
+      try {
+        await addNotes(currentGame.id, notes);
+
+        setUserGames(
+          userGames.map((game) => {
+            if (game.id === currentGame.id) {
+              return {
+                ...game,
+                notes: currentGame.notes,
+              };
+            } else {
+              return game;
+            }
+          })
+        );
+
+        setCurrentGame({ ...currentGame, notes: notes });
+        Keyboard.dismiss();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const handleScoreUpdate = async () => {
     if (homeScore !== "" && awayScore !== "") {
@@ -191,7 +221,7 @@ const GameInfoScreen = ({ navigation }) => {
 
   function PitchingStack() {
     return currentGame.pitching ? (
-      <View className="flex-1 justify-start items-center border-b border-gray-500 px-2">
+      <View className="flex-1 justify-start items-center px-2">
         <View className="flex-row justify-evenly items-start w-full">
           <Text className="text-2xl font-bold w-full">Pitching</Text>
         </View>
@@ -245,7 +275,7 @@ const GameInfoScreen = ({ navigation }) => {
 
   function FieldingStack() {
     return currentGame.fielding ? (
-      <View className="flex-1 justify-start items-start border-b border-gray-500 px-2">
+      <View className="flex-1 justify-start items-start px-2">
         <View className="flex-row justify-evenly items-start w-full">
           <Text className="text-2xl font-bold w-full">Fielding</Text>
         </View>
@@ -322,7 +352,7 @@ const GameInfoScreen = ({ navigation }) => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View className="flex-1 justify-start items-center">
         <Text className="font-extrabold text-4xl pt-10">
           {currentGame.awayTeam} vs. {currentGame.homeTeam}
@@ -366,14 +396,33 @@ const GameInfoScreen = ({ navigation }) => {
         {!isMonarchs ? (
           <></>
         ) : (
-          <View className="w-full justify-evenly h-3/5">
+          <View className="w-full justify-evenly h-5/6 pb-48">
             <AtBatStack />
             <PitchingStack />
             <FieldingStack />
+            <View className="flex-col justify-evenly items-start w-full px-2">
+              <Text className="text-2xl font-bold w-full">Notes</Text>
+              <View className="w-full flex-row justify-between items-center self-center pl-16">
+                <TextInput
+                  className="flex-row text-lg self-center w-3/4 border-2 rounded-xl px-2 text-left h-24"
+                  value={notes}
+                  onChangeText={(text) => setNotes(text)}
+                  multiline={true}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  returnKeyType="done"
+                />
+                <TouchableOpacity
+                  className="flex-row justify-center items-center self-center border-2 rounded-xl w-10 py-1"
+                  onPress={handleNotesUpdate}
+                >
+                  <Check size={24} color="#000" weight="bold" />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };
 
