@@ -176,6 +176,17 @@ export const addFielding = async (gameId, fielding) => {
   }
 };
 
+export const addNotes = async (gameId, note) => {
+  try {
+    const gameRef = doc(db, "games", gameId);
+    const result = await updateDoc(gameRef, { notes: note });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getAllGames = async () => {
   try {
     const gamesSnapshot = await getDocs(collection(db, "games"));
