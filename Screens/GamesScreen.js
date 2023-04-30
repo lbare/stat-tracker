@@ -64,6 +64,7 @@ const GamesScreen = ({ navigation }) => {
           awayScore: item.awayScore !== null ? item.awayScore : null,
           atBats: item.atBats !== null ? item.atBats : null,
           pitching: item.pitching !== null ? item.pitching : null,
+          fielding: item.fielding !== null ? item.fielding : null,
         })),
       };
       setAllGames([allGames]);
@@ -141,6 +142,7 @@ const GamesScreen = ({ navigation }) => {
         awayScore: item.awayScore !== null ? item.awayScore : null,
         atBats: item.atBats !== null ? item.atBats : null,
         pitching: item.pitching !== null ? item.pitching : null,
+        fielding: item.fielding !== null ? item.fielding : null,
       })),
     };
   }
@@ -345,7 +347,7 @@ const GamesScreen = ({ navigation }) => {
       </View>
       <SectionList
         className="w-full"
-        sections={gameToggle ? monarchsGames : allGames}
+        sections={allGames}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <Pressable
