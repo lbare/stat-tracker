@@ -165,6 +165,17 @@ export const addPitchingInning = async (gameId, newInning) => {
   }
 };
 
+export const addFielding = async (gameId, fielding) => {
+  try {
+    const gameRef = doc(db, "games", gameId);
+    const result = await updateDoc(gameRef, { fielding: { ...fielding } });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getAllGames = async () => {
   try {
     const gamesSnapshot = await getDocs(collection(db, "games"));

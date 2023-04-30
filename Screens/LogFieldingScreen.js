@@ -9,16 +9,17 @@ import {
   Pressable,
 } from "react-native";
 import { UserContext } from "../services/UserContext";
-import { addPitchingGame, addPitchingInning } from "../services/firebase";
+import {
+  addPitchingGame,
+  addPitchingInning,
+  addFielding,
+} from "../services/firebase";
 import { Picker } from "@react-native-picker/picker";
-
-const positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"];
 
 const LogFieldingScreen = ({ navigation }) => {
   const { currentGame, setCurrentGame, userGames, setUserGames } =
     useContext(UserContext);
 
-  const [innings, setInnings] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [pos, setPos] = useState({
     C: 0,
     "1B": 0,
@@ -34,54 +35,45 @@ const LogFieldingScreen = ({ navigation }) => {
   const [errors, setErrors] = useState(0);
 
   const clearFields = () => {
-    setInnings([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setPutouts(0);
     setAssists(0);
     setErrors(0);
   };
 
-  //   const handleSubmit = async () => {
-  //     const newGame = {
-  //       position: "",
-  //     };
+  const handleSubmit = async () => {
+    try {
+      // Filter positions that have a value greater than 0
+      const filteredPos = Object.entries(pos).reduce((acc, [key, value]) => {
+        if (value > 0) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
 
-  //     const addPitching = fieldToggle ? addPitchingGame : addPitchingInning;
+      const fieldingData = {
+        ...filteredPos,
+        putouts: putouts,
+        assists: assists,
+        errors: errors,
+      };
 
-  //     try {
-  //       await addPitching(currentGame.id, newGame);
-  //       console.log("Pitching added successfully");
+      await addFielding(currentGame.id, fieldingData);
 
-  //       const newPitching = fieldToggle
-  //         ? newGame
-  //         : {
-  //             inningsPitched:
-  //               parseInt(innings) + parseInt(currentGame.pitching.inningsPitched),
-  //             earnedRuns:
-  //               parseInt(earnedRuns) + parseInt(currentGame.pitching.earnedRuns),
-  //             runs: parseInt(runs) + parseInt(currentGame.pitching.runs),
-  //             hits: parseInt(hits) + parseInt(currentGame.pitching.hits),
-  //             walks: parseInt(walks) + parseInt(currentGame.pitching.walks),
-  //             strikeouts:
-  //               parseInt(strikeouts) + parseInt(currentGame.pitching.strikeouts),
-  //           };
+      setUserGames(
+        userGames.map((game) =>
+          game.id === currentGame.id
+            ? { ...game, fielding: { ...fieldingData } }
+            : game
+        )
+      );
 
-  //       setUserGames(
-  //         userGames.map((game) =>
-  //           game.id === currentGame.id
-  //             ? { ...game, pitching: { ...newPitching } }
-  //             : game
-  //         )
-  //       );
-
-  //       setCurrentGame({ ...currentGame, pitching: { ...newPitching } });
-  //     } catch (error) {
-  //       console.log("Error adding pitching", error);
-  //       throw error;
-  //     }
-
-  //     clearFields();
-  //     navigation.navigate("Game Info");
-  //   };
+      setCurrentGame({ ...currentGame, fielding: { ...fieldingData } });
+      console.log("Fielding added successfully");
+    } catch (error) {
+      console.log("Error adding pitching", error);
+      throw error;
+    }
+  };
 
   return (
     <View className="justify-start items-center h-4/5">
@@ -463,7 +455,7 @@ const LogFieldingScreen = ({ navigation }) => {
       </View>
       <View className="mt-24 self-end px-6 w-42 h-14">
         <TouchableOpacity
-          // onPress={handleSubmit}
+          onPress={handleSubmit}
           className="bg-blue-500 rounded-xl px-8 py-4 w-full"
         >
           <Text className="text-center text-white font-bold text-xl">
