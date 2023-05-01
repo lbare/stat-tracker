@@ -29,8 +29,8 @@ const firebaseConfig = {
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
-const db = getFirestore(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 /* AUTH */
 export const login = async (email, password) => {
@@ -249,18 +249,4 @@ export const deleteGame = async (id) => {
 
 export const generateId = () => {
   return uuid.v4();
-};
-
-export {
-  db,
-  auth,
-  collection,
-  addDoc,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  docRef,
-  doc,
-  getDoc,
-  setDoc,
-  onAuthStateChanged,
 };

@@ -18,16 +18,9 @@ import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
 import GamesScreen from "./Screens/GamesScreen";
 import GameInfoScreen from "./Screens/GameInfoScreen";
-import {
-  onAuthStateChanged,
-  auth,
-  db,
-  doc,
-  getDoc,
-  getAllSeasons,
-  getAllGames,
-  getAllAtBats,
-} from "./services/firebase";
+import { auth, db, getAllGames } from "./services/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { getDoc, doc } from "firebase/firestore";
 import { FloatingAction } from "react-native-floating-action";
 import { UserContext } from "./services/UserContext";
 

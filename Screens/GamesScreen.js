@@ -10,7 +10,6 @@ import {
 import { UserContext } from "../services/UserContext";
 import { deleteGame } from "../services/firebase";
 import { Alert } from "react-native";
-import { SwipeListView } from "react-native-swipe-list-view";
 
 const GamesScreen = ({ navigation }) => {
   const {
@@ -23,8 +22,6 @@ const GamesScreen = ({ navigation }) => {
   } = useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
-  const [gameToggle, setGameToggle] = useState(false);
-  const [monarchsGames, setMonarchsGames] = useState(null);
   const [allGames, setAllGames] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState({
     All: false,
@@ -94,15 +91,12 @@ const GamesScreen = ({ navigation }) => {
     setSelectedTeam((prevSelectedTeam) => {
       const updatedSelectedTeam = { ...prevSelectedTeam };
 
-      // If the current team is already pressed, unpress it
       if (updatedSelectedTeam[team]) {
         updatedSelectedTeam[team] = false;
         updatedSelectedTeam["All"] = true;
       } else {
-        // Press the current team
         updatedSelectedTeam[team] = true;
 
-        // Unpress all other teams
         Object.keys(updatedSelectedTeam).forEach((key) => {
           if (key !== team && (key !== "All" || updatedSelectedTeam[key])) {
             updatedSelectedTeam[key] = false;
