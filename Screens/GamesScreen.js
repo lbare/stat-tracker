@@ -38,13 +38,10 @@ const GamesScreen = ({ navigation }) => {
     Royals: false,
     "White Sox": false,
   });
+  const [selectedGameType, setSelectedGameType] = useState("exhibition");
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear().toString()
   );
-
-  const testData = Array(20)
-    .fill("")
-    .map((_, i) => ({ key: `${i}`, text: `item #${i}` }));
 
   useEffect(() => {
     if (userGames !== null && userGames.length > 0) {
@@ -83,11 +80,15 @@ const GamesScreen = ({ navigation }) => {
       if (selectedTeamValue) {
         const selectedTeamName = selectedTeamValue[0]; // Get the team name
 
-        const games = getFilteredGames(selectedYear, selectedTeamName);
+        const games = getFilteredGames(
+          selectedYear,
+          selectedTeamName,
+          selectedGameType
+        );
         setAllGames([games]);
       }
     }
-  }, [selectedYear, selectedTeam, userGames]);
+  }, [selectedYear, selectedTeam, selectedGameType, userGames]);
 
   const handleButtonPress = (team) => {
     setSelectedTeam((prevSelectedTeam) => {
@@ -113,7 +114,7 @@ const GamesScreen = ({ navigation }) => {
     });
   };
 
-  function getFilteredGames(selectedYear, team) {
+  function getFilteredGames(selectedYear, team, gameType) {
     const sortedGames = userGames.sort((a, b) => a.date - b.date);
 
     let filteredGames = sortedGames;
@@ -121,6 +122,12 @@ const GamesScreen = ({ navigation }) => {
     if (selectedYear) {
       filteredGames = filteredGames.filter((item) => {
         return item.date.getFullYear().toString() === selectedYear.toString();
+      });
+    }
+
+    if (gameType) {
+      filteredGames = filteredGames.filter((item) => {
+        return item.type === gameType;
       });
     }
 
@@ -135,6 +142,7 @@ const GamesScreen = ({ navigation }) => {
         (selectedYear ? selectedYear + " " : "") + (team ? team + " " : ""),
       data: filteredGames.map((item) => ({
         date: item.date,
+        type: item.type,
         id: item.id,
         homeTeam: item.homeTeam,
         awayTeam: item.awayTeam,
@@ -185,10 +193,10 @@ const GamesScreen = ({ navigation }) => {
 
   return (
     <View className="flex-1 w-full justify-center items-center pb-20">
-      <View className="flex-row justify-between items-center w-full border-y-2">
+      <View className="flex-row justify-between items-center w-full border-y-2 h-12">
         <Pressable
           onPress={() => setSelectedYear("2023")}
-          className={`p-4 w-1/3 items-center ${
+          className={`w-1/3 h-full justify-center items-center ${
             selectedYear === "2023" ? "bg-green-400" : ""
           }`}
         >
@@ -200,7 +208,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => setSelectedYear("2022")}
-          className={`p-4 w-1/3 items-center ${
+          className={`w-1/3 h-full justify-center items-center ${
             selectedYear === "2022" ? "bg-green-400" : ""
           }`}
         >
@@ -212,7 +220,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => setSelectedYear("2021")}
-          className={`p-4 w-1/3 items-center ${
+          className={`w-1/3 h-full justify-center items-center ${
             selectedYear === "2021" ? "bg-green-400" : ""
           }`}
         >
@@ -223,10 +231,54 @@ const GamesScreen = ({ navigation }) => {
           </Text>
         </Pressable>
       </View>
-      <View className="flex-row justify-between items-center w-full">
+      <View className="flex-row justify-between items-center w-full border-b-2 h-11">
+        <Pressable
+          onPress={() => setSelectedGameType("exhibition")}
+          className={`w-1/3 h-full justify-center items-center ${
+            selectedGameType === "exhibition" ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-lg ${
+              selectedGameType === "exhibition" ? "font-bold" : ""
+            }`}
+          >
+            Exhibition
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => setSelectedGameType("regular")}
+          className={`w-1/3 h-full justify-center items-center ${
+            selectedGameType === "regular" ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-lg ${
+              selectedGameType === "regular" ? "font-bold" : ""
+            }`}
+          >
+            Regular
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => setSelectedGameType("playoff")}
+          className={`w-1/3 h-full justify-center items-center ${
+            selectedGameType === "playoff" ? "bg-green-400" : ""
+          }`}
+        >
+          <Text
+            className={`text-lg ${
+              selectedGameType === "playoff" ? "font-bold" : ""
+            }`}
+          >
+            Playoffs
+          </Text>
+        </Pressable>
+      </View>
+      <View className="flex-row justify-between items-center w-full h-11">
         <Pressable
           onPress={() => handleButtonPress("Brewers")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Brewers"] ? "bg-green-400" : ""
           }`}
         >
@@ -238,7 +290,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("Giants")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Giants"] ? "bg-green-400" : ""
           }`}
         >
@@ -250,7 +302,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("Monarchs")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full w-1/5 justify-center items-center ${
             selectedTeam["Monarchs"] ? "bg-green-400" : ""
           }`}
         >
@@ -262,7 +314,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("Pirates")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Pirates"] ? "bg-green-400" : ""
           }`}
         >
@@ -274,7 +326,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("Reds")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Reds"] ? "bg-green-400" : ""
           }`}
         >
@@ -285,10 +337,10 @@ const GamesScreen = ({ navigation }) => {
           </Text>
         </Pressable>
       </View>
-      <View className="flex-row justify-between items-center w-full border-y-2">
+      <View className="flex-row justify-between items-center w-full border-y-2 h-11">
         <Pressable
           onPress={() => handleButtonPress("Red Sox")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Red Sox"] ? "bg-green-400" : ""
           }`}
         >
@@ -300,7 +352,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("Rockies")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Rockies"] ? "bg-green-400" : ""
           }`}
         >
@@ -312,7 +364,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("Royals")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["Royals"] ? "bg-green-400" : ""
           }`}
         >
@@ -324,7 +376,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("White Sox")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["White Sox"] ? "bg-green-400" : ""
           }`}
         >
@@ -338,7 +390,7 @@ const GamesScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           onPress={() => handleButtonPress("All")}
-          className={`py-4 w-1/5 items-center ${
+          className={`h-full justify-center w-1/5 items-center ${
             selectedTeam["All"] ? "bg-green-400" : ""
           }`}
         >
@@ -347,6 +399,7 @@ const GamesScreen = ({ navigation }) => {
           </Text>
         </Pressable>
       </View>
+
       <SectionList
         className="w-full"
         sections={allGames}
@@ -398,31 +451,6 @@ const GamesScreen = ({ navigation }) => {
           </View>
         )}
       />
-      {/* <SwipeListView
-        className="w-full"
-        data={newData}
-        renderItem={(data, rowMap) => (
-          <View className="items-center bg-red-500 border-b-black border-b-2 justify-center h-24">
-            <Text className="text-xl">I am in a SwipeListView</Text>
-          </View>
-        )}
-        renderHiddenItem={(data, rowMap) => (
-          <View className="flex-1 flex-row items-center bg-red-500 justify-between px-12">
-            <Text className="">Left</Text>
-            <TouchableOpacity className="items-center bottom-0 justify-center absolute top-0 w-full bg-red-500 right-48">
-              <Text>Close</Text>
-            </TouchableOpacity>
-            <Text className="bg-red-500 justify-center items-center">
-              Right
-            </Text>
-          </View>
-        )}
-        leftOpenValue={75}
-        rightOpenValue={-150}
-        previewRowKey={"0"}
-        previewOpenValue={-40}
-        previewOpenDelay={3000}
-      /> */}
     </View>
   );
 };
