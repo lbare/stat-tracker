@@ -192,17 +192,15 @@ export const addNotes = async (gameId, note) => {
 export const getAllGames = async () => {
   try {
     const gamesSnapshot = await getDocs(collection(db, "games"));
+    // const gamesSnapshot = await getDocs(
+    //   query(
+    //     collection(db, "games"),
+    //     where("homeTeam", "==", "Monarchs"),
+    //     limit(20)
+    //   )
+    // );
     const games = await Promise.all(
       gamesSnapshot.docs.map(async (gameDoc) => {
-        let atBats = [];
-        const atBatsRef = collection(gameDoc.ref, "atBats");
-        const atBatsSnapshot = await getDocs(atBatsRef);
-        if (!atBatsSnapshot.empty) {
-          atBats = atBatsSnapshot.docs.map((atBatDoc) => ({
-            ...atBatDoc.data(),
-            id: atBatDoc.id,
-          }));
-        }
         return {
           ...gameDoc.data(),
           date: gameDoc.data().date.toDate(),

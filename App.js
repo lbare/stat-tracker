@@ -189,6 +189,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [userGames, setUserGames] = useState(null);
   const [currentGame, setCurrentGame] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -231,10 +232,6 @@ export default function App() {
         date: new Date(game.date),
       }));
 
-      console.log("====================================");
-      console.log(gameData);
-      console.log("====================================");
-
       setUserGames(gameData);
     };
 
@@ -242,6 +239,29 @@ export default function App() {
       setData();
     }
   }, []);
+
+  useEffect(() => {
+    const updateAsyncStorage = async () => {
+      try {
+        // Convert Date objects to strings before storing in AsyncStorage
+        const gameData = userGames.map((game) => ({
+          ...game,
+          date: game.date.toISOString(),
+        }));
+
+        await AsyncStorage.setItem("games", JSON.stringify(gameData));
+        console.log("====================================");
+        console.log("UPDATED ASYNC STORAGE");
+        console.log("====================================");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (userGames) {
+      updateAsyncStorage();
+    }
+  }, [userGames]);
 
   return (
     <UserContext.Provider
