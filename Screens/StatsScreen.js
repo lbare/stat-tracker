@@ -6,7 +6,6 @@ import { StatsCalculator } from "../services/StatsCalculator";
 
 const Stats = () => {
   const teams2021 = [
-    "Athletics",
     "Brewers",
     "Braves",
     "Giants",
@@ -21,7 +20,6 @@ const Stats = () => {
     "Astros",
     "Brewers",
     "Giants",
-    "Monarchs",
     "Pirates",
     "Red Sox",
     "Reds",
@@ -33,7 +31,6 @@ const Stats = () => {
   const teams2023 = [
     "Brewers",
     "Giants",
-    "Monarchs",
     "Pirates",
     "Red Sox",
     "Reds",
@@ -43,113 +40,79 @@ const Stats = () => {
   ];
 
   const { userGames } = useContext(UserContext);
-  const [stats2022, setStats2022] = useState({});
+  const [stats2022, setStats2022] = useState(null);
+  const [all2022, setAll2022] = useState(null);
 
-  // const teamGames = [
-  //   {
-  //     atBats: [["Object"], ["Object"]],
-  //     awayScore: 0,
-  //     awayTeam: "Monarchs",
-  //     date: "2022-05-14T01:30:00.000Z",
-  //     homeScore: 10,
-  //     homeTeam: "White Sox",
-  //     id: "9cmYRwAhoaT5eYUFVsXa",
-  //     location: "Lambrick",
-  //     myTeam: true,
-  //     pitching: {
-  //       earnedRuns: 5,
-  //       hits: 10,
-  //       inningsPitched: 4,
-  //       runs: 10,
-  //       strikeouts: 4,
-  //       walks: 1,
-  //     },
-  //     type: "regular",
-  //     winner: "White Sox",
-  //   },
-  //   {
-  //     awayScore: 9,
-  //     awayTeam: "White Sox",
-  //     date: "2022-05-17T01:00:00.000Z",
-  //     homeScore: 7,
-  //     homeTeam: "Monarchs",
-  //     id: "f8tQCWjjSFN5mvuu5SQn",
-  //     location: "Layritz",
-  //     myTeam: true,
-  //     type: "regular",
-  //     winner: "White Sox",
-  //   },
-  //   {
-  //     awayScore: null,
-  //     awayTeam: "Monarchs",
-  //     date: "2022-05-02T01:30:00.000Z",
-  //     homeScore: null,
-  //     homeTeam: "White Sox",
-  //     id: "qlGH6eHGSkadmwrUvWRz",
-  //     location: "Lambrick",
-  //     myTeam: true,
-  //     type: "exhibition",
-  //     winner: null,
-  //   },
-  // ];
+  useEffect(() => {
+    if (userGames) {
+      const atBats = userGames.reduce((cumulatedAtBats, game) => {
+        const gameAtBats = game.atBats || []; // handle empty atBats array if necessary
+        return cumulatedAtBats.concat(gameAtBats);
+      }, []);
 
-  // useEffect(() => {
-  //   if (userGames) {
-  //     const allAtBats = userGames.reduce((cumulatedAtBats, game) => {
-  //       const atBats = game.atBats || []; // handle empty atBats array if necessary
-  //       return cumulatedAtBats.concat(atBats);
-  //     }, []);
+      const all = new StatsCalculator(atBats);
 
-  //     const teamStats = teams2022.map((team) => {
-  //       const teamGames = userGames.filter(
-  //         (game) =>
-  //           game.date.getFullYear() === 2022 &&
-  //           ((game.awayTeam === team && game.homeTeam === "Monarchs") ||
-  //             (game.homeTeam === team && game.awayTeam === "Monarchs"))
-  //       );
+      const teamStats = teams2022.map((team) => {
+        const teamGames = userGames.filter(
+          (game) =>
+            game.date.getFullYear() === 2022 &&
+            game.atBats &&
+            game.atBats.length > 0 &&
+            ((game.awayTeam === team && game.homeTeam === "Monarchs") ||
+              (game.homeTeam === team && game.awayTeam === "Monarchs"))
+        );
 
-  //       const teamAtBats = teamGames.reduce((cumulatedAtBats, game) => {
-  //         const atBats = game.atBats || [];
-  //         return cumulatedAtBats.concat(atBats);
-  //       }, []);
+        const teamAtBats = teamGames.reduce((cumulatedAtBats, game) => {
+          const atBats = game.atBats || [];
+          return cumulatedAtBats.concat(atBats);
+        }, []);
 
-  //       console.log("====================================");
-  //       console.log("teamAtBats: ", teamAtBats);
-  //       console.log("====================================");
-  //       const stats = new StatsCalculator(teamAtBats); // Use team-specific atBats
-  //       const G = teamGames.length;
-  //       // const AB = stats.getAB();
-  //       const R = stats.getR();
-  //       const H = stats.getH();
-  //       const RBI = stats.getRBI();
-  //       const BB = stats.getBB();
-  //       const K = stats.getK();
-  //       const AVG = stats.getAVG();
-  //       const OBP = stats.getOBP();
-  //       const SLG = stats.getSLG();
-  //       const OPS = stats.getOPS();
+        const stats = new StatsCalculator(teamAtBats); // Use team-specific atBats
+        const G = teamGames.length;
+        const AB = stats.getAB();
+        const R = stats.getR();
+        const H = stats.getH();
+        const RBI = stats.getRBI();
+        const BB = stats.getBB();
+        const K = stats.getK();
+        const AVG = stats.getAVG();
+        const OBP = stats.getOBP();
+        const SLG = stats.getSLG();
+        const OPS = stats.getOPS();
 
-  //       return {
-  //         team,
-  //         // AB,
-  //         G,
-  //         R,
-  //         H,
-  //         RBI,
-  //         BB,
-  //         K,
-  //         AVG,
-  //         OBP,
-  //         SLG,
-  //         OPS,
-  //       };
-  //     });
-  //     console.log("====================================");
-  //     console.log("teamStats: ", teamStats);
-  //     console.log("====================================");
-  //     setStats2022(teamStats);
-  //   }
-  // }, []);
+        return {
+          team,
+          AB,
+          G,
+          R,
+          H,
+          RBI,
+          BB,
+          K,
+          AVG,
+          OBP,
+          SLG,
+          OPS,
+        };
+      });
+
+      setAll2022({
+        G: teamStats.reduce((cumulatedG, team) => cumulatedG + team.G, 0),
+        AB: all.getAB(),
+        R: all.getR(),
+        H: all.getH(),
+        RBI: all.getRBI(),
+        BB: all.getBB(),
+        K: all.getK(),
+        AVG: all.getAVG(),
+        OBP: all.getOBP(),
+        SLG: all.getSLG(),
+        OPS: all.getOPS(),
+      });
+
+      setStats2022(teamStats);
+    }
+  }, []);
 
   return (
     <View className="flex-1 justify-start items-center py-8 px-2">
@@ -201,69 +164,93 @@ const Stats = () => {
             <Text className="font-extrabold">OPS</Text>
           </View>
         </View>
-        {/* {teams2022.map((team) => {
-          return (
-            <View className="flex-row justify-start border-l-2">
-              <View className="w-20 h-8 justify-center items-center border-r-2 border-b-2">
-                <Text className="">{team}</Text>
-              </View>
-              <View className="w-12 h-8 justify-center items-center border-r-2">
-                <Text className="">R</Text>
-              </View>
-              <View className="w-12 h-8 justify-center items-center border-r-2">
-                <Text className="">AB</Text>
-              </View>
-            </View>
-          );
-        })} */}
-        {/* {stats2022 &&
-          stats2022.map((team) => {
-            console.log("====================================");
-            console.log("team.AB: ", team);
-            console.log("====================================");
+        {stats2022 &&
+          stats2022.map((team, index) => {
             return (
-              <View className="flex-row justify-start border-l-2">
+              <View className="flex-row justify-start border-l-2" key={index}>
                 <View className="w-20 h-8 justify-center items-center border-r-2 border-b-2">
                   <Text className="">{team.team}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.G}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.AB}</Text>
                 </View>
                 <View className="w-12 h-8 justify-center items-center border-r-2">
                   <Text className="">{team.R}</Text>
                 </View>
                 <View className="w-12 h-8 justify-center items-center border-r-2">
-                  <Text className="">{team.AB}</Text>
+                  <Text className="">{team.H}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.RBI}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.BB}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.K}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.AVG.toFixed(3).substring(1)}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.OBP.toFixed(3).substring(1)}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.SLG.toFixed(3)}</Text>
+                </View>
+                <View className="w-12 h-8 justify-center items-center border-r-2">
+                  <Text className="">{team.OPS.toFixed(3)}</Text>
                 </View>
               </View>
             );
-          })} */}
-
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">R</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">H</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">RBI</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">BB</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">SO</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">AVG</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">OBP</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">SLG</Text>
-        </View>
-        <View className="w-12 h-8 justify-center items-center border-r-2">
-          <Text className="">OPS</Text>
-        </View>
-        {/* </View> */}
+          })}
+        {all2022 && (
+          <View className="flex-row justify-start border-l-2 border-y-2">
+            <View className="w-20 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">Total</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2 ">
+              <Text className="font-bold">{all2022.G}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.AB}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.R}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.H}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.RBI}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.BB}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.K}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">
+                {all2022.AVG.toFixed(3).substring(1)}
+              </Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">
+                {all2022.OBP.toFixed(3).substring(1)}
+              </Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.SLG.toFixed(3)}</Text>
+            </View>
+            <View className="w-12 h-8 justify-center items-center border-r-2">
+              <Text className="font-bold">{all2022.OPS.toFixed(3)}</Text>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
