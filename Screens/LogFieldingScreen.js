@@ -38,6 +38,16 @@ const LogFieldingScreen = ({ navigation }) => {
     setPutouts(0);
     setAssists(0);
     setErrors(0);
+    setPos({
+      C: 0,
+      "1B": 0,
+      "2B": 0,
+      "3B": 0,
+      SS: 0,
+      LF: 0,
+      CF: 0,
+      RF: 0,
+    });
   };
 
   const handleSubmit = async () => {
@@ -69,6 +79,8 @@ const LogFieldingScreen = ({ navigation }) => {
 
       setCurrentGame({ ...currentGame, fielding: { ...fieldingData } });
       console.log("Fielding added successfully");
+      clearFields();
+      navigation.navigate("Game Info");
     } catch (error) {
       console.log("Error adding pitching", error);
       throw error;
