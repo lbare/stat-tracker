@@ -199,87 +199,87 @@ export class StatsCalculator {
   /************/
 
   getH() {
-    return this.H;
+    return this.H || 0;
   }
 
   get1B() {
-    return this.Si;
+    return this.Si || 0;
   }
 
   get2B() {
-    return this.Do;
+    return this.Do || 0;
   }
 
   get3B() {
-    return this.Tr;
+    return this.Tr || 0;
   }
 
   getHR() {
-    return this.HR;
+    return this.HR || 0;
   }
 
   getXBH() {
-    return this.XBH;
+    return this.XBH || 0;
   }
 
   getTB() {
-    return this.TB;
+    return this.TB || 0;
   }
 
   getPA() {
-    return this.PA;
+    return this.PA || 0;
   }
 
   getAB() {
-    return this.AB;
+    return this.AB || 0;
   }
 
   getR() {
-    return this.R;
+    return this.R || 0;
   }
 
   getRBI() {
-    return this.RBI;
+    return this.RBI || 0;
   }
 
   getBB() {
-    return this.BB;
+    return this.BB || 0;
   }
 
   getIBB() {
-    return this.IBB;
+    return this.IBB || 0;
   }
 
   getHBP() {
-    return this.HBP;
+    return this.HBP || 0;
   }
 
   getK() {
-    return this.K;
+    return this.K || 0;
   }
 
   getGIDP() {
-    return this.GIDP;
+    return this.GIDP || 0;
   }
 
   getSB() {
-    return this.SB;
+    return this.SB || 0;
   }
 
   getCS() {
-    return this.CS;
+    return this.CS || 0;
   }
 
   getSF() {
-    return this.SF;
+    return this.SF || 0;
   }
 
   getE() {
-    return this.E;
+    return this.E || 0;
   }
 
   getSAC() {
-    return this.SAC;
+    return this.SAC || 0;
   }
 
   getAVG() {
@@ -298,7 +298,7 @@ export class StatsCalculator {
   }
 
   getOPS() {
-    return this.OBP + this.SLG;
+    return this.OBP + this.SLG || 0;
   }
 
   getBABIP() {
