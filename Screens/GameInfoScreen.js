@@ -14,7 +14,6 @@ import React from "react";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { UserContext } from "../services/UserContext";
 import { updateGameScore, addNotes } from "../services/firebase";
-import { useFocusEffect } from "@react-navigation/native";
 import { StatsCalculator } from "../services/StatsCalculator";
 import { Check } from "phosphor-react-native";
 
@@ -146,19 +145,20 @@ const GameInfoScreen = ({ navigation }) => {
             <View className="flex-col justify-between items-center">
               <Text className="text-sm font-bold">AB</Text>
               <Text className="text-sm font-bold">
-                {currentGame.atBats.length}
+                {stats ? stats.getAB() : 0}
+              </Text>
+            </View>
+
+            <View className="flex-col justify-between items-center">
+              <Text className="text-sm font-bold">H</Text>
+              <Text className="text-sm font-bold">
+                {stats ? stats.getH() : 0}
               </Text>
             </View>
             <View className="flex-col justify-between items-center">
               <Text className="text-sm font-bold">R</Text>
               <Text className="text-sm font-bold">
                 {stats ? stats.getR() : 0}
-              </Text>
-            </View>
-            <View className="flex-col justify-between items-center">
-              <Text className="text-sm font-bold">H</Text>
-              <Text className="text-sm font-bold">
-                {stats ? stats.getH() : 0}
               </Text>
             </View>
             <View className="flex-col justify-between items-center">
@@ -182,13 +182,21 @@ const GameInfoScreen = ({ navigation }) => {
             <View className="flex-col justify-between items-center">
               <Text className="text-sm font-bold">AVG</Text>
               <Text className="text-sm font-bold">
-                {stats ? stats.getAVG().toFixed(3).substring(1) : 0}
+                {stats
+                  ? stats.getAVG() === 1
+                    ? stats.getAVG().toFixed(3)
+                    : stats.getAVG().toFixed(3).substring(1)
+                  : 0}
               </Text>
             </View>
             <View className="flex-col justify-between items-center">
               <Text className="text-sm font-bold">OBP</Text>
               <Text className="text-sm font-bold">
-                {stats ? stats.getOBP().toFixed(3).substring(1) : 0}
+                {stats
+                  ? stats.getOBP() === 1
+                    ? stats.getOBP().toFixed(3)
+                    : stats.getOBP().toFixed(3).substring(1)
+                  : 0}
               </Text>
             </View>
             <View className="flex-col justify-between items-center">
