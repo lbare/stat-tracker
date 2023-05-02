@@ -16,7 +16,6 @@ const LogAtBatScreen = ({ navigation }) => {
   const [activePage, setActivePage] = useState(0);
   const [game, setGame] = useState(currentGame);
   const [result, setResult] = useState(null);
-  const [pitches, setPitches] = useState(3);
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [trajectory, setTrajectory] = useState(null);
   const [hardHit, setHardHit] = useState(null);
@@ -34,7 +33,7 @@ const LogAtBatScreen = ({ navigation }) => {
             onPress: () => {
               setResult("KS");
               setRunScored(false);
-              setActivePage(1);
+              handleAddAtBat();
             },
           },
           {
@@ -42,7 +41,7 @@ const LogAtBatScreen = ({ navigation }) => {
             onPress: () => {
               setResult("KL");
               setRunScored(true);
-              setActivePage(1);
+              handleAddAtBat();
             },
           },
         ]);
@@ -58,12 +57,10 @@ const LogAtBatScreen = ({ navigation }) => {
       case 0:
         return result !== null;
       case 1:
-        return true;
-      case 2:
         return runScored !== null;
-      case 3:
+      case 2:
         return hitLocation.y !== 0;
-      case 4:
+      case 3:
         return trajectory !== null && hardHit !== null;
       default:
         return true;
@@ -72,18 +69,17 @@ const LogAtBatScreen = ({ navigation }) => {
 
   const stepCount =
     result === "K" || result === "KS" || result === "KL"
-      ? 2
+      ? 1
       : result === "BB" ||
         result === "IBB" ||
         result === "HBP" ||
         result === null
-      ? 3
-      : 5;
+      ? 2
+      : 4;
 
   const content = {
     0: <Result result={result} setResult={setResult} />,
-    1: <Pitches pitches={pitches} setPitches={setPitches} />,
-    2: (
+    1: (
       <Runs
         runScored={runScored}
         setRunScored={setRunScored}
@@ -91,10 +87,10 @@ const LogAtBatScreen = ({ navigation }) => {
         setRBI={setRBI}
       />
     ),
-    3: (
+    2: (
       <HitLocation hitLocation={hitLocation} setHitLocation={setHitLocation} />
     ),
-    4: (
+    3: (
       <Trajectory
         trajectory={trajectory}
         setTrajectory={setTrajectory}
@@ -124,7 +120,6 @@ const LogAtBatScreen = ({ navigation }) => {
 
   const clearFields = () => {
     setResult(null);
-    setPitches(0);
     setHitLocation({ x: 0, y: 0 });
     setTrajectory(null);
     setHardHit(null);
@@ -140,7 +135,6 @@ const LogAtBatScreen = ({ navigation }) => {
           x: hitLocation.x !== 0 ? Math.floor(hitLocation.x) : null,
           y: hitLocation.x !== 0 ? Math.floor(hitLocation.y) : null,
         },
-        pitches: pitches,
         trajectory: trajectory,
         hardHit: hardHit,
         runScored: runScored,
@@ -225,7 +219,7 @@ const LogAtBatScreen = ({ navigation }) => {
           disabled={!canProceed}
         >
           <Text className="text-white text-2xl">
-            {activePage === 4 ? "Finish" : "Next"}
+            {activePage === 3 ? "Finish" : "Next"}
           </Text>
         </TouchableOpacity>
       </View>
