@@ -16,6 +16,8 @@ import {
   setDoc,
   deleteDoc,
   updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import uuid from "react-native-uuid";
 
@@ -220,6 +222,33 @@ export const updateGameScore = async (gameId, homeScore, awayScore, winner) => {
     const gameRef = doc(db, "games", gameId);
     const result = await updateDoc(gameRef, { homeScore, awayScore, winner });
     return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllTeamsBySeason = async () => {
+  try {
+    const currentYear = new Date().getFullYear();
+    const q = query(
+      collection(db, "seasons"),
+      where("year", "<=", currentYear)
+    );
+
+    const querySnapshot = await getDocs(q);
+    const teamsByYear = {};
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const year = data.year;
+      const standings = data.standings;
+      const teams = Object.keys(standings);
+
+      teamsByYear[year] = teams;
+    });
+
+    return teamsByYear;
   } catch (error) {
     console.error(error);
     throw error;
