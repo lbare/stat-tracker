@@ -405,7 +405,11 @@ const GamesScreen = ({ navigation }) => {
               navigation.navigate("Game Info");
             }}
             className={`border-b border-gray-500 p-4 flex-row justify-between w-screen ${
-              item.date < new Date() ? "bg-gray-200" : ""
+              item.atBats && item.atBats.length > 0
+                ? item.date < new Date()
+                  ? "bg-red-200"
+                  : ""
+                : ""
             }`}
           >
             <View className="flex-col justify-between items-center self-start">
