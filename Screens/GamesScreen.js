@@ -404,7 +404,9 @@ const GamesScreen = ({ navigation }) => {
               setCurrentGame(item);
               navigation.navigate("Game Info");
             }}
-            className="border-b border-gray-500 p-4 flex-row justify-between w-screen"
+            className={`border-b border-gray-500 p-4 flex-row justify-between w-screen ${
+              item.date < new Date() ? "bg-gray-200" : ""
+            }`}
           >
             <View className="flex-col justify-between items-center self-start">
               <Text className="text-lg">
