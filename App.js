@@ -23,36 +23,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 import { FloatingAction } from "react-native-floating-action";
 import { UserContext } from "./services/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 const BottomBar = createBottomTabNavigator();
-
-function AuthStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          animationEnabled: false,
-          headerBackTitleVisible: false,
-          headerLeft: null,
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{
-          animationEnabled: false,
-          headerBackTitleVisible: false,
-          headerLeft: null,
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
 
 function AppStack() {
   const navigation = useNavigation();
@@ -215,34 +189,59 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [userGames, setUserGames] = useState(null);
   const [currentGame, setCurrentGame] = useState(null);
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const fetchData = async () => {
       try {
-        if (user) {
-          const docSnap = await getDoc(doc(db, "users", user.uid));
-          if (docSnap.exists()) {
-            try {
-              const games = await getAllGames().catch((error) => {
-                console.log("Promise Error: ", error);
-              });
-              setUserGames(games);
-              setUser(user);
-            } catch (error) {
-              console.log(error);
-            }
-          } else {
-            console.log("No such document");
-          }
-        } else {
-          setUser(null);
-        }
+        console.log("**********************************************");
+        console.log("FETCHING FROM FIREBASE");
+        console.log("**********************************************");
+        const games = await getAllGames().catch((error) => {
+          console.log("Promise Error: ", error);
+        });
+        return games;
       } catch (error) {
         console.log(error);
       }
-    });
-    return unsubscribe;
-  }, [user]);
+    };
+
+    const setData = async () => {
+      let gameData;
+      const cachedGameData = await AsyncStorage.getItem("games");
+
+      if (cachedGameData) {
+        gameData = JSON.parse(cachedGameData, (key, value) => {
+          if (key === "date") {
+            return new Date(value);
+          }
+          return value;
+        });
+      } else {
+        gameData = await fetchData();
+        // Convert Date objects to strings before storing in AsyncStorage
+        gameData = gameData.map((game) => ({
+          ...game,
+          date: game.date.toISOString(),
+        }));
+        await AsyncStorage.setItem("games", JSON.stringify(gameData));
+      }
+
+      // Parse string dates back to Date objects
+      gameData = gameData.map((game) => ({
+        ...game,
+        date: new Date(game.date),
+      }));
+
+      console.log("====================================");
+      console.log(gameData);
+      console.log("====================================");
+
+      setUserGames(gameData);
+    };
+
+    if (!userGames) {
+      setData();
+    }
+  }, []);
 
   return (
     <UserContext.Provider
@@ -256,7 +255,7 @@ export default function App() {
       }}
     >
       <NavigationContainer>
-        {user ? <AppStack /> : <AuthStack />}
+        <AppStack />
       </NavigationContainer>
     </UserContext.Provider>
   );
