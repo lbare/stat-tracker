@@ -12,6 +12,7 @@ export class StatsCalculator {
     this.TB = 0;
     this.PA = 0;
     this.AB = 0;
+    this.Out = 0;
     this.R = 0;
     this.RBI = 0;
     this.BB = 0;
@@ -104,19 +105,20 @@ export class StatsCalculator {
 
   calculateBattingTotals() {
     const resultMap = {
-      "1B": { H: 1, Si: 1, AB: 1, TB: 1, PA: 1 },
-      "2B": { H: 1, Do: 1, AB: 1, TB: 2, XBH: 1, PA: 1 },
-      "3B": { H: 1, Tr: 1, AB: 1, TB: 3, XBH: 1, PA: 1 },
-      HR: { H: 1, HR: 1, AB: 1, TB: 4, XBH: 1, PA: 1 },
-      BB: { BB: 1, PA: 1 },
-      IBB: { IBB: 1, PA: 1 },
+      "1B": { H: 1, Si: 1, AB: 1, TB: 1 },
+      "2B": { H: 1, Do: 1, AB: 1, TB: 2, XBH: 1 },
+      "3B": { H: 1, Tr: 1, AB: 1, TB: 3, XBH: 1 },
+      HR: { H: 1, HR: 1, AB: 1, TB: 4, XBH: 1 },
+      BB: { BB: 1 },
+      IBB: { IBB: 1 },
+      Out: { AB: 1 },
       SF: { PA: 1 },
       SAC: { PA: 1 },
-      HBP: { HBP: 1, PA: 1 },
-      KS: { K: 1, KS: 1, AB: 1, PA: 1 },
-      KL: { K: 1, KL: 1, AB: 1, PA: 1 },
-      GIDP: { GIDP: 1, AB: 1, PA: 1 },
-      E: { E: 1, AB: 1, PA: 1 },
+      HBP: { HBP: 1 },
+      KS: { K: 1, KS: 1, AB: 1 },
+      KL: { K: 1, KL: 1, AB: 1 },
+      GIDP: { GIDP: 1, AB: 1 },
+      E: { E: 1, AB: 1 },
     };
 
     this.atBats.forEach((atBat) => {
@@ -285,7 +287,10 @@ export class StatsCalculator {
   }
 
   getOBP() {
-    return this.AB === 0 ? 0 : (this.H + this.BB) / this.AB;
+    return this.PA === 0
+      ? 0
+      : (this.H + this.BB + this.HBP) /
+          (this.AB + this.BB + this.HBP + this.SF);
   }
 
   getSLG() {
