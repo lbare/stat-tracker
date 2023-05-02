@@ -275,7 +275,7 @@ export default function App() {
       }}
     >
       <NavigationContainer>
-        <AppStack />
+        {userGames ? <AppStack /> : <ActivityIndicator size="large" />}
       </NavigationContainer>
     </UserContext.Provider>
   );
