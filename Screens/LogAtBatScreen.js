@@ -8,6 +8,7 @@ import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
 import { UserContext } from "../services/UserContext";
 import { addAtBat, getNumberOfAtBatsByGame } from "../services/firebase";
+import Zone from "../components/Zone";
 
 const LogAtBatScreen = ({ navigation }) => {
   const { userGames, setUserGames, currentGame, setCurrentGame } =
@@ -18,6 +19,7 @@ const LogAtBatScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [trajectory, setTrajectory] = useState(null);
+  const [zone, setZone] = useState(null);
   const [hardHit, setHardHit] = useState(null);
   const [RBI, setRBI] = useState(0);
   const [runScored, setRunScored] = useState(false);
@@ -33,7 +35,7 @@ const LogAtBatScreen = ({ navigation }) => {
             onPress: () => {
               setResult("KS");
               setRunScored(false);
-              handleAddAtBat();
+              setActivePage(1);
             },
           },
           {
@@ -41,7 +43,7 @@ const LogAtBatScreen = ({ navigation }) => {
             onPress: () => {
               setResult("KL");
               setRunScored(true);
-              handleAddAtBat();
+              setActivePage(1);
             },
           },
         ]);
@@ -57,29 +59,41 @@ const LogAtBatScreen = ({ navigation }) => {
       case 0:
         return result !== null;
       case 1:
-        return runScored !== null;
+        return zone !== null;
       case 2:
-        return hitLocation.y !== 0;
+        return runScored !== null;
       case 3:
+        return hitLocation.y !== 0;
+      case 4:
         return trajectory !== null && hardHit !== null;
       default:
         return true;
     }
-  }, [activePage, game, result, hitLocation.y, trajectory, hardHit, runScored]);
+  }, [
+    activePage,
+    game,
+    result,
+    hitLocation.y,
+    trajectory,
+    hardHit,
+    runScored,
+    zone,
+  ]);
 
   const stepCount =
     result === "K" || result === "KS" || result === "KL"
-      ? 1
+      ? 2
       : result === "BB" ||
         result === "IBB" ||
         result === "HBP" ||
         result === null
-      ? 2
-      : 4;
+      ? 3
+      : 5;
 
   const content = {
     0: <Result result={result} setResult={setResult} />,
-    1: (
+    1: <Zone zone={zone} setZone={setZone} />,
+    2: (
       <Runs
         runScored={runScored}
         setRunScored={setRunScored}
@@ -87,10 +101,10 @@ const LogAtBatScreen = ({ navigation }) => {
         setRBI={setRBI}
       />
     ),
-    2: (
+    3: (
       <HitLocation hitLocation={hitLocation} setHitLocation={setHitLocation} />
     ),
-    3: (
+    4: (
       <Trajectory
         trajectory={trajectory}
         setTrajectory={setTrajectory}
@@ -125,6 +139,7 @@ const LogAtBatScreen = ({ navigation }) => {
     setHardHit(null);
     setRunScored(null);
     setRBI(0);
+    setZone(null);
   };
 
   const handleAddAtBat = async () => {
@@ -139,6 +154,7 @@ const LogAtBatScreen = ({ navigation }) => {
         hardHit: hardHit,
         runScored: runScored,
         RBI: RBI,
+        zone: zone,
       };
       await addAtBat(newAtBat, game.id).then(() => {
         setUserGames(
@@ -219,7 +235,7 @@ const LogAtBatScreen = ({ navigation }) => {
           disabled={!canProceed}
         >
           <Text className="text-white text-2xl">
-            {activePage === 3 ? "Finish" : "Next"}
+            {activePage === 4 ? "Finish" : "Next"}
           </Text>
         </TouchableOpacity>
       </View>
