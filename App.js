@@ -1,84 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { View, Image, StatusBar } from "react-native";
+import {
+  DefaultTheme,
+  NavigationContainer,
+  useNavigation,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   House,
-  ChartLineUp,
-  Baseball,
-  CalendarPlus,
+  ChartBar,
+  Trophy,
+  Calendar,
+  PlusCircle,
 } from "phosphor-react-native";
-import Login from "./Screens/LoginScreen";
-import Register from "./Screens/RegisterScreen";
+import QuickAddScreen from "./Screens/QuickAddScreen";
 import LogAtBatScreen from "./Screens/LogAtBatScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
+import BackgroundImage from "./components/BackgroundImage";
 import Stats from "./Screens/StatsScreen";
 import Settings from "./Screens/SettingsScreen";
 import { onAuthStateChanged, auth, db, doc, getDoc } from "./services/firebase";
 import { AuthContext } from "./components/AuthContext";
-import { FloatingAction } from "react-native-floating-action";
 
-const Stack = createStackNavigator();
 const BottomBar = createBottomTabNavigator();
 
-function AuthStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          animationEnabled: false,
-          headerBackTitleVisible: false,
-          headerLeft: null,
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{
-          animationEnabled: false,
-          headerBackTitleVisible: false,
-          headerLeft: null,
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-
 function AppStack() {
-  const navigation = useNavigation();
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <BottomBar.Navigator
         detachInactiveScreens={false}
         initialRouteName="Stats"
         screenOptions={{
           tabBarShowLabel: false,
-          tabBarActiveTintColor: "black",
-          tabBarInactiveTintColor: "gray",
+          tabBarActiveTintColor: "white",
+          tabBarInactiveTintColor: "white",
+          headerShown: false,
           tabBarStyle: {
-            backgroundColor: "white",
-            borderRadius: 20,
-            marginBottom: 25,
-            marginTop: 5,
-            paddingTop: 30,
-            height: 70,
-            borderColor: "#fff",
-            marginHorizontal: 30,
-            paddingHorizontal: 20,
             position: "absolute",
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
+            backgroundColor: "transparent",
+            borderTopWidth: 0,
+            paddingTop: 10,
           },
         }}
       >
@@ -88,9 +54,9 @@ function AppStack() {
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
-                <ChartLineUp size={40} color={color} weight="fill" />
+                <ChartBar size={32} color={color} weight="fill" />
               ) : (
-                <ChartLineUp size={40} color={color} />
+                <ChartBar size={32} color={color} />
               ),
           }}
         />
@@ -98,18 +64,12 @@ function AppStack() {
           name="Log AB"
           component={LogAtBatScreen}
           options={{
-            tabBarIcon: () => (
-              <CalendarPlus size={0} color="white" weight="fill" />
-            ),
-          }}
-        />
-        <BottomBar.Screen
-          name="Add Game"
-          component={AddGameScreen}
-          options={{
-            tabBarIcon: () => (
-              <CalendarPlus size={0} color="white" weight="fill" />
-            ),
+            tabBarIcon: ({ color, focused }) =>
+              focused ? (
+                <Trophy size={32} color={color} weight="fill" />
+              ) : (
+                <Trophy size={32} color={color} />
+              ),
           }}
         />
         <BottomBar.Screen
@@ -118,62 +78,37 @@ function AppStack() {
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
-                <House size={40} color={color} weight="fill" />
+                <House size={32} color={color} weight="fill" />
               ) : (
-                <House size={40} color={color} />
+                <House size={32} color={color} />
+              ),
+          }}
+        />
+        <BottomBar.Screen
+          name="Add Game"
+          component={AddGameScreen}
+          options={{
+            tabBarIcon: ({ color, focused }) =>
+              focused ? (
+                <Calendar size={32} color={color} weight="fill" />
+              ) : (
+                <Calendar size={32} color={color} />
+              ),
+          }}
+        />
+        <BottomBar.Screen
+          name="QuickAddScreen"
+          component={QuickAddScreen}
+          options={{
+            tabBarIcon: ({ color, focused }) =>
+              focused ? (
+                <PlusCircle size={32} color={color} weight="fill" />
+              ) : (
+                <PlusCircle size={32} color={color} />
               ),
           }}
         />
       </BottomBar.Navigator>
-      <View
-        style={{
-          bottom: 20,
-          right: 124,
-        }}
-      >
-        <FloatingAction
-          actions={[
-            {
-              text: "Add AB",
-              name: "add_ab",
-              icon: <Baseball size={40} color="white" />,
-              position: 1,
-              buttonSize: 60,
-              margin: 10,
-              textStyle: {
-                display: "none",
-              },
-              textBackground: "transparent",
-            },
-            {
-              text: "Add Game",
-              name: "add_game",
-              icon: <CalendarPlus size={32} color="white" />,
-              position: 2,
-              buttonSize: 60,
-              margin: 10,
-              textStyle: {
-                display: "none",
-              },
-              textBackground: "transparent",
-            },
-          ]}
-          onPressItem={(name) => {
-            if (name === "add_ab") {
-              navigation.navigate("Log AB");
-            } else if (name === "add_game") {
-              navigation.navigate("Add Game");
-            }
-          }}
-          showBackground={false}
-          buttonSize={80}
-          iconHeight={22}
-          iconWidth={22}
-          position="right"
-          actionsPaddingTopBottom={5}
-          floatingIcon={null}
-        />
-      </View>
     </View>
   );
 }
@@ -206,10 +141,25 @@ export default function App() {
   }, []);
 
   return (
-    <AuthContext.Provider value={userData}>
-      <NavigationContainer>
-        {!user ? <AppStack /> : <AuthStack />}
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <BackgroundImage>
+        <AuthContext.Provider value={userData}>
+          <NavigationContainer
+            theme={{
+              colors: {
+                ...DefaultTheme.colors,
+                background: "transparent",
+              },
+            }}
+          >
+            <AppStack />
+          </NavigationContainer>
+        </AuthContext.Provider>
+      </BackgroundImage>
+    </View>
   );
 }
