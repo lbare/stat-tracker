@@ -1,31 +1,65 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import { View, Alert, TouchableOpacity, Text } from "react-native";
 import StepIndicator from "react-native-step-indicator";
 import HitLocation from "../components/HitLocation";
 import Result from "../components/Result";
-import Count from "../components/Count";
+import Pitches from "../components/Pitches";
 import Trajectory from "../components/Trajectory";
 import Runs from "../components/Runs";
+import { UserContext } from "../services/UserContext";
+import { addAtBat, getNumberOfAtBatsByGame } from "../services/firebase";
+import Zone from "../components/Zone";
 
-const LogAtBatScreen = () => {
+const LogAtBatScreen = ({ navigation }) => {
+  const { userGames, setUserGames, currentGame, setCurrentGame } =
+    useContext(UserContext);
+
   const [activePage, setActivePage] = useState(0);
+  const [game, setGame] = useState(currentGame);
   const [result, setResult] = useState(null);
-  const [count, setCount] = useState({
-    balls: 0,
-    strikes: 0,
-  });
   const [hitLocation, setHitLocation] = useState({ x: 0, y: 0 });
   const [trajectory, setTrajectory] = useState(null);
+  const [zone, setZone] = useState(null);
   const [hardHit, setHardHit] = useState(null);
   const [RBI, setRBI] = useState(0);
-  const [runScored, setRunScored] = useState(null);
+  const [runScored, setRunScored] = useState(false);
+
+  useEffect(() => setGame(currentGame), [currentGame]);
+
+  useEffect(() => {
+    switch (result) {
+      case "K":
+        Alert.alert("Swinging?", "", [
+          {
+            text: "Yes",
+            onPress: () => {
+              setResult("KS");
+              setRunScored(false);
+              setActivePage(1);
+            },
+          },
+          {
+            text: "No",
+            onPress: () => {
+              setResult("KL");
+              setRunScored(true);
+              setActivePage(1);
+            },
+          },
+        ]);
+
+        break;
+      default:
+        break;
+    }
+  }, [result]);
 
   const canProceed = useMemo(() => {
     switch (activePage) {
       case 0:
         return result !== null;
       case 1:
-        return true;
+        return zone !== null;
       case 2:
         return runScored !== null;
       case 3:
@@ -35,17 +69,30 @@ const LogAtBatScreen = () => {
       default:
         return true;
     }
-  }, [activePage, result, hitLocation.y, trajectory, hardHit, runScored]);
-
-  const handleNext = () => setActivePage(activePage + 1);
-  const handleBack = () => setActivePage(activePage - 1);
+  }, [
+    activePage,
+    game,
+    result,
+    hitLocation.y,
+    trajectory,
+    hardHit,
+    runScored,
+    zone,
+  ]);
 
   const stepCount =
-    result === "BB" || result === "K" || result === "HBP" ? 3 : 5;
+    result === "K" || result === "KS" || result === "KL"
+      ? 2
+      : result === "BB" ||
+        result === "IBB" ||
+        result === "HBP" ||
+        result === null
+      ? 3
+      : 5;
 
   const content = {
     0: <Result result={result} setResult={setResult} />,
-    1: <Count count={count} setCount={setCount} />,
+    1: <Zone zone={zone} setZone={setZone} />,
     2: (
       <Runs
         runScored={runScored}
@@ -78,35 +125,68 @@ const LogAtBatScreen = () => {
         {
           text: "OK",
           onPress: () => {
-            console.log(
-              stepCount === 5
-                ? {
-                    result: result,
-                    hitLocation: {
-                      x: Math.floor(hitLocation.x),
-                      y: Math.floor(hitLocation.y),
-                    },
-                    count: count,
-                    trajectory: trajectory,
-                    hardHit: hardHit,
-                    runScored: runScored,
-                    RBI: RBI,
-                  }
-                : {
-                    result: result,
-                    count: count,
-                    runScored: runScored,
-                    RBI: RBI,
-                  }
-            );
+            handleAddAtBat();
           },
         },
       ]);
     } else setActivePage(activePage + step);
   };
 
+  const clearFields = () => {
+    setResult(null);
+    setHitLocation({ x: 0, y: 0 });
+    setTrajectory(null);
+    setHardHit(null);
+    setRunScored(null);
+    setRBI(0);
+    setZone(null);
+  };
+
+  const handleAddAtBat = async () => {
+    try {
+      const newAtBat = {
+        result: result,
+        hitLocation: {
+          x: hitLocation.x !== 0 ? Math.floor(hitLocation.x) : null,
+          y: hitLocation.x !== 0 ? Math.floor(hitLocation.y) : null,
+        },
+        trajectory: trajectory,
+        hardHit: hardHit,
+        runScored: runScored,
+        RBI: RBI,
+        zone: zone,
+      };
+      await addAtBat(newAtBat, game.id).then(() => {
+        setUserGames(
+          userGames.map((g) => {
+            if (g.id === game.id) {
+              if (g.atBats === undefined) g.atBats = [];
+              g.atBats.push(newAtBat);
+              return g;
+            } else return g;
+          })
+        );
+        setCurrentGame({
+          ...game,
+          atBats: [...(game.atBats || []), newAtBat],
+        });
+        setActivePage(0);
+        clearFields();
+        navigation.navigate("Game Info");
+      });
+    } catch (error) {
+      console.error("Error adding AtBat:", error);
+    }
+  };
+
   return (
     <View className="flex flex-col h-full w-full py-5 pb-48">
+      <Text className="self-center text-xl font-bold">
+        AB #
+        {currentGame.atBats && currentGame.atBats.length > 0
+          ? currentGame.atBats.length
+          : 1}
+      </Text>
       <StepIndicator
         customStyles={{
           stepIndicatorSize: 25,

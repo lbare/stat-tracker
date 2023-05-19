@@ -1,14 +1,18 @@
-import React, { useContext, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { register } from "../services/firebase";
-import { AuthContext } from "../components/AuthContext";
+import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+  KeyboardAvoidingView,
+} from "react-native";
+import { addUser } from "../services/firebase";
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-
-  const user = useContext(AuthContext);
 
   const onLoginPress = () => navigation.navigate("Login");
   const onRegisterPress = () => {
@@ -16,15 +20,20 @@ const Register = ({ navigation }) => {
       alert("Passwords don't match.");
       return;
     }
-    register(email, password);
+    addUser(email, password)
+      .then(() => {
+        console.log("Registered!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  useEffect(() => {
-    if (user) navigation.navigate("Home");
-  }, []);
-
   return (
-    <View className="flex-1 justify-center bg-white">
+    <KeyboardAvoidingView
+      className="flex-1 justify-center bg-white"
+      behavior="padding"
+    >
       <View className="h-1/4">
         <Text className="text-7xl pb-20 font-black text-center text-blue-500 pt-1">
           Sign Up
@@ -41,6 +50,7 @@ const Register = ({ navigation }) => {
           textContentType="emailAddress"
           value={email}
           onChangeText={(value) => setEmail(value)}
+          onSubmitEditing={() => Keyboard.dismiss()}
           returnKeyType="next"
         />
         <TextInput
@@ -52,6 +62,7 @@ const Register = ({ navigation }) => {
           keyboardType="default"
           textContentType="password"
           value={password}
+          onSubmitEditing={() => Keyboard.dismiss()}
           onChangeText={(value) => setPassword(value)}
           returnKeyType="next"
         />
@@ -82,8 +93,29 @@ const Register = ({ navigation }) => {
           Already have an account?{"\n"}SIGN IN
         </Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Register;
+
+const test1 = [{ data: [[Object], [Object]], title: "jan" }];
+
+const userGames = [
+  {
+    date: [Object],
+    home: true,
+    id: "8K9v3UsTuedbVesepPjQ",
+    opponent: "Brewers",
+  },
+  {
+    date: [Object],
+    didWin: true,
+    homeTeam: true,
+    id: "AaImGG4m8z9x0haZbngs",
+    isPlayoff: false,
+    opponent: "Reds",
+    runsAllowed: 5,
+    runsScored: 12,
+  },
+];

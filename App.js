@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import React, { useState, useEffect, createContext } from "react";
+import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
-  House,
+  List,
   ChartLineUp,
   Baseball,
   CalendarPlus,
@@ -12,42 +12,21 @@ import {
 import Login from "./Screens/LoginScreen";
 import Register from "./Screens/RegisterScreen";
 import LogAtBatScreen from "./Screens/LogAtBatScreen";
+import LogPitchingScreen from "./Screens/LogPitchingScreen";
+import LogFieldingScreen from "./Screens/LogFieldingScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import Stats from "./Screens/StatsScreen";
-import Settings from "./Screens/SettingsScreen";
-import { onAuthStateChanged, auth, db, doc, getDoc } from "./services/firebase";
-import { AuthContext } from "./components/AuthContext";
+import GamesScreen from "./Screens/GamesScreen";
+import GameInfoScreen from "./Screens/GameInfoScreen";
+import { auth, db, getAllGames } from "./services/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { getDoc, doc } from "firebase/firestore";
 import { FloatingAction } from "react-native-floating-action";
+import { UserContext } from "./services/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 const BottomBar = createBottomTabNavigator();
-
-function AuthStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{
-          animationEnabled: false,
-          headerBackTitleVisible: false,
-          headerLeft: null,
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{
-          animationEnabled: false,
-          headerBackTitleVisible: false,
-          headerLeft: null,
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
 
 function AppStack() {
   const navigation = useNavigation();
@@ -83,14 +62,14 @@ function AppStack() {
         }}
       >
         <BottomBar.Screen
-          name="Stats"
-          component={Stats}
+          name="Games"
+          component={GamesScreen}
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
-                <ChartLineUp size={40} color={color} weight="fill" />
+                <List size={40} color={color} weight="fill" />
               ) : (
-                <ChartLineUp size={40} color={color} />
+                <List size={40} color={color} />
               ),
           }}
         />
@@ -104,6 +83,25 @@ function AppStack() {
           }}
         />
         <BottomBar.Screen
+          name="Log Pitching"
+          component={LogPitchingScreen}
+          options={{
+            tabBarIcon: () => (
+              <CalendarPlus size={0} color="white" weight="fill" />
+            ),
+          }}
+        />
+        <BottomBar.Screen
+          name="Log Fielding"
+          component={LogFieldingScreen}
+          options={{
+            tabBarIcon: () => (
+              <CalendarPlus size={0} color="white" weight="fill" />
+            ),
+          }}
+        />
+
+        <BottomBar.Screen
           name="Add Game"
           component={AddGameScreen}
           options={{
@@ -113,14 +111,23 @@ function AppStack() {
           }}
         />
         <BottomBar.Screen
-          name="Settings"
-          component={Settings}
+          name="Game Info"
+          component={GameInfoScreen}
+          options={{
+            tabBarIcon: () => (
+              <CalendarPlus size={0} color="white" weight="fill" />
+            ),
+          }}
+        />
+        <BottomBar.Screen
+          name="Stats"
+          component={Stats}
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
-                <House size={40} color={color} weight="fill" />
+                <ChartLineUp size={40} color={color} weight="fill" />
               ) : (
-                <House size={40} color={color} />
+                <ChartLineUp size={40} color={color} />
               ),
           }}
         />
@@ -180,36 +187,96 @@ function AppStack() {
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [userGames, setUserGames] = useState(null);
+  const [currentGame, setCurrentGame] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const fetchData = async () => {
       try {
-        if (user) {
-          const docSnap = await getDoc(doc(db, "users", user.uid));
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            setUserData(data);
-            setUser(user);
-          } else {
-            console.log("No such document");
-          }
-        } else {
-          setUser(null);
-        }
+        console.log("**********************************************");
+        console.log("FETCHING FROM FIREBASE");
+        console.log("**********************************************");
+        const games = await getAllGames().catch((error) => {
+          console.log("Promise Error: ", error);
+        });
+        return games;
       } catch (error) {
         console.log(error);
       }
-    });
+    };
 
-    return unsubscribe;
+    const setData = async () => {
+      let gameData;
+      const cachedGameData = await AsyncStorage.getItem("games");
+
+      if (cachedGameData) {
+        gameData = JSON.parse(cachedGameData, (key, value) => {
+          if (key === "date") {
+            return new Date(value);
+          }
+          return value;
+        });
+      } else {
+        gameData = await fetchData();
+        // Convert Date objects to strings before storing in AsyncStorage
+        gameData = gameData.map((game) => ({
+          ...game,
+          date: game.date.toISOString(),
+        }));
+        await AsyncStorage.setItem("games", JSON.stringify(gameData));
+      }
+
+      // Parse string dates back to Date objects
+      gameData = gameData.map((game) => ({
+        ...game,
+        date: new Date(game.date),
+      }));
+
+      setUserGames(gameData);
+    };
+
+    if (!userGames) {
+      setData();
+    }
   }, []);
 
+  useEffect(() => {
+    const updateAsyncStorage = async () => {
+      try {
+        // Convert Date objects to strings before storing in AsyncStorage
+        const gameData = userGames.map((game) => ({
+          ...game,
+          date: game.date.toISOString(),
+        }));
+
+        await AsyncStorage.setItem("games", JSON.stringify(gameData));
+        console.log("====================================");
+        console.log("UPDATED ASYNC STORAGE");
+        console.log("====================================");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (userGames) {
+      updateAsyncStorage();
+    }
+  }, [userGames]);
+
   return (
-    <AuthContext.Provider value={userData}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        userGames,
+        setUserGames,
+        currentGame,
+        setCurrentGame,
+      }}
+    >
       <NavigationContainer>
-        {!user ? <AppStack /> : <AuthStack />}
+        {userGames ? <AppStack /> : <ActivityIndicator size="large" />}
       </NavigationContainer>
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 }

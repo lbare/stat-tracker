@@ -123,7 +123,7 @@ const Result = ({ result, setResult }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View className="flex-row justify-evenly px-10 pt-6">
+      <View className="flex-row justify-evenly px-6 pt-6">
         <TouchableOpacity
           className={`bg-gray-100 border border-gray-500 rounded-xl w-1/5 h-14 justify-center ${
             result === "BB" ? "bg-blue-500 border-blue-700" : ""
@@ -164,6 +164,20 @@ const Result = ({ result, setResult }) => {
             }`}
           >
             OUT
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className={`bg-gray-100 border border-gray-500 rounded-xl w-1/5 h-14 justify-center ${
+            result === "FC" ? "bg-blue-500 border-blue-700" : ""
+          }`}
+          onPress={() => setResult("FC")}
+        >
+          <Text
+            className={`text-center text-xl ${
+              result === "FC" ? "text-white" : ""
+            }`}
+          >
+            FC
           </Text>
         </TouchableOpacity>
       </View>

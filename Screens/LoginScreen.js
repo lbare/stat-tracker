@@ -1,26 +1,35 @@
-import React, { useContext, useEffect } from "react";
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Keyboard,
+  KeyboardAvoidingView,
+} from "react-native";
 import { login } from "../services/firebase";
-import { AuthContext } from "../components/AuthContext";
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("levi.bare@gmail.com");
+  const [password, setPassword] = React.useState("password");
 
   const onRegisterPress = () => navigation.navigate("Register");
   const onLoginPress = () => {
     console.log(email, password);
-    login(email, password);
+    login(email, password)
+      .then(() => {
+        console.log("Logged in!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const user = useContext(AuthContext);
-
-  useEffect(() => {
-    if (user) navigation.navigate("Home");
-  }, []);
-
   return (
-    <View className="flex-1 justify-center bg-white">
+    <KeyboardAvoidingView
+      className="flex-1 justify-center bg-white"
+      behavior="padding"
+    >
       <View className="h-1/4">
         <Text className="text-7xl pb-20 font-black text-center text-blue-500 pt-1">
           Sign In
@@ -37,6 +46,7 @@ const Login = ({ navigation }) => {
           textContentType="emailAddress"
           value={email}
           onChangeText={(value) => setEmail(value.toString())}
+          onSubmitEditing={() => Keyboard.dismiss()}
           returnKeyType="next"
         />
         <TextInput
@@ -65,7 +75,7 @@ const Login = ({ navigation }) => {
           Don't have an account?{"\n"}SIGN UP
         </Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
