@@ -127,40 +127,40 @@ const Stats = () => {
         horizontal={true}
       >
         <View className="flex-row justify-between border-2">
-          <View className="w-20 h-8 justify-center items-center border-r-2">
+          <View className="w-20 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">Team</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">G</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">AB</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">R</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">H</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">RBI</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">BB</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">SO</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">AVG</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">OBP</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center border-r-2">
+          <View className="w-12 h-6 justify-center items-center border-r-2">
             <Text className="font-extrabold">SLG</Text>
           </View>
-          <View className="w-12 h-8 justify-center items-center">
+          <View className="w-12 h-6 justify-center items-center">
             <Text className="font-extrabold">OPS</Text>
           </View>
         </View>
