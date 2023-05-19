@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StatusBar } from "react-native";
-import {
-  DefaultTheme,
-  NavigationContainer,
-  useNavigation,
-} from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { View } from "react-native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   House,
@@ -16,12 +11,13 @@ import {
 } from "phosphor-react-native";
 import QuickAddScreen from "./Screens/QuickAddScreen";
 import LogAtBatScreen from "./Screens/LogAtBatScreen";
+import HomeScreen from "./Screens/HomeScreen";
 import AddGameScreen from "./Screens/AddGameScreen";
 import BackgroundImage from "./components/BackgroundImage";
 import Stats from "./Screens/StatsScreen";
-import Settings from "./Screens/SettingsScreen";
 import { onAuthStateChanged, auth, db, doc, getDoc } from "./services/firebase";
 import { AuthContext } from "./components/AuthContext";
+import { useFonts } from "expo-font";
 
 const BottomBar = createBottomTabNavigator();
 
@@ -73,8 +69,8 @@ function AppStack() {
           }}
         />
         <BottomBar.Screen
-          name="Settings"
-          component={Settings}
+          name="Home"
+          component={HomeScreen}
           options={{
             tabBarIcon: ({ color, focused }) =>
               focused ? (
@@ -114,6 +110,27 @@ function AppStack() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "WorkSans-Black": require("./assets/fonts/WorkSans-Black.ttf"),
+    "WorkSans-BlackItalic": require("./assets/fonts/WorkSans-BlackItalic.ttf"),
+    "WorkSans-Bold": require("./assets/fonts/WorkSans-Bold.ttf"),
+    "WorkSans-BoldItalic": require("./assets/fonts/WorkSans-BoldItalic.ttf"),
+    "WorkSans-ExtraBold": require("./assets/fonts/WorkSans-ExtraBold.ttf"),
+    "WorkSans-ExtraBoldItalic": require("./assets/fonts/WorkSans-ExtraBoldItalic.ttf"),
+    "WorkSans-ExtraLight": require("./assets/fonts/WorkSans-ExtraLight.ttf"),
+    "WorkSans-ExtraLightItalic": require("./assets/fonts/WorkSans-ExtraLightItalic.ttf"),
+    "WorkSans-Light": require("./assets/fonts/WorkSans-Light.ttf"),
+    "WorkSans-LightItalic": require("./assets/fonts/WorkSans-LightItalic.ttf"),
+    "WorkSans-Italic": require("./assets/fonts/WorkSans-Italic.ttf"),
+    "WorkSans-Medium": require("./assets/fonts/WorkSans-Medium.ttf"),
+    "WorkSans-MediumItalic": require("./assets/fonts/WorkSans-MediumItalic.ttf"),
+    "WorkSans-Regular": require("./assets/fonts/WorkSans-Regular.ttf"),
+    "WorkSans-SemiBold": require("./assets/fonts/WorkSans-SemiBold.ttf"),
+    "WorkSans-SemiBoldItalic": require("./assets/fonts/WorkSans-SemiBoldItalic.ttf"),
+    "WorkSans-Thin": require("./assets/fonts/WorkSans-Thin.ttf"),
+    "WorkSans-ThinItalic": require("./assets/fonts/WorkSans-ThinItalic.ttf"),
+  });
+
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
 
