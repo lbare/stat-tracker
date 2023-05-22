@@ -18,6 +18,8 @@ import Stats from "./Screens/StatsScreen";
 import { onAuthStateChanged, auth, db, doc, getDoc } from "./services/firebase";
 import { AuthContext } from "./components/AuthContext";
 import { useFonts } from "expo-font";
+import SplashScreen from "./components/SplashScreen";
+import { Asset } from "expo-asset";
 
 const BottomBar = createBottomTabNavigator();
 
@@ -30,7 +32,7 @@ function AppStack() {
     >
       <BottomBar.Navigator
         detachInactiveScreens={false}
-        initialRouteName="Stats"
+        initialRouteName="Home"
         screenOptions={{
           tabBarShowLabel: false,
           tabBarActiveTintColor: "white",
@@ -133,6 +135,7 @@ export default function App() {
 
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -157,26 +160,47 @@ export default function App() {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    async function loadAssets() {
+      try {
+        await Promise.all([
+          Asset.loadAsync(require("./assets/bg-full.png")),
+          Asset.loadAsync(require("./assets/cloud.png")),
+        ]);
+        setTimeout(() => {
+          setAssetsLoaded(true);
+        }, 3000);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    loadAssets();
+  }, []);
+
   return (
     <View
       style={{
         flex: 1,
       }}
     >
-      <BackgroundImage>
-        <AuthContext.Provider value={userData}>
-          <NavigationContainer
-            theme={{
-              colors: {
-                ...DefaultTheme.colors,
-                background: "transparent",
-              },
-            }}
-          >
-            <AppStack />
-          </NavigationContainer>
-        </AuthContext.Provider>
-      </BackgroundImage>
+      {!assetsLoaded || !fontsLoaded ? (
+        <SplashScreen />
+      ) : (
+        <BackgroundImage>
+          <AuthContext.Provider value={userData}>
+            <NavigationContainer
+              theme={{
+                colors: {
+                  ...DefaultTheme.colors,
+                  background: "transparent",
+                },
+              }}
+            >
+              <AppStack />
+            </NavigationContainer>
+          </AuthContext.Provider>
+        </BackgroundImage>
+      )}
     </View>
   );
 }
