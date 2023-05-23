@@ -18,7 +18,7 @@ const ProgressBar = ({ percent }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 26,
+    height: 16,
     width: "100%",
     borderRadius: 30,
     borderWidth: 3,
