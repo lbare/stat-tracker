@@ -25,6 +25,7 @@ const PageIndicator = ({ index, total }) => {
 
 const styles = StyleSheet.create({
   layout: {
+    flexDirection: "row",
     justifyContent: "center",
     width: 14,
   },
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 20,
-    marginVertical: 2,
+    marginHorizontal: 2,
   },
   active: {
     opacity: 1,
